@@ -1,6 +1,6 @@
 import React, { Children } from "react";
 import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
-import { darkTheme, lightTheme } from "../constants/theme/Theme";
+import { darkTheme, lightTheme } from "../constants/theme/theme";
 
 interface MyProps {
   children: React.ReactNode;

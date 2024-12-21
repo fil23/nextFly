@@ -5,7 +5,7 @@ import { Text } from "react-native-paper";
 export const SplashScreen = () => {
   return (
     <View style={styles.container}>
-      <Text> SplashScreen</Text>
+      {/* <Text variant="titleSmall"> SplashScreen</Text> */}
     </View>
   );
 };

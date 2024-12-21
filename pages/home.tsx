@@ -5,11 +5,13 @@ import { useNavigation } from "@react-navigation/native";
 import { SafeAreaViewCustom } from "../components/safeAreaViewCustom";
 
 export const Home = () => {
-  const navigate = useNavigation();
+  const navigation = useNavigation();
   return (
     <SafeAreaViewCustom>
-      <Text>Home</Text>
-      <Button onPress={() => navigate.navigate("Details")}>Vai dettagli</Button>
+      {/* <Text variant="titleLarge">Home</Text> */}
+      <Button onPress={() => navigation.navigate("details")}>
+        Vai dettagli
+      </Button>
     </SafeAreaViewCustom>
   );
 };
