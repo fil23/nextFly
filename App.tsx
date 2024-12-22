@@ -9,6 +9,8 @@ import { PaperProvider } from "react-native-paper";
 import { darkTheme, lightTheme } from "./constants/theme/theme";
 import * as SecureStore from "expo-secure-store";
 import { Login } from "./pages/public/login";
+import { SignIn } from "./pages/public/signin";
+import { FindPass } from "./pages/public/find_pass";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -26,31 +28,31 @@ export default function App() {
   return (
     <PaperProvider theme={theme}>
       <NavigationContainer>
-        {token == null ? (
-          <Stack.Navigator
-            initialRouteName="login"
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="login" component={Login} />
-          </Stack.Navigator>
-        ) : (
-          <Stack.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: theme.colors.surface,
-              },
-              headerTitleStyle: {
-                color: theme.colors.primary,
-              },
-            }}
-          >
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Details" component={Details} />
-          </Stack.Navigator>
-        )}
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: theme.colors.surface,
+            },
+            headerTintColor: theme.colors.text,
+          }}
+        >
+          {token == null ? (
+            <>
+              <Stack.Screen
+                name="login"
+                component={Login}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen name="signin" component={SignIn} />
+              <Stack.Screen name="find_pass" component={FindPass} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="Details" component={Details} />
+            </>
+          )}
+        </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>
   );
