@@ -2,6 +2,7 @@
   "expo": {
     "name": "talkme",
     "slug": "talkme",
+    "runtimeVersion":"1.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,12 +30,14 @@
       "eas": {
         "projectId": "ea644225-2201-4ee5-a4ce-f0d67eacdb35"
       }
+
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
+    
     "updates": {
       "url": "https://u.expo.dev/ea644225-2201-4ee5-a4ce-f0d67eacdb35"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
