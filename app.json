@@ -8,6 +8,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "assetBundlePatterns": ["**/*"],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -30,7 +31,6 @@
       "eas": {
         "projectId": "ea644225-2201-4ee5-a4ce-f0d67eacdb35"
       }
-
     },
     
     "updates": {

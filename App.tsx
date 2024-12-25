@@ -49,6 +49,7 @@ export default function App() {
             headerTintColor: theme.colors.text,
             animation: "ios_from_right",
             headerTitle: "",
+
             headerRight: () => <Logo_header />,
             headerBackButtonDisplayMode: "minimal",
           }}
@@ -60,7 +61,7 @@ export default function App() {
                 component={Login}
                 options={{ headerShown: false }}
               />
-              <Stack.Screen name="signin" component={SignIn} options={{}} />
+              <Stack.Screen name="signin" component={SignIn} />
               <Stack.Screen name="find_pass" component={FindPass} />
             </>
           ) : (
