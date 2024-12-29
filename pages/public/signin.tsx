@@ -1,13 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import { Text } from "react-native-paper";
+import React from "react";
 import { SafeAreaViewCustom } from "../../components/safeAreaViewCustom";
-import {
-  Animated,
-  ImageBackground,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from "react-native";
+import { StyleSheet, useColorScheme, View } from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { SignInTitles } from "../../components/titles/signInTitles";
 import { FormSignIn } from "../../components/froms/form_registrazione";
@@ -21,6 +14,7 @@ export const SignIn = () => {
     colorScheme === "dark"
       ? require("../../assets/img/Toky nights2.jpg")
       : require("../../assets/img/signInBack.jpg");
+
   return (
     <SafeAreaViewCustom>
       {/* <ImageBackground

@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, useColorScheme, View } from "react-native";
 import { Button, Icon, TextInput } from "react-native-paper";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
+import { GoogleSigninButton } from "@react-native-google-signin/google-signin";
+import { useAuth } from "../../configurations/contexts/authContext";
 
 export const FormSignIn = () => {
   const [utente, setUtente] = useState<Utente | null>(null);
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
+  const { signInWithGoogle } = useAuth();
 
   return (
     <View style={styles.container}>
@@ -38,6 +41,13 @@ export const FormSignIn = () => {
       >
         Sign in
       </Button>
+
+      <GoogleSigninButton
+        onPress={signInWithGoogle}
+        size={GoogleSigninButton.Size.Standard}
+        color={GoogleSigninButton.Color.Dark}
+        collapsable={true}
+      />
     </View>
   );
 };
