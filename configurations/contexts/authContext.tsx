@@ -87,14 +87,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOutWithGoogle = async () => {
     try {
-      // setOnLoad(true);
+      setOnLoad(true);
       await GoogleSignin.signOut();
       await SecureStore.deleteItemAsync("token");
       console.log("Sign out avvenuto con successo");
     } catch (error) {
       setErrore({ errore: true, messaggio: "Errpre durante il signOut" });
-      // } finally {
-      //   setOnLoad(false);
+      setOnLoad(false);
+    } finally {
     }
   };
 

@@ -10,7 +10,7 @@ import { SignIn } from "../../pages/public/signin";
 import { FindPass } from "../../pages/public/find_pass";
 import { useColorScheme } from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
-import Home from "../../pages/home";
+import Home from "../../pages/home/home";
 import { Details } from "../../pages/details";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import * as SecureStore from "expo-secure-store";
