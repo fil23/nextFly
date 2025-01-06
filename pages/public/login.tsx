@@ -4,6 +4,7 @@ import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { Text, TextInput } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { SafeAreaViewCustom } from "../../components/safeAreaViewCustom";
+import { Login_Form } from "../../components/froms/form_login";
 
 export const Login = () => {
   const colorScheme = useColorScheme();
@@ -18,17 +19,8 @@ export const Login = () => {
         >
           Welcome
         </Text>
-        <TextInput
-          label="email"
-          mode="outlined"
-          value={utente?.email}
-          style={[styles.input, { backgroundColor: theme.colors.surface }]}
-          placeholder="Insert your email..."
-          textColor={theme.colors.text}
-          cursorColor={theme.colors.text}
-          activeUnderlineColor={theme.colors.accent}
-          underlineColor={theme.colors.accent}
-        />
+
+        <Login_Form />
       </View>
     </SafeAreaViewCustom>
   );
@@ -37,15 +29,13 @@ export const Login = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
+    gap: 20,
+    paddingVertical: "30%",
   },
   title: {
     textAlignVertical: "center",
     justifyContent: "center",
-    fontWeight: "bold",
-  },
-  input: {
-    width: "80%",
+    fontFamily: "Montserrat-Bold",
   },
 });

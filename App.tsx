@@ -1,57 +1,42 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, useColorScheme, View } from "react-native";
-import Home from "./pages/home";
-import { Details } from "./pages/details";
+import { useColorScheme, Image } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { darkTheme, lightTheme } from "./constants/theme/theme";
-import * as SecureStore from "expo-secure-store";
-import { Login } from "./pages/public/login";
+import * as Font from "expo-font";
+import { AuthProvider } from "./configurations/contexts/authContext";
+import { Route } from "./routes/routes";
 
 const Stack = createNativeStackNavigator();
+
 export default function App() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
-  const [token, setToken] = useState<string | null>(null);
 
-  async function getToken() {
-    setToken(await SecureStore.getItemAsync("token"));
-  }
+  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
 
   useEffect(() => {
-    getToken();
-  });
+    loadFonts();
+  }, []);
+  const loadFonts = async () => {
+    await Font.loadAsync({
+      "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
+      "Montserrat-Black": require("./assets/fonts/static/Montserrat-Black.ttf"),
+      "Montserrat-ExtraBold": require("./assets/fonts/static/Montserrat-ExtraBold.ttf"),
+      "Montserrat-Regular": require("./assets/fonts/static/Montserrat-Regular.ttf"),
+    });
+    setFontsLoaded(true);
+  };
+
+  if (!fontsLoaded) {
+    return null; // Mostra una schermata di caricamento se necessario
+  }
   return (
     <PaperProvider theme={theme}>
-      <NavigationContainer>
-        {token == null ? (
-          <Stack.Navigator
-            initialRouteName="login"
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            <Stack.Screen name="login" component={Login} />
-          </Stack.Navigator>
-        ) : (
-          <Stack.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-              headerStyle: {
-                backgroundColor: theme.colors.surface,
-              },
-              headerTitleStyle: {
-                color: theme.colors.primary,
-              },
-            }}
-          >
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Details" component={Details} />
-          </Stack.Navigator>
-        )}
-      </NavigationContainer>
+      <AuthProvider>
+        <Route />
+      </AuthProvider>
     </PaperProvider>
   );
 }

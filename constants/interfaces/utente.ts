@@ -1,6 +1,6 @@
 interface Utente{
     id:string,
     username:string,
-    isLogged:boolean,
+    password:string,
     email:string,
 }

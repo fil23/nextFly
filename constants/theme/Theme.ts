@@ -1,34 +1,49 @@
-import { DarkTheme } from "@react-navigation/native";
-import { DefaultTheme, MD3DarkTheme } from "react-native-paper";
+import { MD3LightTheme, MD3DarkTheme } from "react-native-paper";
 
 export const lightTheme = {
-  ...DefaultTheme,
+  ...MD3LightTheme,
   roundness: 8,
   colors: {
-    ...DefaultTheme.colors,
-    primary: '#FF5722',
+    ...MD3LightTheme.colors,
+    primary: '#2D3748',
+    secondary: '#FFB400', // Rosso carminio
     accent: '#FF9800',
-    background: '#FFF3E0',
-    surface: '#FFFFFF',
-    text: '#212121',
+    background: '#F7FAFC',
+    surface: '#E2E8F0',
+    text: '#2D3748',
     disabled: '#BDBDBD',
     placeholder: '#616161',
-    error: '#D32F2F',
+    error: '#C62828',
+    success: '#4CAF50',
+    borderColor: '#FFC107',
+    link: '#24a0ff',
+    secondary_text: '#6C757D',
+    shadow: '#8c8c8c',
+    chip_success:'#90f493de',
+    chip_error: '#ff5252c7'
   },
 };
 
 export const darkTheme = {
-  ...DarkTheme,
+  ...MD3DarkTheme,
   roundness: 8,
   colors: {
-    ...DarkTheme.colors,
-    primary: '#FF7043',
+    ...MD3DarkTheme.colors,
+    primary: '#4A5568',
+    secondary: '#FFB400', // Oro ambrato
     accent: '#FF8A65',
-    background: '#121212',
-    surface: '#1E1E1E',
-    text: '#FFE0B2',
+    background: '#1A202C',
+    surface: '#2D3748',
+    text: '#EAEAEA',
     disabled: '#616161',
-    placeholder: '#FFCCBC',
-    error: '#FF5252',
+    placeholder: '#FFCCBC6e',
+    error: '#EF5350',
+    success: '#81C784',
+    borderColor: '#FFD54F',
+    link: '#24a0ff',
+    secondary_text: '#A4A4A4',
+    shadow: '#575757',
+    chip_success : '#86ca8ac7',
+    chip_error : '#EF535099'
   },
 };
