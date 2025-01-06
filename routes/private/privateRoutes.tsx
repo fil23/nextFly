@@ -4,10 +4,10 @@ import Home from "../../pages/home/home";
 
 import { useColorScheme } from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
-import { Logo_header } from "../../components/header/logo_header";
 import { Details } from "../../pages/home/details";
+import { HomeListType } from "../../pages/home/paramHomeList";
 
-const HomeStack = createNativeStackNavigator();
+const HomeStack = createNativeStackNavigator<HomeListType>();
 
 export const HomeStackNavigator = () => {
   const color = useColorScheme();
@@ -20,10 +20,19 @@ export const HomeStackNavigator = () => {
           backgroundColor: theme.colors.surface,
         },
         headerTintColor: theme.colors.text,
+        headerTitleStyle: {
+          fontFamily: "Montserrat-Bold",
+        },
       }}
     >
       <HomeStack.Screen name="home" component={Home} />
-      <HomeStack.Screen name="details" component={Details} />
+      <HomeStack.Screen
+        name="details"
+        component={Details}
+        options={({ route }) => ({
+          title: route.params.viaggio.title,
+        })}
+      />
     </HomeStack.Navigator>
   );
 };

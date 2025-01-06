@@ -23,7 +23,6 @@ export const SafeAreaViewCustom: React.FC<MyProps> = ({
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 60,
     paddingHorizontal: 20,
   },
 });

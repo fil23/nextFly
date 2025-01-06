@@ -24,6 +24,7 @@ export default function App() {
       "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
       "Montserrat-Black": require("./assets/fonts/static/Montserrat-Black.ttf"),
       "Montserrat-ExtraBold": require("./assets/fonts/static/Montserrat-ExtraBold.ttf"),
+      "Montserrat-Regular": require("./assets/fonts/static/Montserrat-Regular.ttf"),
     });
     setFontsLoaded(true);
   };

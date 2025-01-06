@@ -19,6 +19,8 @@ export const lightTheme = {
     link: '#24a0ff',
     secondary_text: '#6C757D',
     shadow: '#8c8c8c',
+    chip_success:'#90f493de',
+    chip_error: '#ff5252c7'
   },
 };
 
@@ -41,5 +43,7 @@ export const darkTheme = {
     link: '#24a0ff',
     secondary_text: '#A4A4A4',
     shadow: '#575757',
+    chip_success : '#86ca8ac7',
+    chip_error : '#EF535099'
   },
 };

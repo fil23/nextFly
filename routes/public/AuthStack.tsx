@@ -1,17 +1,11 @@
-import {
-  createStaticNavigation,
-  NavigationContainer,
-} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Logo_header } from "../../components/header/logo_header";
 import { Login } from "../../pages/public/login";
 import { SignIn } from "../../pages/public/signin";
 import { FindPass } from "../../pages/public/find_pass";
 import { useColorScheme } from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
-import Home from "../../pages/home/home";
-import { Details } from "../../pages/details";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import * as SecureStore from "expo-secure-store";
 import { useAuth } from "../../configurations/contexts/authContext";
