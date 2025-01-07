@@ -3,4 +3,7 @@ export type HomeListType = {
     details:{
         viaggio:any;
     }
+    profile:{
+        utente:string,
+    }
 }

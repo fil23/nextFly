@@ -2,7 +2,10 @@ import React from "react";
 import { useAuth } from "../configurations/contexts/authContext";
 import { NavigationContainer } from "@react-navigation/native";
 import { AuthStack } from "./public/AuthStack";
-import { HomeStackNavigator } from "./private/privateRoutes";
+import {
+  HomeStackNavigator,
+  ProfileStackNavigator,
+} from "./private/privateRoutes";
 import { SplashScreen } from "../pages/splash/splashScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useColorScheme } from "react-native";
@@ -23,8 +26,9 @@ export const Route = () => {
           screenOptions={{
             tabBarActiveBackgroundColor: theme.colors.background,
             headerShown: false,
+            tabBarHideOnKeyboard: true,
             tabBarActiveTintColor: theme.colors.text,
-            tabBarInactiveTintColor: theme.colors.text,
+            tabBarInactiveBackgroundColor: theme.colors.background,
           }}
         >
           <Tab.Screen
@@ -33,11 +37,31 @@ export const Route = () => {
             options={{
               tabBarLabel: "Home",
               tabBarIcon: ({ focused }) => {
-                return <IconButton icon={focused ? "home" : "home-outline"} />;
+                return (
+                  <IconButton
+                    icon={focused ? "home" : "home-outline"}
+                    iconColor={theme.colors.text}
+                  />
+                );
               },
               tabBarStyle: {
                 borderTopWidth: 1,
                 borderColor: "black",
+              },
+            }}
+          />
+          <Tab.Screen
+            name="profileTab"
+            component={ProfileStackNavigator}
+            options={{
+              tabBarLabel: "Profile",
+              tabBarIcon: ({ focused }) => {
+                return (
+                  <IconButton
+                    icon={focused ? "account" : "account-outline"}
+                    iconColor={theme.colors.text}
+                  />
+                );
               },
             }}
           />

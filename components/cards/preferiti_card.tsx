@@ -26,8 +26,10 @@ export const PreferCard: FC<MyProps> = (props): JSX.Element => {
       key={props.index}
       onPress={() => navigate.navigate("details", { viaggio: props.viaggio })}
     >
+      {/* Card title */}
       <Card.Title title={props.viaggio.title} titleStyle={styles.card_title} />
       <Card.Content style={styles.card_content}>
+        {/* Card's banner image */}
         <View style={styles.card_image}>
           <ImageBackground
             source={{ uri: props.viaggio.img }}
@@ -37,10 +39,12 @@ export const PreferCard: FC<MyProps> = (props): JSX.Element => {
             resizeMethod="resize"
           />
         </View>
+
+        {/* travel's details */}
         <View style={styles.card_info}>
           <Text style={styles.card_info_text}>
             <Text style={styles.card_info_text_label}>Destination:</Text>
-            {" " + props.viaggio.localita}
+            {" " + props.viaggio.detinazione}
           </Text>
           <Text style={styles.card_info_text}>
             <Text style={styles.card_info_text_label}>Participants:</Text>{" "}

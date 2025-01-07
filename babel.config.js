@@ -6,10 +6,11 @@ module.exports = function (api) {
       production: {
         plugins: [
           'react-native-paper/babel',
-       
         ],
       },
     },
+    assets:['./assets/fonts']
+
     
   };
 };

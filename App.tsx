@@ -14,24 +14,6 @@ export default function App() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
 
-  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    loadFonts();
-  }, []);
-  const loadFonts = async () => {
-    await Font.loadAsync({
-      "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
-      "Montserrat-Black": require("./assets/fonts/static/Montserrat-Black.ttf"),
-      "Montserrat-ExtraBold": require("./assets/fonts/static/Montserrat-ExtraBold.ttf"),
-      "Montserrat-Regular": require("./assets/fonts/static/Montserrat-Regular.ttf"),
-    });
-    setFontsLoaded(true);
-  };
-
-  if (!fontsLoaded) {
-    return null; // Mostra una schermata di caricamento se necessario
-  }
   return (
     <PaperProvider theme={theme}>
       <AuthProvider>
