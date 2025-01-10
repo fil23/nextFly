@@ -13,6 +13,23 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        Montserrat: require("./assets/fonts/Montserrat-VariableFont_wght.ttf"),
+        "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
+      });
+      setFontsLoaded(true);
+    }
+
+    loadFonts();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null; // Optionally render a loading screen
+  }
 
   return (
     <PaperProvider theme={theme}>

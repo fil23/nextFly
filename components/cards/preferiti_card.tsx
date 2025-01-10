@@ -27,7 +27,11 @@ export const PreferCard: FC<MyProps> = (props): JSX.Element => {
       onPress={() => navigate.navigate("details", { viaggio: props.viaggio })}
     >
       {/* Card title */}
-      <Card.Title title={props.viaggio.title} titleStyle={styles.card_title} />
+      <Card.Title
+        title={props.viaggio.title}
+        titleStyle={styles.card_title}
+        titleVariant="titleMedium"
+      />
       <Card.Content style={styles.card_content}>
         {/* Card's banner image */}
         <View style={styles.card_image}>
@@ -76,7 +80,6 @@ const createStyle = (theme: typeof lightTheme) =>
       backgroundColor: theme.colors.surface,
     },
     card_title: {
-      fontFamily: "Montserrat-ExtraBold",
       textAlign: "center",
     },
     card_image: {
@@ -96,7 +99,6 @@ const createStyle = (theme: typeof lightTheme) =>
     },
     card_info_text: {
       color: theme.colors.text,
-      fontFamily: "Montserrat-Regular",
       fontSize: 12,
     },
     card_info_text_label: { fontFamily: "Montserrat-Bold" },
