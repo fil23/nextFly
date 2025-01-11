@@ -3,7 +3,6 @@ export const fontConfig = {
   default: {
     "fontFamily": "Montserrat",
     "fontSize": 13,
-    "fontWeight": "normal",
     "letterSpacing": 0.5,
     "lineHeight": 16,
   },
@@ -60,10 +59,32 @@ export const fontConfig = {
 
   titleLarge: {
   "fontFamily": "Montserrat",
-  "fontWeight":"bold",
   "fontSize": 22,
   "letterSpacing": 0,
   "lineHeight": 28,
-}
+  },
+
+  displayMedium: {
+     "fontFamily": "Montserrat-Bold",
+     "fontSize": 45,
+     "letterSpacing": 0,
+     "lineHeight": 52,
+   },
+
+   displaySmall: {
+  "fontFamily": "Montserrat-Bold",
+  "fontSize": 36,
+  "letterSpacing": 0,
+  "lineHeight": 44,
+  },
+
+  "displayLarge": {
+    "fontFamily": "Montserrat-Bold",
+    "fontSize": 57,
+    "letterSpacing": 0,
+    "lineHeight": 64,
+  }
+
+
 
 };

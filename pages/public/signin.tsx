@@ -1,9 +1,15 @@
 import React from "react";
 import { SafeAreaViewCustom } from "../../components/safeAreaViewCustom";
-import { StyleSheet, useColorScheme, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  useColorScheme,
+  View,
+} from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { SignInTitles } from "../../components/titles/signInTitles";
 import { FormSignIn } from "../../components/froms/form_registrazione";
+import { Platform } from "react-native";
 
 export const SignIn = () => {
   const colorScheme = useColorScheme();
@@ -25,11 +31,12 @@ export const SignIn = () => {
         }}
         resizeMode="cover"
       >*/}
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container}>
         {/* Titolo della sign in page (welcome + nome app) */}
         <SignInTitles />
         <FormSignIn />
-      </View>
+      </KeyboardAvoidingView>
+
       {/*</ImageBackground> */}
     </SafeAreaViewCustom>
   );
@@ -38,7 +45,7 @@ export const SignIn = () => {
 const createStyle = (theme: typeof lightTheme) =>
   StyleSheet.create({
     container: {
-      flex: 2,
+      flex: 1,
       paddingTop: 30,
     },
   });

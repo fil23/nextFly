@@ -19,7 +19,7 @@ export const SignInTitles = () => {
   return (
     <View style={styles.container}>
       <Text variant="displaySmall" style={styles.title}>
-        Welcome to . . .
+        Welcome to
       </Text>
       <Animated.View style={{ transform: [{ translateX: slideAnim }] }}>
         <Text style={styles.span} variant="displaySmall">
@@ -34,7 +34,6 @@ const createStyles = (theme: typeof lightTheme) =>
   StyleSheet.create({
     title: {
       color: theme.colors.text,
-      fontFamily: "Montserrat-Bold",
       paddingBottom: 10,
     },
     span: {
@@ -48,5 +47,6 @@ const createStyles = (theme: typeof lightTheme) =>
 
     container: {
       alignItems: "center",
+      justifyContent: "flex-end",
     },
   });

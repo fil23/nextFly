@@ -7,6 +7,7 @@ import { darkTheme, lightTheme } from "./constants/theme/theme";
 import * as Font from "expo-font";
 import { AuthProvider } from "./configurations/contexts/authContext";
 import { Route } from "./routes/routes";
+import * as SecureStore from "expo-secure-store";
 
 const Stack = createNativeStackNavigator();
 
@@ -20,11 +21,17 @@ export default function App() {
       await Font.loadAsync({
         Montserrat: require("./assets/fonts/Montserrat-VariableFont_wght.ttf"),
         "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
+        "Montserrat-ExtraBold": require("./assets/fonts/static/Montserrat-ExtraBold.ttf"),
       });
       setFontsLoaded(true);
     }
+    // async function deleteToken() {
+    //   await SecureStore.deleteItemAsync("token");
+    //   console.log("Token eliminato");
+    // }
 
     loadFonts();
+    // deleteToken();
   }, []);
 
   if (!fontsLoaded) {
