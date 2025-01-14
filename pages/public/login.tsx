@@ -11,13 +11,18 @@ import { StyleSheet } from "react-native";
 import { SafeAreaViewCustom } from "../../components/safeAreaViewCustom";
 import { Login_Form } from "../../components/froms/form_login";
 import { Platform } from "react-native";
+import { LoaderIndicator } from "../../components/loaderIndicator";
+import { useAuth } from "../../configurations/contexts/authContext";
 
 export const Login = () => {
   const slideAnim = useRef(new Animated.Value(1200)).current;
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
   const [utente, setUtente] = useState<Utente | null>(null);
+  const [load, setOnload] = useState<boolean>(false);
   const styles = createStyle(theme);
+
+  const auth = useAuth();
   useEffect(() => {
     // Avvia l'animazione al caricamento del componente
     Animated.timing(slideAnim, {
@@ -26,27 +31,35 @@ export const Login = () => {
       useNativeDriver: true, // Usa il driver nativo per migliori performance
     }).start();
   }, [slideAnim]);
+
+  // useEffect(() => {
+  //   auth.signOutWithGoogle();
+  // }, []);
   return (
     <SafeAreaViewCustom>
-      <KeyboardAvoidingView
-        style={styles.container}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <Text variant="displaySmall" style={styles.title}>
-          Welcome back to{" "}
-          <Animated.View
-            style={{
-              transform: [{ translateY: slideAnim }],
-            }}
-          >
-            <Text style={styles.span} variant="displaySmall">
-              NextFly
-            </Text>
-          </Animated.View>
-        </Text>
+      {load ? (
+        <LoaderIndicator />
+      ) : (
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <Text variant="displaySmall" style={styles.title}>
+            Welcome back to{" "}
+            <Animated.View
+              style={{
+                transform: [{ translateY: slideAnim }],
+              }}
+            >
+              <Text style={styles.span} variant="displaySmall">
+                NextFly
+              </Text>
+            </Animated.View>
+          </Text>
 
-        <Login_Form />
-      </KeyboardAvoidingView>
+          <Login_Form />
+        </KeyboardAvoidingView>
+      )}
     </SafeAreaViewCustom>
   );
 };

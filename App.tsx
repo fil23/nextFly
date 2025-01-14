@@ -5,9 +5,11 @@ import { useColorScheme, Image } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { darkTheme, lightTheme } from "./constants/theme/theme";
 import * as Font from "expo-font";
-import { AuthProvider } from "./configurations/contexts/authContext";
+import { AuthProvider, useAuth } from "./configurations/contexts/authContext";
 import { Route } from "./routes/routes";
 import * as SecureStore from "expo-secure-store";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "./constants/theme/toastConfiguration";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +44,7 @@ export default function App() {
     <PaperProvider theme={theme}>
       <AuthProvider>
         <Route />
+        <Toast config={toastConfig} />
       </AuthProvider>
     </PaperProvider>
   );

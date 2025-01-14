@@ -1,5 +1,5 @@
 import { MD3LightTheme, MD3DarkTheme, configureFonts } from "react-native-paper";
-import { fontConfig } from "../../configurations/fontConfiguration";
+import { fontConfig } from "./fontConfiguration";
 
 
 export const lightTheme = {
