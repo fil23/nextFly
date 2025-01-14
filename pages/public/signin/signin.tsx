@@ -19,8 +19,8 @@ export const SignIn = () => {
   const [load, setOnload] = useState<boolean>(false);
   const image =
     colorScheme === "dark"
-      ? require("../../assets/img/Toky nights2.jpg")
-      : require("../../assets/img/signInBack.jpg");
+      ? require("../../../assets/img/Toky nights2.jpg")
+      : require("../../../assets/img/signInBack.jpg");
 
   return (
     <SafeAreaViewCustom>
