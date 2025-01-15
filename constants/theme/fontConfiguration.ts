@@ -58,7 +58,7 @@ export const fontConfig = {
   },
 
   titleLarge: {
-  "fontFamily": "Montserrat",
+  "fontFamily": "Montserrat-Bold",
   "fontSize": 22,
   "letterSpacing": 0,
   "lineHeight": 28,

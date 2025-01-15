@@ -7,6 +7,7 @@ import Toast from "react-native-toast-message";
 import { chiamata_publ_post_async } from "../../api/calls/chiamate";
 import { endpoints } from "../../api/endpoints/endpoints";
 import { useNavigation } from "@react-navigation/native";
+import { validateEmail } from "../../utils/validateEmail";
 
 interface InputText {
   email: string;
@@ -33,11 +34,6 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
   const navigation = useNavigation();
 
   const { signInWithGoogle, handleUtente } = useAuth();
-
-  const validateEmail = (email: string): boolean => {
-    const regEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return regEmail.test(email);
-  };
 
   const handlerInputs = (text: string, inputName: string) => {
     setInputs((prev) => ({ ...prev, [inputName]: text }));
@@ -70,6 +66,7 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
         });
     } else {
       setError(() => ({ error: true, msg_error: "Format email error" }));
+      props.setLoad(false);
       Toast.show({
         type: "error",
         text1: "Format error",
@@ -157,7 +154,7 @@ const createStyle = (theme: typeof lightTheme) =>
     container: {
       marginTop: 20,
       flex: 0.7,
-      paddingHorizontal: "10%",
+      paddingHorizontal: "5%",
       paddingTop: 50,
       justifyContent: "flex-start",
       gap: 10,

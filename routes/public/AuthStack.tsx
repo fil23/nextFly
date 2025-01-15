@@ -38,8 +38,8 @@ export const AuthStack = () => {
         headerTintColor: theme.colors.text,
         headerStyle: { backgroundColor: theme.colors.surface },
         animation: "ios_from_right",
-        headerTitle: "",
-        headerRight: () => <Logo_header />,
+        headerTitle: () => <Logo_header />,
+        headerTitleAlign: "center",
         headerBackButtonDisplayMode: "minimal",
       }}
     >

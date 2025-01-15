@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       chiamata_publ_post_async(endpoints.auth.googleSignIn, {
         token: idToken,
-        password: userInfo.data?.serverAuthCode,
+        password: userInfo.data?.user.id,
         email: userInfo.data?.user.email,
       })
         .then(async (risp) => {
