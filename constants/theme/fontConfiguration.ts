@@ -29,7 +29,7 @@ export const fontConfig = {
   "lineHeight": 40,
   },
   labelSmall: {
-  "fontFamily": "Montserrat",
+  "fontFamily": "Montserrat-Bold",
   "fontSize": 11,
   "fontWeight": "500",
   "letterSpacing": 0.5,
@@ -37,7 +37,7 @@ export const fontConfig = {
   },
 
   labelMedium: {
-  "fontFamily": "Montserrat",
+  "fontFamily": "Montserrat-Bold",
   "fontSize": 12,
   "fontWeight": "500",
   "letterSpacing": 0.5,
@@ -78,7 +78,7 @@ export const fontConfig = {
   "lineHeight": 44,
   },
 
-  "displayLarge": {
+  displayLarge: {
     "fontFamily": "Montserrat-Bold",
     "fontSize": 57,
     "letterSpacing": 0,

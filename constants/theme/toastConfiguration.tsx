@@ -12,12 +12,18 @@ export const toastConfig = {
         style={{
           backgroundColor: theme.colors.surface,
           borderLeftColor: theme.colors.error,
+          flexWrap: "wrap",
         }}
         text1Style={{
           color: theme.colors.error,
+
           fontSize: 17,
         }}
-        text2Style={{ color: theme.colors.text, fontSize: 14 }}
+        text2Style={{
+          color: theme.colors.text,
+          fontSize: 14,
+          flexWrap: "wrap",
+        }}
       />
     );
   },

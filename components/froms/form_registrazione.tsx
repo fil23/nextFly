@@ -1,5 +1,11 @@
 import React, { FC, useEffect, useState } from "react";
-import { StyleSheet, ToastAndroid, useColorScheme, View } from "react-native";
+import {
+  SectionList,
+  StyleSheet,
+  ToastAndroid,
+  useColorScheme,
+  View,
+} from "react-native";
 import { Button, Icon, Text, TextInput } from "react-native-paper";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { useAuth } from "../../configurations/contexts/authContext";
@@ -7,7 +13,7 @@ import Toast from "react-native-toast-message";
 import { chiamata_publ_post_async } from "../../api/calls/chiamate";
 import { endpoints } from "../../api/endpoints/endpoints";
 import { useNavigation } from "@react-navigation/native";
-import { validateEmail } from "../../utils/validateEmail";
+import { validateEmail, validatePassword } from "../../utils/validateEmail";
 
 interface InputText {
   email: string;
@@ -15,7 +21,7 @@ interface InputText {
 }
 
 interface Errors {
-  error: boolean;
+  error: string;
   msg_error: string;
 }
 
@@ -27,7 +33,7 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
   const [utente, setUtente] = useState<Utente | null>(null);
   const [hide, setHide] = useState<boolean>(true);
   const [inputs, setInputs] = useState<InputText>({ email: "", password: "" });
-  const [error, setError] = useState<Errors>({ error: false, msg_error: "" });
+  const [error, setError] = useState<Errors>({ error: "", msg_error: "" });
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
@@ -41,7 +47,9 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
 
   const signIn = () => {
     props.setLoad(true);
-    if (validateEmail(inputs.email)) {
+    const valE = validateEmail(inputs.email);
+    const valP = validatePassword(inputs.password);
+    if (valE && valP) {
       chiamata_publ_post_async(endpoints.auth.verifica_email_reg, inputs)
         .then((risp) => {
           Toast.show({
@@ -64,13 +72,24 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
         .finally(() => {
           props.setLoad(false);
         });
-    } else {
-      setError(() => ({ error: true, msg_error: "Format email error" }));
+    } else if (!valE) {
+      setError(() => ({ error: "email", msg_error: "Format email error" }));
       props.setLoad(false);
       Toast.show({
         type: "error",
         text1: "Format error",
         text2: "can you check your email please?",
+      });
+    } else {
+      setError(() => ({
+        error: "password",
+        msg_error: "Format password error",
+      }));
+      props.setLoad(false);
+      Toast.show({
+        type: "error",
+        text1: "Format error",
+        text2: "Please review your password",
       });
     }
   };
@@ -79,7 +98,7 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
     <View style={styles.container}>
       <TextInput
         mode="outlined"
-        error={error.error}
+        error={error.error == "email"}
         value={utente?.email}
         maxLength={50}
         multiline={false}
@@ -96,6 +115,7 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
       <TextInput
         mode="outlined"
         value={utente?.password}
+        error={error.error == "password"}
         autoCapitalize="none"
         label="Password"
         maxLength={50}
@@ -115,6 +135,32 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
           />
         }
       />
+      {error.error == "password" && (
+        <SectionList
+          sections={[
+            {
+              title: "Your passwrod must contains:",
+              data: [
+                "min. 1 lowercase character",
+                "min. 1 uppercase character",
+                "min. 1 special character",
+                "min. a number",
+              ],
+            },
+          ]}
+          renderItem={({ item }) => (
+            <Text variant="labelSmall" style={{ color: theme.colors.error }}>
+              {" "}
+              - {item}
+            </Text>
+          )}
+          renderSectionHeader={({ section }) => (
+            <Text variant="labelMedium" style={{ color: theme.colors.error }}>
+              {section.title}
+            </Text>
+          )}
+        />
+      )}
 
       <Button
         mode="elevated"
@@ -138,7 +184,7 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
         collapsable
         icon={() => <Icon source="google" size={20} />}
       >
-        <Text variant="titleSmall">Registrati con Google</Text>
+        <Text variant="titleSmall">Sign in with Google</Text>
       </Button>
     </View>
   );

@@ -2,8 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Button, Text, TextInput } from "react-native-paper";
 import { AuthListType } from "../params/AuthListType";
-import { SafeAreaView, StyleSheet, useColorScheme, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  useColorScheme,
+  View,
+} from "react-native";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
+import { Platform } from "react-native";
 
 type EmailConfirmProps = NativeStackScreenProps<AuthListType, "email_conf">;
 const NUMBER_CELL = 5;
@@ -40,53 +47,57 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
           Insert your code
         </Text>
       </View>
-      <View style={styles.input_container}>
-        <View style={styles.inputs}>
-          {code.map((item, index) => (
-            <TextInput
-              mode="flat"
-              key={index}
-              ref={(ref: any) => (inputRefs.current[index] = ref)}
-              value={code[index]}
-              onChangeText={(text) => modElemento(index, text)}
-              onKeyPress={(e) => handleKeyPress(e, index)}
-              maxLength={1}
-              textAlign="center"
-              multiline={false}
-              style={styles.input}
-              underlineColor={theme.colors.backdrop}
-              activeUnderlineColor={theme.colors.secondary}
-            />
-          ))}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <View style={styles.input_container}>
+          <View style={styles.inputs}>
+            {code.map((item, index) => (
+              <TextInput
+                mode="flat"
+                key={index}
+                ref={(ref: any) => (inputRefs.current[index] = ref)}
+                value={code[index]}
+                onChangeText={(text) => modElemento(index, text)}
+                onKeyPress={(e) => handleKeyPress(e, index)}
+                maxLength={1}
+                textAlign="center"
+                multiline={false}
+                style={styles.input}
+                underlineColor={theme.colors.backdrop}
+                activeUnderlineColor={theme.colors.secondary}
+              />
+            ))}
+          </View>
+
+          <Button
+            mode="elevated"
+            buttonColor={theme.colors.secondary}
+            style={styles.button}
+            elevation={5}
+          >
+            <Text
+              variant="titleMedium"
+              style={{ color: theme.colors.secondary_text }}
+            >
+              Submit
+            </Text>
+          </Button>
+
+          <Button mode="text" compact>
+            <Text
+              variant="bodyMedium"
+              style={{
+                color: theme.colors.link,
+                textDecorationLine: "underline",
+                fontWeight: "500",
+              }}
+            >
+              Resend code with same mail
+            </Text>
+          </Button>
         </View>
-
-        <Button
-          mode="elevated"
-          buttonColor={theme.colors.secondary}
-          style={styles.button}
-          elevation={5}
-        >
-          <Text
-            variant="titleMedium"
-            style={{ color: theme.colors.secondary_text }}
-          >
-            Submit
-          </Text>
-        </Button>
-
-        <Button mode="text" compact>
-          <Text
-            variant="bodyMedium"
-            style={{
-              color: theme.colors.link,
-              textDecorationLine: "underline",
-              fontWeight: "500",
-            }}
-          >
-            Resend code with same mail
-          </Text>
-        </Button>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -100,16 +111,16 @@ const createStyle = (theme: typeof lightTheme) =>
     },
     text_container: {
       marginVertical: 30,
-      flex: 0.3,
       width: "100%",
       justifyContent: "center",
     },
     input_container: {
       flexDirection: "column",
+      marginTop: "30%",
+      gap: 30,
       width: "90%",
-      gap: 40,
       marginHorizontal: 10,
-      justifyContent: "space-evenly",
+      justifyContent: "center",
       alignItems: "center",
     },
     inputs: {
