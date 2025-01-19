@@ -57,7 +57,7 @@ export const Login = () => {
             </Animated.View>
           </Text>
 
-          <Login_Form />
+          <Login_Form load={load} setOnLoad={setOnload} />
         </KeyboardAvoidingView>
       )}
     </SafeAreaViewCustom>

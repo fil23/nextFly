@@ -13,5 +13,9 @@ export const chiamata_publ_post = (url:string, body?:any) =>{
 }
 
 export const chiamata_publ_post_async = async (url:string,body?:any) =>{
-    return await axios.post(url,body);
+    return await axios.post(url,body,{
+        headers:{
+            "Content-Type":"application/json"
+        }
+    });
 }

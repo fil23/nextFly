@@ -1,28 +1,84 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { StyleSheet, useColorScheme, View } from "react-native";
 import { Button, TextInput, Text, IconButton, Icon } from "react-native-paper";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../configurations/contexts/authContext";
+import { chiamata_publ_post_async } from "../../api/calls/chiamate";
+import { validateEmail, validatePassword } from "../../utils/validateEmail";
+import * as SecureStore from "expo-secure-store";
+import Toast from "react-native-toast-message";
 
-export const Login_Form = () => {
+interface MyProps {
+  load: boolean;
+  setOnLoad: any;
+}
+
+interface Error {
+  error: string;
+  msg: string;
+}
+
+export const Login_Form: FC<MyProps> = (props): JSX.Element => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
-  const [utente, setUtente] = useState<Utente | null>();
+  const [utente, setUtente] = useState<Utente>({
+    id: "",
+    password: "",
+    email: "",
+  });
   const [hide, setHide] = useState<boolean>(true);
+  const [error, setError] = useState<Error>({ error: "", msg: "" });
   const navigate = useNavigation();
   const styles = createStyle(theme);
   const { signInWithGoogle } = useAuth();
+
+  const login = () => {
+    props.setOnLoad(true);
+    const valE = validateEmail(utente.email);
+    const valP = validatePassword(utente.password);
+    if (valE && valP) {
+      chiamata_publ_post_async("login", {
+        email: utente?.email,
+        password: utente?.password,
+      })
+        .then((risp) => {
+          SecureStore.setItemAsync("token", risp.data.token);
+          Toast.show({
+            type: "success",
+            text1: "Success",
+            text2: "Login succesful",
+          });
+          navigate.navigate("home");
+        })
+        .catch((err) => {
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: "Something went wrong during login",
+          });
+        })
+        .finally(() => {
+          props.setOnLoad(false);
+        });
+    } else if (valE) {
+      setError({ error: "email", msg: "Email's format is wrong" });
+      Toast.show({ type: "error", text1: "Error", text2: error.msg });
+    } else {
+      setError({ error: "password", msg: "Password's format is wrong" });
+      Toast.show({ type: "error", text1: "Error", text2: error.msg });
+    }
+  };
+
   return (
     <>
       <TextInput
         label="Email"
         mode="outlined"
         placeholderTextColor={theme.colors.placeholder}
-        value={utente?.email}
+        value={utente.email}
         style={{ width: "80%" }}
         placeholder="Insert your email..."
-        passwordRules={"required:@"}
         inputMode="email"
         keyboardType="email-address"
         textContentType="emailAddress"
@@ -31,6 +87,7 @@ export const Login_Form = () => {
         activeOutlineColor={theme.colors.borderColor}
         maxLength={50}
         multiline={false}
+        error={error.error == "email" ? true : false}
       />
 
       <TextInput
@@ -56,6 +113,7 @@ export const Login_Form = () => {
             onPress={() => setHide(!hide)}
           />
         }
+        error={error.error == "password" ? true : false}
       />
 
       <View style={styles.links}>
@@ -72,6 +130,7 @@ export const Login_Form = () => {
         mode="elevated"
         buttonColor={theme.colors.secondary}
         style={styles.button}
+        onPress={login}
       >
         <Text
           variant="titleMedium"

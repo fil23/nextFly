@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from "react-native";
-import { Platform } from "react-native";
+import { KeyboardAvoidingView, StyleSheet, useColorScheme } from "react-native";
 import { FormSignIn } from "../../../components/froms/form_registrazione";
 import { LoaderIndicator } from "../../../components/loaderIndicator";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";

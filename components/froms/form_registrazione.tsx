@@ -48,9 +48,13 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
   const signIn = () => {
     props.setLoad(true);
     const valE = validateEmail(inputs.email);
+    console.log("Pas " + inputs.password);
     const valP = validatePassword(inputs.password);
+    console.log("Val: " + valP);
     if (valE && valP) {
-      chiamata_publ_post_async(endpoints.auth.verifica_email_reg, inputs)
+      chiamata_publ_post_async(endpoints.auth.verifica_email_reg, {
+        email: inputs.email,
+      })
         .then((risp) => {
           Toast.show({
             type: "success",
@@ -93,6 +97,10 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
       });
     }
   };
+
+  // useEffect(() => {
+  //   console.log("Pass:" + inputs.password);
+  // }, [inputs]);
 
   return (
     <View style={styles.container}>

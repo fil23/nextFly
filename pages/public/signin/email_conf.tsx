@@ -11,6 +11,11 @@ import {
 } from "react-native";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { Platform } from "react-native";
+import { chiamata_publ_post_async } from "../../../api/calls/chiamate";
+import { endpoints } from "../../../api/endpoints/endpoints";
+import Toast from "react-native-toast-message";
+import * as SecureStore from "expo-secure-store";
+import { useNavigation } from "@react-navigation/native";
 
 type EmailConfirmProps = NativeStackScreenProps<AuthListType, "email_conf">;
 const NUMBER_CELL = 5;
@@ -21,6 +26,7 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
+  const navigator = useNavigation();
 
   const modElemento = (indice: number, stringa: any) => {
     setCode((prev) => {
@@ -38,6 +44,29 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
     if (e.nativeEvent.key === "Backspace" && code[index] === "" && index > 0) {
       inputRefs.current[index - 1]?.focus();
     }
+  };
+
+  const sendcode = () => {
+    const data = {
+      email: email,
+      password: password,
+      code: code.join(""),
+    };
+    chiamata_publ_post_async(endpoints.auth.code_validation, data)
+      .then((risp) => {
+        console.log("Codice verificato con successo ");
+        SecureStore.setItemAsync("tokne", risp.data.token);
+        navigator.navigate("home");
+        Toast.show({ type: "success", text1: "Evrything is good!" });
+      })
+      .catch((err) => {
+        console.log("Errore" + code.join(""));
+        Toast.show({
+          type: "error",
+          text1: "Wrong code",
+          text2: "Insert wrong code!",
+        });
+      });
   };
 
   return (
@@ -75,6 +104,7 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
             buttonColor={theme.colors.secondary}
             style={styles.button}
             elevation={5}
+            onPress={sendcode}
           >
             <Text
               variant="titleMedium"
@@ -93,7 +123,7 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
                 fontWeight: "500",
               }}
             >
-              Resend code with same mail
+              Resend code with same email
             </Text>
           </Button>
         </View>
