@@ -18,7 +18,7 @@ const webClient = process.env.EXPO_PUBLIC_GOOGLE_WEB;
 export const AuthStack = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
-  const { setToken } = useAuth();
+  const { setToken, setOnLoad } = useAuth();
   async function getToken() {
     const storedToken = await SecureStore.getItemAsync("token");
     setToken(storedToken);
@@ -26,11 +26,13 @@ export const AuthStack = () => {
   }
 
   useEffect(() => {
+    setOnLoad(true);
     getToken();
     GoogleSignin.configure({
       webClientId: webClient,
       offlineAccess: true,
     });
+    setOnLoad(false);
   }, []);
   return (
     <Stack.Navigator

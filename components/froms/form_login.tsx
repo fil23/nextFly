@@ -8,6 +8,7 @@ import { chiamata_publ_post_async } from "../../api/calls/chiamate";
 import { validateEmail, validatePassword } from "../../utils/validateEmail";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
+import { text } from "stream/consumers";
 
 interface MyProps {
   load: boolean;
@@ -42,14 +43,13 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         email: utente?.email,
         password: utente?.password,
       })
-        .then((risp) => {
-          SecureStore.setItemAsync("token", risp.data.token);
+        .then(async (risp) => {
+          await SecureStore.setItemAsync("token", risp.data.token);
           Toast.show({
             type: "success",
             text1: "Success",
             text2: "Login succesful",
           });
-          navigate.navigate("home");
         })
         .catch((err) => {
           Toast.show({
@@ -77,6 +77,7 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         mode="outlined"
         placeholderTextColor={theme.colors.placeholder}
         value={utente.email}
+        onChangeText={(text) => setUtente((prev) => ({ ...prev, email: text }))}
         style={{ width: "80%" }}
         placeholder="Insert your email..."
         inputMode="email"
@@ -98,6 +99,9 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
           "required: upper; required: lower; required: digit; minlength: 8;"
         }
         value={utente?.password}
+        onChangeText={(text) =>
+          setUtente((prev) => ({ ...prev, password: text }))
+        }
         style={{ width: "80%" }}
         contentStyle={styles.input}
         placeholder="Insert password..."

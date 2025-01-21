@@ -7,6 +7,6 @@ export const validateEmail = (email:string) => {
 
 export const validatePassword = (password : string) =>{
   return password.match(
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/
   );
 }

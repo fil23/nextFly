@@ -17,6 +17,7 @@ interface AuthContextType {
   signInWithGoogle: any;
   signOutWithGoogle: any;
   onLoad: boolean;
+  setOnLoad: any;
 }
 
 interface ErroreInt {
@@ -163,8 +164,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             ),
         }
       );
-      setOnLoad(false);
     } finally {
+      setOnLoad(false);
     }
   };
 
@@ -183,6 +184,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         signInWithGoogle,
         signOutWithGoogle,
         onLoad,
+        setOnLoad,
       }}
     >
       {children}

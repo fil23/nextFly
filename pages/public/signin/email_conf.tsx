@@ -16,17 +16,21 @@ import { endpoints } from "../../../api/endpoints/endpoints";
 import Toast from "react-native-toast-message";
 import * as SecureStore from "expo-secure-store";
 import { useNavigation } from "@react-navigation/native";
+import { LoaderIndicator } from "../../../components/loaderIndicator";
+import { useAuth } from "../../../configurations/contexts/authContext";
 
 type EmailConfirmProps = NativeStackScreenProps<AuthListType, "email_conf">;
 const NUMBER_CELL = 5;
 export const EmailConfirm = ({ route }: EmailConfirmProps) => {
   const inputRefs = useRef<(TextInput | null)[]>([]);
   const [code, setCode] = useState<string[]>(Array(NUMBER_CELL).fill(""));
+  const [load, setLoad] = useState<boolean>(false);
   const { email, password } = route.params;
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
   const navigator = useNavigation();
+  const { setToken } = useAuth();
 
   const modElemento = (indice: number, stringa: any) => {
     setCode((prev) => {
@@ -52,12 +56,14 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
       password: password,
       code: code.join(""),
     };
+    setLoad(true);
     chiamata_publ_post_async(endpoints.auth.code_validation, data)
-      .then((risp) => {
+      .then(async (risp) => {
         console.log("Codice verificato con successo ");
-        SecureStore.setItemAsync("tokne", risp.data.token);
-        navigator.navigate("home");
+
         Toast.show({ type: "success", text1: "Evrything is good!" });
+        await SecureStore.setItemAsync("token", risp.data.token);
+        setToken(risp.data.token);
       })
       .catch((err) => {
         console.log("Errore" + code.join(""));
@@ -66,68 +72,77 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
           text1: "Wrong code",
           text2: "Insert wrong code!",
         });
+      })
+      .finally(() => {
+        setLoad(false);
       });
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.text_container}>
-        <Text variant="displaySmall" style={styles.title}>
-          Insert your code
-        </Text>
-      </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={styles.input_container}>
-          <View style={styles.inputs}>
-            {code.map((item, index) => (
-              <TextInput
-                mode="flat"
-                key={index}
-                ref={(ref: any) => (inputRefs.current[index] = ref)}
-                value={code[index]}
-                onChangeText={(text) => modElemento(index, text)}
-                onKeyPress={(e) => handleKeyPress(e, index)}
-                maxLength={1}
-                textAlign="center"
-                multiline={false}
-                style={styles.input}
-                underlineColor={theme.colors.backdrop}
-                activeUnderlineColor={theme.colors.secondary}
-              />
-            ))}
+      {load ? (
+        <LoaderIndicator />
+      ) : (
+        <>
+          <View style={styles.text_container}>
+            <Text variant="displaySmall" style={styles.title}>
+              Insert your code
+            </Text>
           </View>
-
-          <Button
-            mode="elevated"
-            buttonColor={theme.colors.secondary}
-            style={styles.button}
-            elevation={5}
-            onPress={sendcode}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <Text
-              variant="titleMedium"
-              style={{ color: theme.colors.secondary_text }}
-            >
-              Submit
-            </Text>
-          </Button>
+            <View style={styles.input_container}>
+              <View style={styles.inputs}>
+                {code.map((item, index) => (
+                  <TextInput
+                    mode="flat"
+                    key={index}
+                    ref={(ref: any) => (inputRefs.current[index] = ref)}
+                    value={code[index]}
+                    onChangeText={(text) => modElemento(index, text)}
+                    onKeyPress={(e) => handleKeyPress(e, index)}
+                    maxLength={1}
+                    textAlign="center"
+                    multiline={false}
+                    style={styles.input}
+                    underlineColor={theme.colors.backdrop}
+                    activeUnderlineColor={theme.colors.secondary}
+                  />
+                ))}
+              </View>
 
-          <Button mode="text" compact>
-            <Text
-              variant="bodyMedium"
-              style={{
-                color: theme.colors.link,
-                textDecorationLine: "underline",
-                fontWeight: "500",
-              }}
-            >
-              Resend code with same email
-            </Text>
-          </Button>
-        </View>
-      </KeyboardAvoidingView>
+              <Button
+                mode="elevated"
+                buttonColor={theme.colors.secondary}
+                style={styles.button}
+                elevation={5}
+                onPress={sendcode}
+              >
+                <Text
+                  variant="titleMedium"
+                  style={{ color: theme.colors.secondary_text }}
+                >
+                  Submit
+                </Text>
+              </Button>
+
+              <Button mode="text" compact>
+                <Text
+                  variant="bodyMedium"
+                  style={{
+                    color: theme.colors.link,
+                    textDecorationLine: "underline",
+                    fontWeight: "500",
+                  }}
+                >
+                  Resend code with same email
+                </Text>
+              </Button>
+            </View>
+          </KeyboardAvoidingView>
+        </>
+      )}
     </SafeAreaView>
   );
 };
