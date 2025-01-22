@@ -9,6 +9,7 @@ import { validateEmail, validatePassword } from "../../utils/validateEmail";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
 import { text } from "stream/consumers";
+import { endpoints } from "../../api/endpoints/endpoints";
 
 interface MyProps {
   load: boolean;
@@ -32,19 +33,20 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
   const [error, setError] = useState<Error>({ error: "", msg: "" });
   const navigate = useNavigation();
   const styles = createStyle(theme);
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle, setToken } = useAuth();
 
   const login = () => {
     props.setOnLoad(true);
     const valE = validateEmail(utente.email);
     const valP = validatePassword(utente.password);
     if (valE && valP) {
-      chiamata_publ_post_async("login", {
+      chiamata_publ_post_async(endpoints.auth.login, {
         email: utente?.email,
         password: utente?.password,
       })
         .then(async (risp) => {
           await SecureStore.setItemAsync("token", risp.data.token);
+          setToken(risp.data.token);
           Toast.show({
             type: "success",
             text1: "Success",
@@ -64,9 +66,11 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
     } else if (valE) {
       setError({ error: "email", msg: "Email's format is wrong" });
       Toast.show({ type: "error", text1: "Error", text2: error.msg });
+      props.setOnLoad(false);
     } else {
       setError({ error: "password", msg: "Password's format is wrong" });
       Toast.show({ type: "error", text1: "Error", text2: error.msg });
+      props.setOnLoad(false);
     }
   };
 
@@ -82,6 +86,7 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         placeholder="Insert your email..."
         inputMode="email"
         keyboardType="email-address"
+        autoCapitalize="none"
         textContentType="emailAddress"
         textColor={theme.colors.text}
         contentStyle={styles.input}

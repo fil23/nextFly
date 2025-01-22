@@ -70,5 +70,6 @@ const createStyle = (theme: typeof lightTheme) =>
   StyleSheet.create({
     section: {
       marginVertical: 20,
+      color: theme.colors.secondary,
     },
   });

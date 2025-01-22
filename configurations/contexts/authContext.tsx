@@ -18,6 +18,7 @@ interface AuthContextType {
   signOutWithGoogle: any;
   onLoad: boolean;
   setOnLoad: any;
+  signOut: () => void;
 }
 
 interface ErroreInt {
@@ -173,6 +174,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUtente((prev) => ({ ...prev, [name]: value }));
   };
 
+  const signOut = async () => {
+    await SecureStore.deleteItemAsync("token");
+    setUtente({ id: "", email: "email", password: "" });
+    setToken(null);
+    console.log("Sign ot successed");
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -185,6 +193,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         signOutWithGoogle,
         onLoad,
         setOnLoad,
+        signOut,
       }}
     >
       {children}

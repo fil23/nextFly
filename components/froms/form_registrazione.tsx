@@ -67,11 +67,20 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
           });
         })
         .catch((error) => {
-          Toast.show({
-            type: "error",
-            text1: "Something has gone wrong",
-            text2: "Sorry something went wrong can you try again later? ",
-          });
+          /**TODO: gestire messaggio di errore da backend */
+          if (error.response.data.msg == "Utente già registrato") {
+            Toast.show({
+              type: "error",
+              text1: "User already existed",
+              text2: "There is already an email logged in",
+            });
+          } else {
+            Toast.show({
+              type: "error",
+              text1: "Something has gone wrong",
+              text2: "Sorry something went wrong can you try again later? ",
+            });
+          }
         })
         .finally(() => {
           props.setLoad(false);

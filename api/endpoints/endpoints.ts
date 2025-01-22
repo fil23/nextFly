@@ -5,5 +5,6 @@ export const endpoints = {
         googleSignIn:URL_PUBLIC + '/auth/google',
         verifica_email_reg: URL_PUBLIC + '/auth/verifica_email_reg',
         code_validation:URL_PUBLIC + '/auth/verifica_cod',
+        login:URL_PUBLIC + '/auth/login'
     }
 }

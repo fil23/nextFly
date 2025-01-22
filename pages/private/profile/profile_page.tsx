@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Chip, Divider, Text } from "react-native-paper";
+import { Button, Chip, Divider, Text } from "react-native-paper";
 import { HomeListType } from "../home/paramHomeList";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
@@ -11,13 +11,17 @@ import {
   useColorScheme,
   View,
 } from "react-native";
-import { CustomChip } from "../../../components/cards/custom_chip";
+import { useAuth } from "../../../configurations/contexts/authContext";
 
 export const PrivateProfilePage = () => {
+  const { signOut } = useAuth();
   return (
-    <>
+    <SafeAreaViewCustom>
       <Text>Private profile page</Text>
-    </>
+      <Button mode="contained" onPress={signOut}>
+        <Text variant="titleSmall">Sign out</Text>
+      </Button>
+    </SafeAreaViewCustom>
   );
 };
 

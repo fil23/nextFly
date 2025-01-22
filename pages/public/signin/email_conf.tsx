@@ -29,7 +29,6 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
-  const navigator = useNavigation();
   const { setToken } = useAuth();
 
   const modElemento = (indice: number, stringa: any) => {
