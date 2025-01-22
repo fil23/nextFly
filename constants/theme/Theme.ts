@@ -1,8 +1,11 @@
-import { MD3LightTheme, MD3DarkTheme } from "react-native-paper";
+import { MD3LightTheme, MD3DarkTheme, configureFonts } from "react-native-paper";
+import { fontConfig } from "./fontConfiguration";
+
 
 export const lightTheme = {
   ...MD3LightTheme,
   roundness: 8,
+  fonts:configureFonts({config:fontConfig}),
   colors: {
     ...MD3LightTheme.colors,
     primary: '#2D3748',
@@ -20,13 +23,16 @@ export const lightTheme = {
     secondary_text: '#6C757D',
     shadow: '#8c8c8c',
     chip_success:'#90f493de',
-    chip_error: '#ff5252c7'
+    chip_error: '#ff5252c7',
+    yellow_star:'#ffeb52',
+    google_button_color:'#016fd5'
   },
 };
 
 export const darkTheme = {
   ...MD3DarkTheme,
   roundness: 8,
+  fonts:configureFonts({config:fontConfig}),
   colors: {
     ...MD3DarkTheme.colors,
     primary: '#4A5568',
@@ -41,9 +47,11 @@ export const darkTheme = {
     success: '#81C784',
     borderColor: '#FFD54F',
     link: '#24a0ff',
-    secondary_text: '#A4A4A4',
-    shadow: '#575757',
+    secondary_text: '#121212',
+    shadow: '#000000',
     chip_success : '#86ca8ac7',
-    chip_error : '#EF535099'
+    chip_error : '#EF535099',
+    yellow_star:'#ffeb52',
+    google_button_color:'#016fd5'
   },
 };

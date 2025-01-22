@@ -6,15 +6,19 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import { chiamata_publ_post_async } from "../../api/calls/chiamate";
 import { endpoints } from "../../api/endpoints/endpoints";
 import * as SecureStore from "expo-secure-store";
+import { Alert } from "react-native";
 
 interface AuthContextType {
   utente: Utente;
   setUtente: any;
+  handleUtente: (name: string, value: string) => void;
   token: string | null;
   setToken: any;
   signInWithGoogle: any;
   signOutWithGoogle: any;
   onLoad: boolean;
+  setOnLoad: any;
+  signOut: () => void;
 }
 
 interface ErroreInt {
@@ -29,7 +33,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     id: "",
     email: "",
     password: "",
-    username: "",
   });
   const [token, setToken] = useState<string | null>(null);
   const [errore, setErrore] = useState<ErroreInt | null>();
@@ -45,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       chiamata_publ_post_async(endpoints.auth.googleSignIn, {
         token: idToken,
-        password: userInfo.data?.serverAuthCode,
+        password: userInfo.data?.user.id,
         email: userInfo.data?.user.email,
       })
         .then(async (risp) => {
@@ -65,19 +68,75 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       switch (error.code) {
         case statusCodes.SIGN_IN_CANCELLED:
           console.error("L'utente ha cancellato l'accesso");
+          Alert.alert(
+            "Error",
+            "Something is gone wrong during the authentication",
+            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
+            {
+              cancelable: true,
+              onDismiss: () =>
+                Alert.alert(
+                  " This alert was dismissed by tapping outside of the alert dialog.,"
+                ),
+            }
+          );
           break;
         case statusCodes.IN_PROGRESS:
           console.error("Operazione in corso");
+          Alert.alert(
+            "Error",
+            "Something is gone wrong during the authentication",
+            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
+            {
+              cancelable: true,
+              onDismiss: () =>
+                Alert.alert(
+                  " This alert was dismissed by tapping outside of the alert dialog.,"
+                ),
+            }
+          );
           break;
         case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
           console.error("Servizi di Google Play non disponibili");
+          Alert.alert(
+            "Error",
+            "Something is gone wrong during the authentication",
+            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
+            {
+              cancelable: true,
+              onDismiss: () =>
+                Alert.alert(
+                  " This alert was dismissed by tapping outside of the alert dialog.,"
+                ),
+            }
+          );
           break;
         case 409:
           console.error("utente già registrato");
+          Alert.alert(
+            "Error",
+            "Something is gone wrong during the authentication",
+            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
+            {
+              cancelable: true,
+              onDismiss: () =>
+                Alert.alert(
+                  " This alert was dismissed by tapping outside of the alert dialog.,"
+                ),
+            }
+          );
           break;
 
         default:
           console.error("Errore durante l'accesso", error);
+          Alert.alert(
+            "Error",
+            "Something is gone wrong during the authentication",
+            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
+            {
+              cancelable: true,
+            }
+          );
           break;
       }
 
@@ -93,9 +152,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log("Sign out avvenuto con successo");
     } catch (error) {
       setErrore({ errore: true, messaggio: "Errpre durante il signOut" });
-      setOnLoad(false);
+
+      Alert.alert(
+        "Error",
+        "Something is gone wrong during the authentication",
+        [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
+        {
+          cancelable: true,
+          onDismiss: () =>
+            Alert.alert(
+              " This alert was dismissed by tapping outside of the alert dialog.,"
+            ),
+        }
+      );
     } finally {
+      setOnLoad(false);
     }
+  };
+
+  const handleUtente = (name: string, value: string) => {
+    setUtente((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const signOut = async () => {
+    await SecureStore.deleteItemAsync("token");
+    setUtente({ id: "", email: "email", password: "" });
+    setToken(null);
+    console.log("Sign ot successed");
   };
 
   return (
@@ -103,11 +186,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         utente,
         setUtente,
+        handleUtente,
         token,
         setToken,
         signInWithGoogle,
         signOutWithGoogle,
         onLoad,
+        setOnLoad,
+        signOut,
       }}
     >
       {children}

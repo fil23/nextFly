@@ -5,37 +5,46 @@ import { useColorScheme, Image } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { darkTheme, lightTheme } from "./constants/theme/theme";
 import * as Font from "expo-font";
-import { AuthProvider } from "./configurations/contexts/authContext";
+import { AuthProvider, useAuth } from "./configurations/contexts/authContext";
 import { Route } from "./routes/routes";
+import * as SecureStore from "expo-secure-store";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "./constants/theme/toastConfiguration";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
-
-  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        Montserrat: require("./assets/fonts/Montserrat-VariableFont_wght.ttf"),
+        "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
+        "Montserrat-ExtraBold": require("./assets/fonts/static/Montserrat-ExtraBold.ttf"),
+      });
+      setFontsLoaded(true);
+    }
+    // async function deleteToken() {
+    //   await SecureStore.deleteItemAsync("token");
+    //   console.log("Token eliminato");
+    // }
+
     loadFonts();
+    // deleteToken();
   }, []);
-  const loadFonts = async () => {
-    await Font.loadAsync({
-      "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
-      "Montserrat-Black": require("./assets/fonts/static/Montserrat-Black.ttf"),
-      "Montserrat-ExtraBold": require("./assets/fonts/static/Montserrat-ExtraBold.ttf"),
-      "Montserrat-Regular": require("./assets/fonts/static/Montserrat-Regular.ttf"),
-    });
-    setFontsLoaded(true);
-  };
 
   if (!fontsLoaded) {
-    return null; // Mostra una schermata di caricamento se necessario
+    return null; // Optionally render a loading screen
   }
+
   return (
     <PaperProvider theme={theme}>
       <AuthProvider>
         <Route />
+        <Toast config={toastConfig} />
       </AuthProvider>
     </PaperProvider>
   );

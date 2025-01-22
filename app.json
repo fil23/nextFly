@@ -8,7 +8,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": ["assets/fonts/*"],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
