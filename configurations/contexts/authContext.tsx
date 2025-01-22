@@ -32,7 +32,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [utente, setUtente] = useState<Utente>({
     id: "",
     email: "",
-    password: "",
   });
   const [token, setToken] = useState<string | null>(null);
   const [errore, setErrore] = useState<ErroreInt | null>();
@@ -149,6 +148,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setOnLoad(true);
       await GoogleSignin.signOut();
       await SecureStore.deleteItemAsync("token");
+      await SecureStore.deleteItemAsync("email");
       console.log("Sign out avvenuto con successo");
     } catch (error) {
       setErrore({ errore: true, messaggio: "Errpre durante il signOut" });
@@ -176,7 +176,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = async () => {
     await SecureStore.deleteItemAsync("token");
-    setUtente({ id: "", email: "email", password: "" });
+    setUtente({ id: "", email: "" });
+    await SecureStore.deleteItemAsync("email");
     setToken(null);
     console.log("Sign ot successed");
   };

@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Button, Chip, Divider, Text } from "react-native-paper";
+import { Avatar, Button, Chip, Divider, Text } from "react-native-paper";
 import { HomeListType } from "../home/paramHomeList";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
@@ -15,15 +15,33 @@ import { useAuth } from "../../../configurations/contexts/authContext";
 
 export const PrivateProfilePage = () => {
   const { signOut } = useAuth();
+  const color = useColorScheme();
+  const theme = color === "dark" ? darkTheme : lightTheme;
+  const styles = createPrivateStyle(theme);
   return (
     <SafeAreaViewCustom>
-      <Text>Private profile page</Text>
+      <Avatar.Image
+        size={150}
+        source={{ uri: utente.img_profilo }}
+        style={styles.profile_image}
+      />
+
+      <Divider />
+      <Text variant="displaySmall">Utente</Text>
       <Button mode="contained" onPress={signOut}>
         <Text variant="titleSmall">Sign out</Text>
       </Button>
     </SafeAreaViewCustom>
   );
 };
+
+const createPrivateStyle = (theme: typeof darkTheme) =>
+  StyleSheet.create({
+    profile_image: {
+      marginVertical: 10,
+      alignSelf: "center",
+    },
+  });
 
 type ProfileProps = NativeStackScreenProps<HomeListType, "profile">;
 

@@ -29,7 +29,7 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
-  const { setToken } = useAuth();
+  const { setToken, setUtente } = useAuth();
 
   const modElemento = (indice: number, stringa: any) => {
     setCode((prev) => {
@@ -59,10 +59,11 @@ export const EmailConfirm = ({ route }: EmailConfirmProps) => {
     chiamata_publ_post_async(endpoints.auth.code_validation, data)
       .then(async (risp) => {
         console.log("Codice verificato con successo ");
-
         Toast.show({ type: "success", text1: "Evrything is good!" });
         await SecureStore.setItemAsync("token", risp.data.token);
         setToken(risp.data.token);
+        setUtente({ email: data.email });
+        await SecureStore.setItemAsync("email", data.email);
       })
       .catch((err) => {
         console.log("Errore" + code.join(""));

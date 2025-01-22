@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { StyleSheet, useColorScheme, View } from "react-native";
-import { Button, TextInput, Text, IconButton, Icon } from "react-native-paper";
+import { Button, TextInput, Text, Icon } from "react-native-paper";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../configurations/contexts/authContext";
@@ -8,7 +8,6 @@ import { chiamata_publ_post_async } from "../../api/calls/chiamate";
 import { validateEmail, validatePassword } from "../../utils/validateEmail";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
-import { text } from "stream/consumers";
 import { endpoints } from "../../api/endpoints/endpoints";
 
 interface MyProps {
@@ -21,28 +20,30 @@ interface Error {
   msg: string;
 }
 
+interface Inputs {
+  email: string;
+  password: string;
+}
+
 export const Login_Form: FC<MyProps> = (props): JSX.Element => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
-  const [utente, setUtente] = useState<Utente>({
-    id: "",
-    password: "",
-    email: "",
-  });
+
+  const [inputs, setInputs] = useState<Inputs>({ email: "", password: "" });
   const [hide, setHide] = useState<boolean>(true);
   const [error, setError] = useState<Error>({ error: "", msg: "" });
   const navigate = useNavigation();
   const styles = createStyle(theme);
-  const { signInWithGoogle, setToken } = useAuth();
+  const { signInWithGoogle, setToken, setUtente } = useAuth();
 
   const login = () => {
     props.setOnLoad(true);
-    const valE = validateEmail(utente.email);
-    const valP = validatePassword(utente.password);
+    const valE = validateEmail(inputs.email);
+    const valP = validatePassword(inputs.password);
     if (valE && valP) {
       chiamata_publ_post_async(endpoints.auth.login, {
-        email: utente?.email,
-        password: utente?.password,
+        email: inputs?.email,
+        password: inputs?.password,
       })
         .then(async (risp) => {
           await SecureStore.setItemAsync("token", risp.data.token);
@@ -52,6 +53,9 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
             text1: "Success",
             text2: "Login succesful",
           });
+
+          setUtente({ email: inputs.email });
+          await SecureStore.setItemAsync("email", inputs.email);
         })
         .catch((err) => {
           Toast.show({
@@ -80,8 +84,8 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         label="Email"
         mode="outlined"
         placeholderTextColor={theme.colors.placeholder}
-        value={utente.email}
-        onChangeText={(text) => setUtente((prev) => ({ ...prev, email: text }))}
+        value={inputs.email}
+        onChangeText={(text) => setInputs((prev) => ({ ...prev, email: text }))}
         style={{ width: "80%" }}
         placeholder="Insert your email..."
         inputMode="email"
@@ -103,9 +107,9 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         passwordRules={
           "required: upper; required: lower; required: digit; minlength: 8;"
         }
-        value={utente?.password}
+        value={inputs?.password}
         onChangeText={(text) =>
-          setUtente((prev) => ({ ...prev, password: text }))
+          setInputs((prev) => ({ ...prev, password: text }))
         }
         style={{ width: "80%" }}
         contentStyle={styles.input}
