@@ -2,7 +2,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { TouchableOpacity, useColorScheme, View } from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
-import { HomeStackNavigator, ProfileStackNavigator } from "./privateRoutes";
+import {
+  AddStackNavigator,
+  HomeStackNavigator,
+  ProfileStackNavigator,
+} from "./privateRoutes";
 import { IconButton } from "react-native-paper";
 
 const Tab = createBottomTabNavigator();
@@ -15,8 +19,13 @@ export const PrivateStack = () => {
         tabBarActiveBackgroundColor: theme.colors.surface,
         headerShown: false,
         tabBarStyle: {
-          elevation: 5,
           backgroundColor: theme.colors.surface,
+          shadowColor: theme.colors.secondary,
+          shadowOffset: {
+            height: 5,
+            width: 5,
+          },
+          shadowRadius: 10,
           position: "absolute",
           borderTopLeftRadius: 10,
           borderTopRightRadius: 10,
@@ -42,6 +51,8 @@ export const PrivateStack = () => {
         ),
       }}
     >
+      {/* Tab icon home  */}
+
       <Tab.Screen
         name="homeTab"
         component={HomeStackNavigator}
@@ -66,6 +77,37 @@ export const PrivateStack = () => {
           },
         }}
       />
+
+      {/* Tab icon add new trip  */}
+
+      <Tab.Screen
+        name="addTab"
+        component={AddStackNavigator}
+        options={{
+          tabBarButton: (props) => (
+            <TouchableOpacity {...props}>{props.children}</TouchableOpacity>
+          ),
+          tabBarIconStyle: {
+            alignSelf: "center",
+          },
+          tabBarLabel: "",
+          tabBarIcon: ({ focused }) => {
+            return (
+              <IconButton
+                icon="plus-circle"
+                size={60}
+                background={theme.colors.surface}
+                style={{
+                  backgroundColor: theme.colors.surface,
+                }}
+                iconColor={focused ? theme.colors.secondary : theme.colors.text}
+              />
+            );
+          },
+        }}
+      />
+
+      {/* Tab icon profile */}
       <Tab.Screen
         name="profileTab"
         component={ProfileStackNavigator}

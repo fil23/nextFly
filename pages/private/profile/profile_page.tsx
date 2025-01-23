@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Button, Chip, Divider, Text } from "react-native-paper";
+import { Avatar, Button, Chip, Divider, Text } from "react-native-paper";
 import { HomeListType } from "../home/paramHomeList";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
@@ -13,17 +13,36 @@ import {
 } from "react-native";
 import { useAuth } from "../../../configurations/contexts/authContext";
 
+//TODO: complete profile page with users' information
 export const PrivateProfilePage = () => {
   const { signOut } = useAuth();
+  const color = useColorScheme();
+  const theme = color === "dark" ? darkTheme : lightTheme;
+  const styles = createPrivateStyle(theme);
   return (
     <SafeAreaViewCustom>
-      <Text>Private profile page</Text>
-      <Button mode="contained" onPress={signOut}>
-        <Text variant="titleSmall">Sign out</Text>
-      </Button>
+      <ScrollView>
+        <Avatar.Image
+          size={150}
+          source={{ uri: utente.img_profilo }}
+          style={styles.profile_image}
+        />
+
+        <View>
+          <Text variant="titleLarge">User's information</Text>
+        </View>
+      </ScrollView>
     </SafeAreaViewCustom>
   );
 };
+
+const createPrivateStyle = (theme: typeof darkTheme) =>
+  StyleSheet.create({
+    profile_image: {
+      marginVertical: 10,
+      alignSelf: "center",
+    },
+  });
 
 type ProfileProps = NativeStackScreenProps<HomeListType, "profile">;
 
@@ -63,32 +82,56 @@ export const PublicProfilePage = ({ route, navigation }: ProfileProps) => {
             resizeMode="cover"
           />
         </View>
+
         {/* user informations */}
+
         <View>
           <Text variant="titleMedium">Contry visited:</Text>
 
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 5 }}>
-            {utente.paesi.map((paese: string) => (
-              <Chip mode="outlined" textStyle={{ fontSize: 11 }}>
-                {paese}
+            {utente.paesi.map((paese: string, index: number) => (
+              <Chip
+                mode="outlined"
+                key={index}
+                textStyle={{ fontSize: 11 }}
+                style={{
+                  backgroundColor: theme.colors.secondary,
+                  borderColor: "black",
+                }}
+              >
+                <Text
+                  variant="labelSmall"
+                  style={{ color: theme.colors.secondary_text }}
+                >
+                  {paese}
+                </Text>
               </Chip>
             ))}
           </View>
         </View>
         <Divider style={{ marginTop: 20 }} />
-        <View style={styles.user_info}>
-          <Text variant="titleMedium">User informations:</Text>
-          <Text variant="labelLarge">
-            Username: <Text>{utente.username}</Text>
-          </Text>
-          <Text variant="labelLarge">
-            Travel created: <Text>{utente.viaggi_creati}</Text>
-          </Text>
-        </View>
-        <Divider style={{ marginVertical: 15 }} />
-        <View>
-          <Text variant="titleMedium">A short description about myself:</Text>
-          <Text>{utente.descrizione}</Text>
+
+        {/* Travel's description */}
+        <View style={{ marginBottom: 100 }}>
+          <View style={styles.user_info}>
+            <Text variant="titleMedium">User informations:</Text>
+            <Text variant="labelLarge">
+              Username: <Text>{utente.username}</Text>
+            </Text>
+            <Text variant="labelLarge">
+              Travel created: <Text>{utente.viaggi_creati}</Text>
+            </Text>
+          </View>
+          <Divider style={{ marginVertical: 15 }} />
+
+          <View>
+            <Text variant="titleMedium">A short description about myself:</Text>
+            <Text>{utente.descrizione}</Text>
+          </View>
+          <View>
+            <Text variant="titleMedium">A short description about myself:</Text>
+            <Text>{utente.descrizione}</Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaViewCustom>

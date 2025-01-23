@@ -13,6 +13,7 @@ import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { useState } from "react";
 import { CustomChip } from "../../../components/cards/custom_chip";
 import { Link } from "@react-navigation/native";
+import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
 
 type DetailsProps = NativeStackScreenProps<HomeListType, "details">;
 
@@ -69,7 +70,12 @@ export const Details = ({ route, navigation }: DetailsProps) => {
                   navigation.push("profile", { utente: viaggio.creatore })
                 }
               >
-                {viaggio.creatore}
+                <Text
+                  style={{ color: theme.colors.link }}
+                  variant="labelMedium"
+                >
+                  {viaggio.creatore}
+                </Text>
               </Button>
             </View>
 
@@ -88,15 +94,11 @@ export const Details = ({ route, navigation }: DetailsProps) => {
           </View>
         </View>
 
-        <Button
-          mode="contained"
-          buttonColor={theme.colors.secondary}
+        <CustomButtonYellow
+          text="submit"
+          function={() => {}}
           style={styles.button}
-          textColor={theme.colors.surface}
-          onPress={() => console.log("Accesso richiesto")}
-        >
-          Richiedi accesso
-        </Button>
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -117,6 +119,7 @@ const createStyle = (theme: typeof lightTheme) =>
     },
     container: {
       flex: 1,
+      paddingBottom: 20,
     },
     info: {
       paddingHorizontal: 10,
