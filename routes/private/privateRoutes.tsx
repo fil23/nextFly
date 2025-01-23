@@ -18,6 +18,7 @@ const HomeStack = createNativeStackNavigator<HomeListType>();
 const ProfileStack = createNativeStackNavigator<ProfileListType>();
 const AddStack = createNativeStackNavigator<AddListType>();
 
+// Home navigation routes
 export const HomeStackNavigator = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
@@ -53,6 +54,7 @@ export const HomeStackNavigator = () => {
   );
 };
 
+// Profile navigation routes
 export const ProfileStackNavigator = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
@@ -75,6 +77,7 @@ export const ProfileStackNavigator = () => {
   );
 };
 
+// Add page navigation routes
 export const AddStackNavigator = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;

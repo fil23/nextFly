@@ -67,7 +67,7 @@ export const FormSignIn: FC<MyProps> = (props): JSX.Element => {
           });
         })
         .catch((error) => {
-          /**TODO: gestire messaggio di errore da backend */
+          //TODO:Manage error messages from backend.
           if (error.response.data.msg == "Utente già registrato") {
             Toast.show({
               type: "error",
