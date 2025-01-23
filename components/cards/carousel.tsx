@@ -1,6 +1,8 @@
 import React, { FC, memo } from "react";
 import Carousel from "pinar";
 import { PreferCard } from "./preferiti_card";
+import { useColorScheme } from "react-native";
+import { darkTheme, lightTheme } from "../../constants/theme/theme";
 
 interface Data {
   title: string;
@@ -17,10 +19,21 @@ interface MyProps {
 }
 
 export const CustomCarousel: FC<MyProps> = ({ data }): JSX.Element => {
+  const color = useColorScheme();
+  const theme = color === "dark" ? darkTheme : lightTheme;
   return (
-    <Carousel showsControls={false} height={230}>
+    <Carousel
+      showsControls={false}
+      height={230}
+      activeDotStyle={{
+        backgroundColor: theme.colors.secondary,
+        width: 9,
+        height: 9,
+        borderRadius: 100,
+      }}
+    >
       {data.map((viaggio, index) => (
-        <PreferCard index={index} viaggio={viaggio} />
+        <PreferCard index={index} key={index} viaggio={viaggio} />
       ))}
     </Carousel>
   );

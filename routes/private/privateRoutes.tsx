@@ -11,9 +11,12 @@ import {
   PrivateProfilePage,
   PublicProfilePage,
 } from "../../pages/private/profile/profile_page";
+import { AddListType } from "../../pages/private/add/paramAddList";
+import { AddPage } from "../../pages/private/add/addPage";
 
 const HomeStack = createNativeStackNavigator<HomeListType>();
 const ProfileStack = createNativeStackNavigator<ProfileListType>();
+const AddStack = createNativeStackNavigator<AddListType>();
 
 export const HomeStackNavigator = () => {
   const color = useColorScheme();
@@ -69,5 +72,26 @@ export const ProfileStackNavigator = () => {
     >
       <ProfileStack.Screen name="profile" component={PrivateProfilePage} />
     </ProfileStack.Navigator>
+  );
+};
+
+export const AddStackNavigator = () => {
+  const color = useColorScheme();
+  const theme = color === "dark" ? darkTheme : lightTheme;
+  return (
+    <AddStack.Navigator
+      screenOptions={{
+        animation: "ios_from_right",
+        headerStyle: {
+          backgroundColor: theme.colors.surface,
+        },
+        headerTintColor: theme.colors.text,
+        headerTitleStyle: {
+          fontFamily: "Montserrat-Bold",
+        },
+      }}
+    >
+      <AddStack.Screen name="add" component={AddPage} />
+    </AddStack.Navigator>
   );
 };
