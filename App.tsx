@@ -1,17 +1,12 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { useColorScheme, Image } from "react-native";
+import { useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { darkTheme, lightTheme } from "./constants/theme/theme";
 import * as Font from "expo-font";
-import { AuthProvider, useAuth } from "./configurations/contexts/authContext";
+import { AuthProvider } from "./configurations/contexts/authContext";
 import { Route } from "./routes/routes";
-import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./constants/theme/toastConfiguration";
-
-const Stack = createNativeStackNavigator();
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -21,7 +16,7 @@ export default function App() {
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
-        Montserrat: require("./assets/fonts/Montserrat-VariableFont_wght.ttf"),
+        Montserrat: require("./assets/fonts/static/Montserrat-Regular.ttf"),
         "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
         "Montserrat-ExtraBold": require("./assets/fonts/static/Montserrat-ExtraBold.ttf"),
       });

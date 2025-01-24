@@ -42,7 +42,7 @@ export const darkTheme = {
     surface: '#2D3748',
     text: '#EAEAEA',
     disabled: '#616161',
-    placeholder: '#FFCCBC6e',
+    placeholder: '#EAEAEA75',
     error: '#EF5350',
     success: '#81C784',
     borderColor: '#FFD54F',

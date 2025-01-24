@@ -85,7 +85,9 @@ export const PrivateStack = () => {
         component={AddStackNavigator}
         options={{
           tabBarButton: (props) => (
-            <TouchableOpacity {...props}>{props.children}</TouchableOpacity>
+            <TouchableOpacity activeOpacity={0.8} {...props}>
+              <View>{props.children}</View>
+            </TouchableOpacity>
           ),
           tabBarIconStyle: {
             alignSelf: "center",
@@ -95,7 +97,7 @@ export const PrivateStack = () => {
             return (
               <IconButton
                 icon="plus-circle"
-                size={60}
+                size={50}
                 background={theme.colors.surface}
                 style={{
                   backgroundColor: theme.colors.surface,
