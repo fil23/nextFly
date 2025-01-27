@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
-import { Searchbar, Text } from "react-native-paper";
+import { Searchbar } from "react-native-paper";
 import { StyleSheet, useColorScheme, View } from "react-native";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 
