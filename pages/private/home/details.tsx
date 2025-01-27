@@ -12,7 +12,6 @@ import {
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { useState } from "react";
 import { CustomChip } from "../../../components/cards/custom_chip";
-import { Link } from "@react-navigation/native";
 import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
 
 type DetailsProps = NativeStackScreenProps<HomeListType, "details">;

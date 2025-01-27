@@ -10,19 +10,17 @@ export const SafeAreaViewCustom: React.FC<MyProps> = ({
 }): JSX.Element => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
+  const styles = createStyle(theme);
 
-  return (
-    <SafeAreaView
-      style={[style.container, { backgroundColor: theme.colors.background }]}
-    >
-      {children}
-    </SafeAreaView>
-  );
+  return <SafeAreaView style={styles.container}>{children}</SafeAreaView>;
 };
 
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-});
+const createStyle = (theme: typeof darkTheme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingHorizontal: 20,
+      paddingVertical: 30,
+      backgroundColor: theme.colors.background,
+    },
+  });

@@ -37,12 +37,6 @@ export const PrivateStack = () => {
         tabBarLabelStyle: {
           fontWeight: "bold",
         },
-        transitionSpec: {
-          animation: "timing",
-          config: {
-            duration: 1,
-          },
-        },
         tabBarInactiveBackgroundColor: theme.colors.surface,
         tabBarButton: (props) => (
           <TouchableOpacity {...props}>
@@ -80,7 +74,7 @@ export const PrivateStack = () => {
 
       {/* Tab icon add new trip  */}
 
-      <Tab.Screen
+      {/* <Tab.Screen
         name="addTab"
         component={AddStackNavigator}
         options={{
@@ -107,7 +101,7 @@ export const PrivateStack = () => {
             );
           },
         }}
-      />
+      /> */}
 
       {/* Tab icon profile */}
       <Tab.Screen
