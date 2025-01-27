@@ -81,6 +81,7 @@ const createStyle = (theme: typeof lightTheme) =>
     },
     card_title: {
       textAlign: "center",
+      color: theme.colors.secondary,
     },
     card_image: {
       width: "35%",

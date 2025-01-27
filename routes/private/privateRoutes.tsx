@@ -26,13 +26,9 @@ export const HomeStackNavigator = () => {
     <HomeStack.Navigator
       screenOptions={{
         animation: "ios_from_right",
-        headerStyle: {
-          backgroundColor: theme.colors.surface,
-        },
-        headerTintColor: theme.colors.text,
-        headerTitleStyle: {
-          fontFamily: "Montserrat-Bold",
-        },
+        keyboardHandlingEnabled: true,
+
+        headerShown: false,
       }}
     >
       <HomeStack.Screen name="home" component={Home} />
@@ -63,13 +59,14 @@ export const ProfileStackNavigator = () => {
     <ProfileStack.Navigator
       screenOptions={{
         animation: "ios_from_right",
-        headerStyle: {
-          backgroundColor: theme.colors.surface,
-        },
-        headerTintColor: theme.colors.text,
-        headerTitleStyle: {
-          fontFamily: "Montserrat-Bold",
-        },
+        // headerStyle: {
+        //   backgroundColor: theme.colors.surface,
+        // },
+        // headerTintColor: theme.colors.text,
+        // headerTitleStyle: {
+        //   fontFamily: "Montserrat-Bold",
+        // },
+        headerShown: false,
       }}
     >
       <ProfileStack.Screen name="profile" component={PrivateProfilePage} />
@@ -85,13 +82,14 @@ export const AddStackNavigator = () => {
     <AddStack.Navigator
       screenOptions={{
         animation: "ios_from_right",
-        headerStyle: {
-          backgroundColor: theme.colors.surface,
-        },
-        headerTintColor: theme.colors.text,
-        headerTitleStyle: {
-          fontFamily: "Montserrat-Bold",
-        },
+        // headerStyle: {
+        //   backgroundColor: theme.colors.surface,
+        // },
+        // headerTintColor: theme.colors.text,
+        // headerTitleStyle: {
+        //   fontFamily: "Montserrat-Bold",
+        // },
+        headerShown: false,
       }}
     >
       <AddStack.Screen name="add" component={AddPage} />

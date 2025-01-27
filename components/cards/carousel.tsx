@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import React, { FC } from "react";
 import Carousel from "pinar";
 import { PreferCard } from "./preferiti_card";
 import { useColorScheme } from "react-native";
@@ -27,8 +27,8 @@ export const CustomCarousel: FC<MyProps> = ({ data }): JSX.Element => {
       height={230}
       activeDotStyle={{
         backgroundColor: theme.colors.secondary,
-        width: 9,
-        height: 9,
+        width: 8,
+        height: 8,
         borderRadius: 100,
       }}
     >
