@@ -1,8 +1,7 @@
-import { Card, Searchbar, Text } from "react-native-paper";
+import { Searchbar, Text } from "react-native-paper";
 import React, { useCallback, useState } from "react";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import {
-  FlatList,
   ImageBackground,
   SafeAreaView,
   ScrollView,
@@ -10,7 +9,10 @@ import {
   useColorScheme,
   View,
 } from "react-native";
-import { CustomCarousel } from "../../../components/cards/carousel";
+import {
+  CarouselMulti,
+  CustomCarousel,
+} from "../../../components/cards/carousel";
 import { SectionTitleIcon } from "../../../components/titles/sectionTitlesWithIcon";
 
 interface Data {
@@ -73,32 +75,32 @@ export const Home = () => {
     {
       id: 0,
       title: "Tokyo",
-      img: "https://i.pinimg.com/474x/a8/a7/79/a8a77990462bcf699372f8ba9f962056.jpg",
+      img: "https://i.pinimg.com/736x/7f/2d/96/7f2d96104ffadeaaef28267d686d0459.jpg",
     },
     {
       id: 1,
       title: "New York",
-      img: "https://i.pinimg.com/474x/50/23/73/502373bda51129d7aa91e4d56bbadcaa.jpg",
+      img: "https://i.pinimg.com/736x/12/fc/6f/12fc6f33fc47fc8d4a9d3acbba557882.jpg",
     },
     {
-      id: 0,
-      title: "Tokyo",
-      img: "https://i.pinimg.com/474x/a8/a7/79/a8a77990462bcf699372f8ba9f962056.jpg",
+      id: 2,
+      title: "Mexico City",
+      img: "https://i.pinimg.com/736x/c9/a2/8e/c9a28edb7a9d0a093e6047887c14e0e2.jpg",
     },
     {
-      id: 1,
-      title: "New York",
-      img: "https://i.pinimg.com/474x/50/23/73/502373bda51129d7aa91e4d56bbadcaa.jpg",
+      id: 3,
+      title: "Rome",
+      img: "https://i.pinimg.com/736x/ae/e0/2e/aee02e9e9faecc254aa2437d2e75cd04.jpg",
     },
     {
-      id: 0,
-      title: "Tokyo",
-      img: "https://i.pinimg.com/474x/a8/a7/79/a8a77990462bcf699372f8ba9f962056.jpg",
+      id: 4,
+      title: "Edinburgh ",
+      img: "https://i.pinimg.com/736x/f5/4a/c0/f54ac013c2929986608017704727b1ae.jpg",
     },
     {
-      id: 1,
-      title: "New York",
-      img: "https://i.pinimg.com/474x/50/23/73/502373bda51129d7aa91e4d56bbadcaa.jpg",
+      id: 5,
+      title: "Lisbona",
+      img: "https://i.pinimg.com/736x/1a/7a/fa/1a7afa6bafdcf2f324eb580a058cbb69.jpg",
     },
   ]);
 
@@ -114,6 +116,7 @@ export const Home = () => {
         contentInsetAdjustmentBehavior="always"
         automaticallyAdjustsScrollIndicatorInsets
         showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
       >
         {/* TODO:ADD CAROSELLO? */}
         {/* Cover  */}
@@ -153,8 +156,8 @@ export const Home = () => {
         {/* Different sections */}
         <View style={styles.content_prefer}>
           {/* My travels*/}
-          <View>
-            <SectionTitleIcon icon="airplane-takeoff" msg="My places" />
+          <SectionTitleIcon icon="airplane-takeoff" msg="My places" />
+          <View style={{ paddingHorizontal: 10 }}>
             {/* Carousel of saved travels  */}
             <CustomCarousel data={data} />
           </View>
@@ -166,13 +169,10 @@ export const Home = () => {
               msg="Discover a new place"
             />
             {/* Cards of new countries */}
-            {/* TODO:Sistemare la visualizzazione delle cardss */}
-            {/* <FlatList
-              data={cards}
-              renderItem={({ item }) => (
-                <Card.Cover source={{ uri: item.img }} />
-              )}
-            /> */}
+
+            <View style={styles.container_cards}>
+              <CarouselMulti data={cards} />
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -218,9 +218,13 @@ const createStyle = (theme: typeof lightTheme) =>
       fontFamily: "Montserrat",
       fontWeight: 400,
     },
+    searchbar: {
+      backgroundColor: theme.colors.surface,
+      minHeight: 40,
+      maxHeight: 50,
+    },
     // content areas
     content_prefer: {
-      paddingHorizontal: 10,
       paddingBottom: 60,
     },
 
@@ -234,9 +238,10 @@ const createStyle = (theme: typeof lightTheme) =>
       textShadowRadius: 2,
     },
 
-    searchbar: {
-      backgroundColor: theme.colors.surface,
-      minHeight: 40,
-      maxHeight: 50,
+    //cards
+
+    container_cards: {
+      height: 200,
+      width: "100%",
     },
   });

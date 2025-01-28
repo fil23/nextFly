@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Avatar, Button, Chip, Divider, Text } from "react-native-paper";
+import { Avatar, Button, Chip, Divider, List, Text } from "react-native-paper";
 import { HomeListType } from "../home/paramHomeList";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
@@ -21,17 +21,11 @@ export const PrivateProfilePage = () => {
   const styles = createPrivateStyle(theme);
   return (
     <SafeAreaViewCustom>
-      <ScrollView>
-        <Avatar.Image
-          size={150}
-          source={{ uri: utente.img_profilo }}
-          style={styles.profile_image}
-        />
-
-        <View>
-          <Text variant="titleLarge">User's information</Text>
-        </View>
-      </ScrollView>
+      <List.Section title="Profile">
+        <List.Accordion title="prova1">
+          <List.Item title="username" />
+        </List.Accordion>
+      </List.Section>
     </SafeAreaViewCustom>
   );
 };

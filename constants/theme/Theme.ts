@@ -26,7 +26,9 @@ export const lightTheme = {
     chip_success:'#90f493de',
     chip_error: '#ff5252c7',
     yellow_star:'#ffeb52',
-    google_button_color:'#016fd5'
+    google_button_color:'#016fd5',
+    elevation:'#000000',
+    black:'#000000',
   },
 };
 
@@ -54,6 +56,8 @@ export const darkTheme = {
     chip_success : '#86ca8ac7',
     chip_error : '#EF535099',
     yellow_star:'#ffeb52',
-    google_button_color:'#016fd5'
+    google_button_color:'#016fd5',
+    elevation:'#a6a6a6',
+    black:'#000000'
   },
 };

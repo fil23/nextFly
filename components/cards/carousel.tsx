@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import Carousel from "pinar";
 import { PreferCard } from "./preferiti_card";
-import { useColorScheme } from "react-native";
+import { FlatList, ScrollView, useColorScheme, View } from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
+import { CoverCards } from "./coverCards";
 
 interface Data {
   title: string;
@@ -14,8 +15,18 @@ interface Data {
   data_arrivo: string;
   creatore: string;
 }
+
+interface Card {
+  title: string;
+  img: string;
+  id: number;
+}
 interface MyProps {
   data: Data[];
+}
+
+interface MyPropsMulti {
+  data: Card[];
 }
 
 export const CustomCarousel: FC<MyProps> = ({ data }): JSX.Element => {
@@ -36,5 +47,27 @@ export const CustomCarousel: FC<MyProps> = ({ data }): JSX.Element => {
         <PreferCard index={index} key={index} viaggio={viaggio} />
       ))}
     </Carousel>
+  );
+};
+
+export const CarouselMulti: FC<MyPropsMulti> = ({ data }): JSX.Element => {
+  return (
+    <ScrollView horizontal>
+      {data.map((item) => (
+        <View style={{ minWidth: 130, maxWidth: 200, paddingRight: 15 }}>
+          <CoverCards img={item.img} city={item.title} key={item.id} />
+        </View>
+      ))}
+    </ScrollView>
+    // <FlatList
+    //   data={data}
+    //   horizontal={true}
+    //   style={{ width: "100%", marginRight: 10 }}
+    //   renderItem={({ item }) => (
+    //     <View style={{ minWidth: 130, maxWidth: 200, paddingRight: 15 }}>
+    //       <CoverCards img={item.img} city={item.title} key={item.id} />
+    //     </View>
+    //   )}
+    // />
   );
 };

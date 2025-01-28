@@ -3,8 +3,8 @@ import React from "react";
 import { TouchableOpacity, useColorScheme, View } from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import {
-  AddStackNavigator,
   HomeStackNavigator,
+  MyTravelsStackNavigator,
   ProfileStackNavigator,
 } from "./privateRoutes";
 import { IconButton } from "react-native-paper";
@@ -102,6 +102,32 @@ export const PrivateStack = () => {
           },
         }}
       /> */}
+
+      {/* My travels */}
+      {/* TODO:Add and create my travels tab */}
+
+      <Tab.Screen
+        name="myTravelsTab"
+        component={MyTravelsStackNavigator}
+        options={{
+          tabBarButton: (props) => (
+            <TouchableOpacity {...props}>{props.children}</TouchableOpacity>
+          ),
+
+          tabBarLabel: "My travels",
+          tabBarIconStyle: { alignSelf: "center" },
+          tabBarIcon: ({ focused }) => {
+            return (
+              <IconButton
+                icon={
+                  focused ? "map-marker-radius" : "map-marker-radius-outline"
+                }
+                iconColor={focused ? theme.colors.secondary : theme.colors.text}
+              />
+            );
+          },
+        }}
+      />
 
       {/* Tab icon profile */}
       <Tab.Screen
