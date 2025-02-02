@@ -54,8 +54,11 @@ export const CarouselMulti: FC<MyPropsMulti> = ({ data }): JSX.Element => {
   return (
     <ScrollView horizontal>
       {data.map((item) => (
-        <View style={{ minWidth: 130, maxWidth: 200, paddingRight: 15 }}>
-          <CoverCards img={item.img} city={item.title} key={item.id} />
+        <View
+          style={{ minWidth: 130, maxWidth: 200, paddingRight: 15 }}
+          key={item.id}
+        >
+          <CoverCards img={item.img} city={item.title} />
         </View>
       ))}
     </ScrollView>

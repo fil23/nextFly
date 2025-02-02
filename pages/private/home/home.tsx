@@ -1,3 +1,5 @@
+// FIXME: capire perchè esce errore della key
+
 import { Searchbar, Text } from "react-native-paper";
 import React, { useCallback, useState } from "react";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";

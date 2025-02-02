@@ -93,6 +93,7 @@ export const AddStackNavigator = () => {
   );
 };
 
+// MyTravels navigation routes
 export const MyTravelsStackNavigator = () => {
   return (
     <MyTravelsStack.Navigator

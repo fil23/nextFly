@@ -1,13 +1,27 @@
 import React, { FC } from "react";
-import { ImageBackground, StyleSheet, useColorScheme } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+  View,
+} from "react-native";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
-import { Surface, Text } from "react-native-paper";
+import { Divider, Surface, Text } from "react-native-paper";
 
 interface MyProps {
   img: string;
   city: string;
 }
-
+interface MyTravelsProps {
+  data: {
+    id: number;
+    title: string;
+    img: string;
+    subtitle: string;
+  };
+}
+// Cards which you can find in Home page under Discover a new place
 export const CoverCards: FC<MyProps> = (props): JSX.Element => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
@@ -52,5 +66,57 @@ const createStyle = (theme: typeof lightTheme) =>
         height: 1,
       },
       textShadowRadius: 1,
+    },
+  });
+
+// cards which you can find it in my travels page i section menu
+export const MytravelsCard: FC<MyTravelsProps> = (props): JSX.Element => {
+  const color = useColorScheme();
+  const theme = color === "dark" ? darkTheme : lightTheme;
+  const styles = createMytravelStyle(theme);
+  return (
+    <TouchableOpacity onPress={() => console.log("card press")}>
+      <View style={styles.card_container} key={props.data.id}>
+        <View style={styles.card_img}>
+          <ImageBackground
+            source={{ uri: props.data.img }}
+            style={{ width: "100%", height: "100%" }}
+            imageStyle={{ borderRadius: 15 }}
+          />
+        </View>
+        <View style={{ flexWrap: "nowrap" }}>
+          <Text variant="labelLarge" style={styles.card_title}>
+            {props.data.title}
+          </Text>
+          <Text style={styles.card_subtitle}>{props.data.subtitle}</Text>
+        </View>
+      </View>
+      <Divider />
+    </TouchableOpacity>
+  );
+};
+const createMytravelStyle = (theme: typeof lightTheme) =>
+  StyleSheet.create({
+    card_container: {
+      width: "100%",
+      height: 70,
+      flexDirection: "row",
+      marginHorizontal: 10,
+      marginVertical: 10,
+      gap: 20,
+      paddingRight: 55,
+    },
+    card_img: {
+      width: "30%",
+      padding: 3,
+      borderRadius: 15,
+    },
+    card_title: {
+      marginVertical: 5,
+      color: theme.colors.secondary,
+    },
+    card_subtitle: {
+      width: "70%",
+      marginRight: 5,
     },
   });
