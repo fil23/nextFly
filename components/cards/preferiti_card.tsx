@@ -30,6 +30,13 @@ export const PreferCard: FC<MyProps> = (props): JSX.Element => {
       <Card.Title
         title={props.viaggio.title}
         titleStyle={styles.card_title}
+        style={{
+          shadowColor: "black",
+          shadowOffset: {
+            width: 3,
+            height: 3,
+          },
+        }}
         titleVariant="titleMedium"
       />
       <Card.Content style={styles.card_content}>

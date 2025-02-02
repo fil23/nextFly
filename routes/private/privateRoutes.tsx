@@ -13,10 +13,13 @@ import {
 } from "../../pages/private/profile/profile_page";
 import { AddListType } from "../../pages/private/add/paramAddList";
 import { AddPage } from "../../pages/private/add/addPage";
+import { MyTravelsListType } from "../../pages/private/my_travels/paramTravelsList";
+import { MyTravelsPage } from "../../pages/private/my_travels/my_travels";
 
 const HomeStack = createNativeStackNavigator<HomeListType>();
 const ProfileStack = createNativeStackNavigator<ProfileListType>();
 const AddStack = createNativeStackNavigator<AddListType>();
+const MyTravelsStack = createNativeStackNavigator<MyTravelsListType>();
 
 // Home navigation routes
 export const HomeStackNavigator = () => {
@@ -27,7 +30,6 @@ export const HomeStackNavigator = () => {
       screenOptions={{
         animation: "ios_from_right",
         keyboardHandlingEnabled: true,
-
         headerShown: false,
       }}
     >
@@ -37,6 +39,9 @@ export const HomeStackNavigator = () => {
         component={Details}
         options={({ route }) => ({
           title: route.params.viaggio.title,
+          headerShown: true,
+          headerTransparent: true,
+          headerTintColor: theme.colors.title,
         })}
       />
       <HomeStack.Screen
@@ -76,23 +81,28 @@ export const ProfileStackNavigator = () => {
 
 // Add page navigation routes
 export const AddStackNavigator = () => {
-  const color = useColorScheme();
-  const theme = color === "dark" ? darkTheme : lightTheme;
   return (
     <AddStack.Navigator
       screenOptions={{
         animation: "ios_from_right",
-        // headerStyle: {
-        //   backgroundColor: theme.colors.surface,
-        // },
-        // headerTintColor: theme.colors.text,
-        // headerTitleStyle: {
-        //   fontFamily: "Montserrat-Bold",
-        // },
         headerShown: false,
       }}
     >
       <AddStack.Screen name="add" component={AddPage} />
     </AddStack.Navigator>
+  );
+};
+
+// MyTravels navigation routes
+export const MyTravelsStackNavigator = () => {
+  return (
+    <MyTravelsStack.Navigator
+      screenOptions={{
+        animation: "ios_from_right",
+        headerShown: false,
+      }}
+    >
+      <MyTravelsStack.Screen name="myTravels" component={MyTravelsPage} />
+    </MyTravelsStack.Navigator>
   );
 };
