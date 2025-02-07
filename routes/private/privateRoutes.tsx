@@ -15,6 +15,7 @@ import { AddListType } from "../../pages/private/add/paramAddList";
 import { AddPage } from "../../pages/private/add/addPage";
 import { MyTravelsListType } from "../../pages/private/my_travels/paramTravelsList";
 import { MyTravelsPage } from "../../pages/private/my_travels/my_travels";
+import { CreateTravelsPage } from "../../pages/private/my_travels/create_travels";
 
 const HomeStack = createNativeStackNavigator<HomeListType>();
 const ProfileStack = createNativeStackNavigator<ProfileListType>();
@@ -103,6 +104,7 @@ export const MyTravelsStackNavigator = () => {
       }}
     >
       <MyTravelsStack.Screen name="myTravels" component={MyTravelsPage} />
+      <MyTravelsStack.Screen name="creaTravel" component={CreateTravelsPage} />
     </MyTravelsStack.Navigator>
   );
 };

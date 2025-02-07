@@ -4,15 +4,19 @@ import { darkTheme, lightTheme } from "../constants/theme/theme";
 
 interface MyProps {
   children: React.ReactNode;
+  style?: {};
 }
 export const SafeAreaViewCustom: React.FC<MyProps> = ({
   children,
+  style,
 }): JSX.Element => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
 
-  return <SafeAreaView style={styles.container}>{children}</SafeAreaView>;
+  return (
+    <SafeAreaView style={[styles.container, style]}>{children}</SafeAreaView>
+  );
 };
 
 const createStyle = (theme: typeof darkTheme) =>
