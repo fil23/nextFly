@@ -50,8 +50,8 @@ export const fontConfig = {
     "lineHeight": 20,
   },
   titleMedium: {
-    "fontFamily": "Montserrat-Bold",
-    "fontSize": 16,
+    "fontFamily": "Myfont",
+    "fontSize": 30,
     "letterSpacing": 0.15,
     "lineHeight": 24,
   },
@@ -71,14 +71,14 @@ export const fontConfig = {
    },
 
    displaySmall: {
-  "fontFamily": "Montserrat-Bold",
-  "fontSize": 36,
+  "fontFamily": "Myfont",
+  "fontSize": 60,
   "letterSpacing": 0,
   "lineHeight": 44,
   },
 
   displayLarge: {
-    "fontFamily": "Montserrat-Bold",
+    "fontFamily": "Myfont",
     "fontSize": 57,
     "letterSpacing": 0,
     "lineHeight": 64,

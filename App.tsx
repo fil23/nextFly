@@ -19,6 +19,7 @@ export default function App() {
         Montserrat: require("./assets/fonts/static/Montserrat-Regular.ttf"),
         "Montserrat-Bold": require("./assets/fonts/static/Montserrat-Bold.ttf"),
         "Montserrat-ExtraBold": require("./assets/fonts/static/Montserrat-ExtraBold.ttf"),
+        Myfont: require("./assets/fonts/Myfont-Regular.ttf"),
       });
       setFontsLoaded(true);
     }
