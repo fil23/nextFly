@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "config": {
-        "googleMapsApiKey": "AIzaSyCSfhMK8rN4VO8ldtVfsNd6NWMg5ws8WnE"
+        "googleMapsApiKey":"${EXPO_PUBLIC_API_KEY_MAPS}" 
       }
     },
     "android": {
@@ -29,7 +29,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCSfhMK8rN4VO8ldtVfsNd6NWMg5ws8WnE"
+          "apiKey":"${EXPO_PUBLIC_API_KEY_MAPS}"
         }
       },
       "package": "com.pippo123.talkme"
