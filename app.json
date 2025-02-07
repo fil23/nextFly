@@ -29,7 +29,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey":"${EXPO_PUBLIC_API_KEY_MAPS}"
+          "apiKey":"AIzaSyCSfhMK8rN4VO8ldtVfsNd6NWMg5ws8WnE"
         }
       },
       "package": "com.pippo123.talkme"

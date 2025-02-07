@@ -3,7 +3,6 @@ import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
 import { Searchbar, Text } from "react-native-paper";
 import { StyleSheet, useColorScheme } from "react-native";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 export const CreateTravelsPage = () => {
   const color = useColorScheme();
@@ -28,10 +27,6 @@ export const CreateTravelsPage = () => {
         clearButtonMode="always"
         collapsable={true}
         style={styles.searchbar}
-      />
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        style={{ width: "100%", height: "100%" }}
       />
     </SafeAreaViewCustom>
   );
