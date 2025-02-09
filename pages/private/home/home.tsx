@@ -1,6 +1,6 @@
 // FIXME: capire perchè esce errore della key
 
-import { Searchbar, Text } from "react-native-paper";
+import { Button, Icon, Searchbar, Text } from "react-native-paper";
 import React, { useCallback, useState } from "react";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import {
@@ -16,6 +16,7 @@ import {
   CustomCarousel,
 } from "../../../components/cards/carousel";
 import { SectionTitleIcon } from "../../../components/titles/sectionTitlesWithIcon";
+import { useNavigation } from "@react-navigation/native";
 
 interface Data {
   title: string;
@@ -37,6 +38,7 @@ export const Home = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
+  const navigate = useNavigation();
   const [search, setSearch] = useState<string>("");
 
   //exemples of datas
@@ -136,23 +138,21 @@ export const Home = () => {
             </Text>
 
             {/* search bar */}
-            <Searchbar
-              autoCapitalize="sentences"
-              value={search}
-              theme={theme}
-              placeholder="Where is your place?"
+            <Button
+              mode="elevated"
+              icon={() => (
+                <Icon
+                  source="magnify"
+                  size={20}
+                  color={theme.colors.secondary}
+                />
+              )}
               elevation={5}
-              inputStyle={styles.search_bar_input}
-              iconColor={theme.colors.secondary}
-              cursorColor={theme.colors.secondary}
-              multiline={false}
-              placeholderTextColor={theme.colors.placeholder}
-              maxLength={25}
-              onChangeText={(text) => setSearch(text)}
-              clearButtonMode="always"
-              collapsable={true}
-              style={styles.searchbar}
-            />
+              contentStyle={{ backgroundColor: theme.colors.surface }}
+              onPress={() => navigate.navigate("search")}
+            >
+              <Text variant="titleSmall">Find a new travel</Text>
+            </Button>
           </View>
         </View>
         {/* Different sections */}

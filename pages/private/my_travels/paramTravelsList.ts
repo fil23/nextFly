@@ -1,4 +1,5 @@
 export type MyTravelsListType = {
     myTravels: undefined;
-    creaTravel:undefined
+    creaTravel:undefined;
+    search:undefined
 }

@@ -49,6 +49,12 @@ export const fontConfig = {
     "letterSpacing": 0.1,
     "lineHeight": 20,
   },
+  titleSmall: {
+    "fontFamily": "Montserrat-Bold",
+    "fontSize": 15,
+    "letterSpacing": 0,
+    "lineHeight": 28,
+    },
   titleMedium: {
     "fontFamily": "Myfont",
     "fontSize": 30,

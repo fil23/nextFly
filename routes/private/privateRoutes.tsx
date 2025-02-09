@@ -16,6 +16,7 @@ import { AddPage } from "../../pages/private/add/addPage";
 import { MyTravelsListType } from "../../pages/private/my_travels/paramTravelsList";
 import { MyTravelsPage } from "../../pages/private/my_travels/my_travels";
 import { CreateTravelsPage } from "../../pages/private/my_travels/create_travels";
+import { SearchPage } from "../../pages/private/add/searchPage";
 
 const HomeStack = createNativeStackNavigator<HomeListType>();
 const ProfileStack = createNativeStackNavigator<ProfileListType>();
@@ -52,6 +53,7 @@ export const HomeStackNavigator = () => {
           title: route.params.utente,
         })}
       />
+      <HomeStack.Screen name="search" component={SearchPage} />
     </HomeStack.Navigator>
   );
 };
@@ -96,6 +98,8 @@ export const AddStackNavigator = () => {
 
 // MyTravels navigation routes
 export const MyTravelsStackNavigator = () => {
+  const color = useColorScheme();
+  const theme = color === "dark" ? darkTheme : lightTheme;
   return (
     <MyTravelsStack.Navigator
       screenOptions={{
@@ -105,6 +109,16 @@ export const MyTravelsStackNavigator = () => {
     >
       <MyTravelsStack.Screen name="myTravels" component={MyTravelsPage} />
       <MyTravelsStack.Screen name="creaTravel" component={CreateTravelsPage} />
+      <MyTravelsStack.Screen
+        name="search"
+        component={SearchPage}
+        options={{
+          title: "",
+          headerShown: true,
+          headerTransparent: true,
+          headerTintColor: theme.colors.text,
+        }}
+      />
     </MyTravelsStack.Navigator>
   );
 };

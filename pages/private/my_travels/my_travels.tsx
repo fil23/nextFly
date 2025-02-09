@@ -119,7 +119,7 @@ export const MyTravelsPage = () => {
       <AnimatedFAB
         icon={"plus"}
         label="Create new travel"
-        onPress={() => navigate.navigate("creaTravel")}
+        onPress={() => navigate.navigate("search")}
         extended={false}
         animateFrom="right"
         iconMode="static"

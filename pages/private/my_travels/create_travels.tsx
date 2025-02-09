@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
-import { Searchbar, Text } from "react-native-paper";
-import { StyleSheet, useColorScheme } from "react-native";
+import { Divider, Searchbar, Text } from "react-native-paper";
+import { FlatList, StyleSheet, useColorScheme, View } from "react-native";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 
 export const CreateTravelsPage = () => {
@@ -9,6 +9,10 @@ export const CreateTravelsPage = () => {
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
   const [city, setCity] = useState<string>("");
+  const [cities, setCities] = useState<string[]>([
+    "Give me sujestion...",
+    "Tokyo",
+  ]);
   return (
     <SafeAreaViewCustom>
       <Searchbar
@@ -27,6 +31,23 @@ export const CreateTravelsPage = () => {
         clearButtonMode="always"
         collapsable={true}
         style={styles.searchbar}
+      />
+      <FlatList
+        data={cities}
+        renderItem={({ item }) => (
+          <View
+            style={{
+              backgroundColor: theme.colors.surface,
+              paddingVertical: 5,
+              marginHorizontal: 20,
+              paddingLeft: 7,
+            }}
+          >
+            <Text style={{ paddingBottom: 15 }}>{item}</Text>
+            <Divider />
+          </View>
+        )}
+        style={{ maxHeight: "40%" }}
       />
     </SafeAreaViewCustom>
   );

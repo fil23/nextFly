@@ -3,6 +3,7 @@ export type HomeListType = {
     details:{
         viaggio:any;
     }
+    search:undefined;
     profile:{
         utente:string,
     }
