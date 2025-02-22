@@ -1,3 +1,4 @@
-export type AddListType =  {
-    add:undefined,
+export type AddListType = {
+  add: undefined,
+  search: undefined,
 }

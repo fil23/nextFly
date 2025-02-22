@@ -5,6 +5,7 @@ import { StyleSheet, useColorScheme, View } from "react-native";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { v4 as uuidv4 } from "uuid";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { error } from "console";
 
 export const SearchPage = () => {
   const color = useColorScheme();
@@ -14,7 +15,7 @@ export const SearchPage = () => {
   const autiComplete = async () => {
     // @ts-ignore
   };
-  useEffect(() => {}, [search]);
+  useEffect(() => { }, [search]);
   return (
     <SafeAreaViewCustom style={styles.main_areaView}>
       {/* <TextInput
@@ -27,7 +28,7 @@ export const SearchPage = () => {
         left={
           <TextInput.Icon icon="magnify" size={25} color={theme.colors.text} />
         }
-        right={
+        
           <TextInput.Icon
             icon="close"
             size={25}
@@ -36,17 +37,15 @@ export const SearchPage = () => {
           />
         }
       /> */}
-
-      <View>
-        <GooglePlacesAutocomplete
-          placeholder="Search"
-          onPress={(data) => {
-            console.log(data);
-          }}
+      <View style={styles.container}>
+        <GooglePlacesAutocomplete placeholder="Search"
+          onPress={(data) => console.log("data: " + data.description)}
           query={{
-            key: process.env.API_KEY_MAPS,
-            language: "en",
+            key: process.env.EXPO_PUBLIC_API_KEY_MAPS,
+            language: 'en',
           }}
+          onFail={(error) => console.error(error)}
+
         />
       </View>
     </SafeAreaViewCustom>
@@ -61,4 +60,8 @@ const createStyle = (theme: typeof darkTheme) =>
     search_bar: {
       backgroundColor: theme.colors.background,
     },
+    container: {
+      flex: 1,
+      padding: 10
+    }
   });
