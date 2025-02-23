@@ -20,7 +20,7 @@ export const CustomButtonYellow: FC<MyProps> = (props): JSX.Element => {
       style={props.style}
     >
       <Text
-        variant="titleMedium"
+        variant="titleSmall"
         style={{ color: theme.colors.secondary_text }}
       >
         {props.text}

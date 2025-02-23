@@ -53,7 +53,16 @@ export const HomeStackNavigator = () => {
           title: route.params.utente,
         })}
       />
-      <HomeStack.Screen name="search" component={SearchPage} />
+      <HomeStack.Screen
+        name="search"
+        component={SearchPage}
+        options={{
+          title: "",
+          headerTransparent: true,
+          headerShown: true,
+          headerTintColor: theme.colors.text,
+        }}
+      />
     </HomeStack.Navigator>
   );
 };
