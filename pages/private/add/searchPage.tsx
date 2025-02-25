@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
-import { Icon, IconButton, Text, TextInput } from "react-native-paper";
+import {
+  Button,
+  FAB,
+  Icon,
+  IconButton,
+  Text,
+  TextInput,
+} from "react-native-paper";
 import {
   ImageBackground,
   StyleSheet,
@@ -9,10 +16,12 @@ import {
   View,
   SafeAreaView,
   KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "@react-navigation/native";
+import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
 
 export const SearchPage = () => {
   const color = useColorScheme();
@@ -25,24 +34,25 @@ export const SearchPage = () => {
   };
   useEffect(() => {}, [search]);
   return (
-    <KeyboardAvoidingView
-      style={styles.main_container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <SafeAreaView style={styles.main_container}>
       <ImageBackground
         resizeMode="cover"
-        resizeMethod="resize"
-        source={require("../../../assets/img/Tokyo nights2jpg.jpg")}
-        style={{ height: "100%", width: "100%" }}
+        source={require("../../../assets/img/NY_black.jpg")}
+        imageStyle={{ position: "absolute", top: 0, left: 0 }}
+        style={{
+          width: Dimensions.get("window").width,
+          height: Dimensions.get("window").height,
+        }}
       />
       <View style={styles.search_bar}>
+        {/* Title */}
         <Text
           variant="displayMedium"
           style={{ color: theme.colors.secondary, paddingVertical: "10%" }}
         >
           Where is your place?
         </Text>
-
+        {/* Google search bar for autocompletes */}
         <View>
           <GooglePlacesAutocomplete
             placeholder="Search"
@@ -54,9 +64,21 @@ export const SearchPage = () => {
             onPress={(data) => console.log(data)}
             onFail={(error) => console.error(error)}
           />
+          <CustomButtonYellow
+            text="Search"
+            style={styles.search_button}
+            function={() => console.log("press")}
+          />
         </View>
       </View>
-    </KeyboardAvoidingView>
+      {/* <FAB
+        icon="arrow-right-bold-outline"
+        style={styles.button_next_page}
+        color={theme.colors.black}
+        size="medium"
+        onPress={() => console.log("Next page")}
+      /> */}
+    </SafeAreaView>
   );
 };
 
@@ -73,5 +95,10 @@ const createStyle = (theme: typeof darkTheme) =>
       width: "90%",
       position: "absolute",
       marginTop: "30%",
+    },
+
+    search_button: {
+      marginHorizontal: "10%",
+      marginTop: "7%",
     },
   });
