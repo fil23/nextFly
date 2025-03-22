@@ -15,6 +15,7 @@ import { EmailConfirm } from "../../pages/public/signin/email_conf";
 const Stack = createNativeStackNavigator<AuthListType>();
 
 const webClient = process.env.EXPO_PUBLIC_GOOGLE_WEB;
+const iosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS;
 export const AuthStack = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
@@ -30,6 +31,7 @@ export const AuthStack = () => {
     getToken();
     GoogleSignin.configure({
       webClientId: webClient,
+      iosClientId: iosClientId,
       offlineAccess: true,
     });
     setOnLoad(false);

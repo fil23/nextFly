@@ -20,6 +20,10 @@
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "${API_KEY_MAPS}"
+      },
+      "bundleIdentifier": "com.pippo123.talkme",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {

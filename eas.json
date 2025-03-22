@@ -11,10 +11,9 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      
       },
       "ios": {
-        "simulator": true
+        
       },
       "channel": "development"
     },

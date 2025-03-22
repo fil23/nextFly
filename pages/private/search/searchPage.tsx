@@ -27,12 +27,12 @@ export const SearchPage = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
-  const [search, setSearch] = useState<string>("");
   const navigate = useNavigation();
+  const [search, setSearch] = useState<string | null>(null);
   const autiComplete = async () => {
     // @ts-ignore
   };
-  useEffect(() => {}, [search]);
+
   return (
     <SafeAreaView style={styles.main_container}>
       <ImageBackground
@@ -61,13 +61,15 @@ export const SearchPage = () => {
               language: "en",
               types: "(regions)",
             }}
-            onPress={(data) => console.log(data)}
+            onPress={(data) => setSearch(data.description)}
             onFail={(error) => console.error(error)}
           />
           <CustomButtonYellow
             text="Search"
             style={styles.search_button}
-            function={() => console.log("press")}
+            function={() =>
+              navigate.navigate("information", { destination: search })
+            }
           />
         </View>
       </View>

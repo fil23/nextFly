@@ -16,12 +16,15 @@ import { AddPage } from "../../pages/private/add/addPage";
 import { MyTravelsListType } from "../../pages/private/my_travels/paramTravelsList";
 import { MyTravelsPage } from "../../pages/private/my_travels/my_travels";
 import { CreateTravelsPage } from "../../pages/private/my_travels/create_travels";
-import { SearchPage } from "../../pages/private/add/searchPage";
+import { SearchPage } from "../../pages/private/search/searchPage";
+import { SearchTypeList } from "../../pages/private/search/searchTypeList";
+import { InformationPage } from "../../pages/private/search/informationPage";
 
 const HomeStack = createNativeStackNavigator<HomeListType>();
 const ProfileStack = createNativeStackNavigator<ProfileListType>();
 const AddStack = createNativeStackNavigator<AddListType>();
 const MyTravelsStack = createNativeStackNavigator<MyTravelsListType>();
+const SearchStack = createNativeStackNavigator<SearchTypeList>();
 
 // Home navigation routes
 export const HomeStackNavigator = () => {
@@ -55,7 +58,7 @@ export const HomeStackNavigator = () => {
       />
       <HomeStack.Screen
         name="search"
-        component={SearchPage}
+        component={SearchStackNavigator}
         options={{
           title: "",
           headerTransparent: true,
@@ -129,5 +132,22 @@ export const MyTravelsStackNavigator = () => {
         }}
       />
     </MyTravelsStack.Navigator>
+  );
+};
+
+export const SearchStackNavigator = () => {
+  const color = useColorScheme();
+  const theme = color === "dark" ? darkTheme : lightTheme;
+
+  return (
+    <SearchStack.Navigator
+      screenOptions={{
+        animation: "ios_from_right",
+        headerShown: false,
+      }}
+    >
+      <SearchStack.Screen name="search" component={SearchPage} />
+      <SearchStack.Screen name="information" component={InformationPage} />
+    </SearchStack.Navigator>
   );
 };
