@@ -7,6 +7,7 @@ import { AuthProvider } from "./configurations/contexts/authContext";
 import { Route } from "./routes/routes";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./constants/theme/toastConfiguration";
+import { createClient } from "@supabase/supabase-js";
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -14,6 +15,7 @@ export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
+    //
     async function loadFonts() {
       await Font.loadAsync({
         Montserrat: require("./assets/fonts/static/Montserrat-Regular.ttf"),

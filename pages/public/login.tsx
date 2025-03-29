@@ -26,7 +26,7 @@ export const Login = () => {
   useEffect(() => {
     // Avvia l'animazione al caricamento del componente
     Animated.timing(slideAnim, {
-      toValue: 10, // Valore finale
+      toValue: 130, // Valore finale
       duration: 1000, // Durata in millisecondi
       useNativeDriver: true, // Usa il driver nativo per migliori performance
     }).start();
@@ -51,7 +51,7 @@ export const Login = () => {
                 transform: [{ translateY: slideAnim }],
               }}
             >
-              <Text style={styles.span} variant="displaySmall">
+              <Text style={styles.span} variant="displayMedium">
                 NextFly
               </Text>
             </Animated.View>
@@ -70,11 +70,12 @@ const createStyle = (theme: typeof lightTheme) =>
       flex: 1,
       alignItems: "center",
       gap: 20,
-      paddingVertical: "30%",
+      paddingVertical: "10%",
     },
     title: {
       textAlign: "center",
-      justifyContent: "center",
+      maxHeight: "50%",
+      minHeight: "20%",
       color: theme.colors.text,
     },
     span: {
@@ -83,7 +84,7 @@ const createStyle = (theme: typeof lightTheme) =>
       fontFamily: "Montserrat-ExtraBold",
       textShadowColor: theme.colors.shadow,
       textShadowOffset: { width: 3, height: 1 },
-      textShadowRadius: 1,
-      paddingTop: 10,
+      paddingTop: 15,
+      marginTop: "20%",
     },
   });

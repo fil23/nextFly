@@ -11,8 +11,7 @@ import {
   PrivateProfilePage,
   PublicProfilePage,
 } from "../../pages/private/profile/profile_page";
-import { AddListType } from "../../pages/private/add/paramAddList";
-import { AddPage } from "../../pages/private/add/addPage";
+
 import { MyTravelsListType } from "../../pages/private/my_travels/paramTravelsList";
 import { MyTravelsPage } from "../../pages/private/my_travels/my_travels";
 import { CreateTravelsPage } from "../../pages/private/my_travels/create_travels";
@@ -22,7 +21,6 @@ import { InformationPage } from "../../pages/private/search/informationPage";
 
 const HomeStack = createNativeStackNavigator<HomeListType>();
 const ProfileStack = createNativeStackNavigator<ProfileListType>();
-const AddStack = createNativeStackNavigator<AddListType>();
 const MyTravelsStack = createNativeStackNavigator<MyTravelsListType>();
 const SearchStack = createNativeStackNavigator<SearchTypeList>();
 
@@ -38,15 +36,22 @@ export const HomeStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <HomeStack.Screen name="home" component={Home} />
+      <HomeStack.Screen
+        name="home"
+        component={Home}
+        options={{ title: "Home" }}
+      />
       <HomeStack.Screen
         name="details"
         component={Details}
         options={({ route }) => ({
           title: route.params.viaggio.title,
           headerShown: true,
-          headerTransparent: true,
+          headerTransparent: false,
           headerTintColor: theme.colors.title,
+          headerStyle: {
+            backgroundColor: theme.colors.surface,
+          },
         })}
       />
       <HomeStack.Screen
@@ -94,20 +99,6 @@ export const ProfileStackNavigator = () => {
   );
 };
 
-// Add page navigation routes
-export const AddStackNavigator = () => {
-  return (
-    <AddStack.Navigator
-      screenOptions={{
-        animation: "ios_from_right",
-        headerShown: false,
-      }}
-    >
-      <AddStack.Screen name="add" component={AddPage} />
-    </AddStack.Navigator>
-  );
-};
-
 // MyTravels navigation routes
 export const MyTravelsStackNavigator = () => {
   const color = useColorScheme();
@@ -119,15 +110,25 @@ export const MyTravelsStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <MyTravelsStack.Screen name="myTravels" component={MyTravelsPage} />
-      <MyTravelsStack.Screen name="creaTravel" component={CreateTravelsPage} />
+      <MyTravelsStack.Screen
+        name="myTravels"
+        component={MyTravelsPage}
+        options={{ title: "My travels" }}
+      />
+      <MyTravelsStack.Screen
+        name="createTravel"
+        component={CreateTravelsPage}
+      />
       <MyTravelsStack.Screen
         name="search"
-        component={SearchPage}
+        component={SearchStackNavigator}
         options={{
           title: "",
           headerShown: true,
-          headerTransparent: true,
+          headerTransparent: false,
+          headerStyle: {
+            backgroundColor: theme.colors.surface,
+          },
           headerTintColor: theme.colors.text,
         }}
       />
@@ -146,8 +147,19 @@ export const SearchStackNavigator = () => {
         headerShown: false,
       }}
     >
-      <SearchStack.Screen name="search" component={SearchPage} />
-      <SearchStack.Screen name="information" component={InformationPage} />
+      <SearchStack.Screen name="destination" component={SearchPage} />
+      <SearchStack.Screen
+        name="information"
+        component={InformationPage}
+        options={({ route }) => ({
+          title: route.params.destination,
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: theme.colors.surface,
+          },
+          headerTintColor: theme.colors.text,
+        })}
+      />
     </SearchStack.Navigator>
   );
 };

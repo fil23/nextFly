@@ -137,7 +137,7 @@ export const Home = () => {
               Find your place
             </Text>
 
-            {/* search bar */}
+            {/* search bar button*/}
             <Button
               mode="elevated"
               icon={() => (
@@ -155,6 +155,7 @@ export const Home = () => {
             </Button>
           </View>
         </View>
+
         {/* Different sections */}
         <View style={styles.content_prefer}>
           {/* My travels*/}

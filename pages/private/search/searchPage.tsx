@@ -1,21 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
+import { Text } from "react-native-paper";
 import {
-  Button,
-  FAB,
-  Icon,
-  IconButton,
-  Text,
-  TextInput,
-} from "react-native-paper";
-import {
-  ImageBackground,
   StyleSheet,
   useColorScheme,
-  Platform,
   View,
   SafeAreaView,
-  KeyboardAvoidingView,
+  ImageBackground,
   Dimensions,
 } from "react-native";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
@@ -28,7 +18,7 @@ export const SearchPage = () => {
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
   const navigate = useNavigation();
-  const [search, setSearch] = useState<string | null>(null);
+  const [search, setSearch] = useState<string | null>();
   const autiComplete = async () => {
     // @ts-ignore
   };
@@ -37,7 +27,7 @@ export const SearchPage = () => {
     <SafeAreaView style={styles.main_container}>
       <ImageBackground
         resizeMode="cover"
-        source={require("../../../assets/img/NY_black.jpg")}
+        source={require("../../../assets/img/backSearch.jpg")}
         imageStyle={{ position: "absolute", top: 0, left: 0 }}
         style={{
           width: Dimensions.get("window").width,
@@ -68,7 +58,9 @@ export const SearchPage = () => {
             text="Search"
             style={styles.search_button}
             function={() =>
-              navigate.navigate("information", { destination: search })
+              navigate.navigate("information", {
+                destination: search,
+              })
             }
           />
         </View>

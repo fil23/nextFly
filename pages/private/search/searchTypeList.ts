@@ -1,6 +1,8 @@
+import type { Travel } from "../../../constants/interfaces/travel";
+
 export type SearchTypeList = {
-    search:undefined,
+    destination:undefined,
     information:{
-        destination:undefined,
+        destination:string,
     },
 }

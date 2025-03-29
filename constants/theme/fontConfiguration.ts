@@ -71,14 +71,14 @@ export const fontConfig = {
 
   displayMedium: {
      "fontFamily": "Montserrat-Bold",
-     "fontSize": 45,
+     "fontSize": 60,
      "letterSpacing": 0,
      "lineHeight": 52,
    },
 
    displaySmall: {
   "fontFamily": "Myfont",
-  "fontSize": 60,
+  "fontSize": 45,
   "letterSpacing": 0,
   "lineHeight": 44,
   },

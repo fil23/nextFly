@@ -30,13 +30,6 @@ export const PreferCard: FC<MyProps> = (props): JSX.Element => {
       <Card.Title
         title={props.viaggio.title}
         titleStyle={styles.card_title}
-        style={{
-          shadowColor: "black",
-          shadowOffset: {
-            width: 3,
-            height: 3,
-          },
-        }}
         titleVariant="titleMedium"
       />
       <Card.Content style={styles.card_content}>
@@ -94,7 +87,7 @@ const createStyle = (theme: typeof lightTheme) =>
       width: "35%",
     },
     card_content: {
-      height: "77%",
+      height: "82%",
       marginTop: -10,
       flexDirection: "row",
       gap: 15,
