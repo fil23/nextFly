@@ -7,7 +7,7 @@ export const fontConfig = {
     "lineHeight": 16,
   },
   headlineSmall: {
-    "fontFamily": "Montserrat",
+    "fontFamily": "Montserrat-Bold",
     "fontSize": 24,
     "fontWeight":"normal",
     "letterSpacing": 0,
@@ -15,14 +15,14 @@ export const fontConfig = {
   },
 
   headlineMedium: {
-  "fontFamily": "Montserrat",
+  "fontFamily": "Montserrat-Bold",
   "fontSize": 28,
   "letterSpacing": 0,
   "lineHeight": 36,
   },
 
   headlineLarge: {
-  "fontFamily": "Montserrat",
+  "fontFamily": "Montserrat-Bold",
   "fontSize": 32,
   "fontWeight": "400",
   "letterSpacing": 0,
