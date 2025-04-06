@@ -123,9 +123,6 @@ export const MyTravelsStackNavigator = () => {
         name="search"
         component={SearchStackNavigator}
         options={{
-          title: "",
-          headerShown: true,
-          headerTransparent: false,
           headerStyle: {
             backgroundColor: theme.colors.surface,
           },
@@ -144,16 +141,25 @@ export const SearchStackNavigator = () => {
     <SearchStack.Navigator
       screenOptions={{
         animation: "ios_from_right",
-        headerShown: false,
       }}
     >
-      <SearchStack.Screen name="destination" component={SearchPage} />
+      <SearchStack.Screen
+        name="destination"
+        component={SearchPage}
+        options={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: theme.colors.surface,
+          },
+          headerTintColor: theme.colors.text,
+        }}
+      />
       <SearchStack.Screen
         name="information"
         component={InformationPage}
         options={({ route }) => ({
           title: route.params.destination,
-          headerShown: false,
+          headerShown: true,
           headerStyle: {
             backgroundColor: theme.colors.surface,
           },

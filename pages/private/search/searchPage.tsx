@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Text } from "react-native-paper";
 import {
   StyleSheet,
@@ -18,13 +18,23 @@ export const SearchPage = () => {
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
   const navigate = useNavigation();
-  const [search, setSearch] = useState<string | null>();
+  const [search, setSearch] = useState<string | null>(null);
+  const [disabled, setDisabled] = useState<boolean>(true);
   const autiComplete = async () => {
     // @ts-ignore
   };
 
+  useEffect(() => {
+    if (search == "" || search == null) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [search]);
+
   return (
-    <SafeAreaView style={styles.main_container}>
+    // <SafeAreaView style={styles.main_container}>
+    <View style={styles.main_container}>
       <ImageBackground
         resizeMode="cover"
         source={require("../../../assets/img/backSearch.jpg")}
@@ -53,6 +63,7 @@ export const SearchPage = () => {
             }}
             onPress={(data) => setSearch(data.description)}
             onFail={(error) => console.error(error)}
+            autoFillOnNotFound
           />
           <CustomButtonYellow
             text="Search"
@@ -62,6 +73,7 @@ export const SearchPage = () => {
                 destination: search,
               })
             }
+            disabled={disabled}
           />
         </View>
       </View>
@@ -72,7 +84,8 @@ export const SearchPage = () => {
         size="medium"
         onPress={() => console.log("Next page")}
       /> */}
-    </SafeAreaView>
+    </View>
+    //</SafeAreaView>
   );
 };
 
