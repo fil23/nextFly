@@ -66,8 +66,7 @@ export const HomeStackNavigator = () => {
         component={SearchStackNavigator}
         options={{
           title: "",
-          headerTransparent: true,
-          headerShown: true,
+          headerShown: false,
           headerTintColor: theme.colors.text,
         }}
       />

@@ -17,6 +17,8 @@ import { SearchTypeList } from "./searchTypeList";
 import DatePicker, { RangeOutput } from "react-native-neat-date-picker";
 import { create } from "domain";
 import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
+import { GoogleGenAI, Type } from "@google/genai";
+import { useAuth } from "../../../configurations/contexts/authContext";
 
 // interfaces
 
@@ -42,8 +44,13 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
   const [focus, setFocus] = useState<boolean>(false);
   const [passanger, setPassanger] = useState<number>(1);
   const [badget, setBadget] = useState<string>("0");
+  const [response, setResponse] = useState<string>("");
   const today = new Date();
   const styles = createStyle(theme);
+  const ai = new GoogleGenAI({
+    apiKey: process.env.EXPO_PUBLIC_API_KEY_GEMINI,
+  });
+  const { onLoad, setOnLoad } = useAuth();
 
   const onConfirm = useCallback(
     (output: RangeOutput) => {
@@ -76,6 +83,84 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
     handleInfos("n_passengers", passanger);
     handleInfos("badget", badget);
   }, [destination, startDate, endDate, passanger, badget]);
+
+  const generate = async () => {
+    console.log("entrato");
+    setOnLoad(true);
+    const prompt =
+      "Generate a travel in " +
+      info.destination +
+      " for " +
+      info.n_passengers +
+      " people with " +
+      info.badget +
+      "€ badget from " +
+      info.start_date +
+      " to " +
+      info.end_date;
+
+    try {
+      const res = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                day: {
+                  type: Type.NUMBER,
+                  description: "Number of the day",
+                  nullable: false,
+                },
+                location: {
+                  type: Type.STRING,
+                  description: "Name of the location",
+                  nullable: false,
+                },
+                duration: {
+                  type: Type.NUMBER,
+                  description: "Days in the current location",
+                  nullable: false,
+                },
+                places: {
+                  type: Type.ARRAY,
+                  description: "Places to visit in this location",
+                  items: {
+                    type: Type.OBJECT,
+                    properties: {
+                      place: {
+                        type: Type.STRING,
+                        description: "Name of the place to visit",
+                        nullable: false,
+                      },
+                      price: {
+                        type: Type.NUMBER,
+                        description: "Price to visit the place",
+                      },
+                    },
+                  },
+                },
+                price: {
+                  type: Type.NUMBER,
+                  description: "The cost in the current location",
+                  nullable: false,
+                },
+              },
+            },
+          },
+        },
+      });
+      console.log(res.text);
+    } catch (exeption) {
+      console.error(exeption);
+    } finally {
+      setOnLoad(false);
+    }
+  };
+
   return (
     <SafeAreaViewCustom>
       {/* First row with when input*/}
@@ -158,7 +243,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
                   setFocus(false);
                 }}
                 numberOfLines={1}
-                defaultValue="1"
+                placeholder="1"
               />
             </View>
 
@@ -169,7 +254,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
                 keyboardType="numeric"
                 right={<TextInput.Icon icon="currency-eur" />}
                 activeOutlineColor={theme.colors.secondary}
-                defaultValue="0"
+                placeholder="0"
                 value={badget}
                 onChangeText={(text) => setBadget(text)}
               />
@@ -177,7 +262,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
           </KeyboardAvoidingView>
           <CustomButtonYellow
             text="Confirm"
-            function={() => confirm}
+            function={generate}
             style={styles.confirm_button}
           />
         </View>
