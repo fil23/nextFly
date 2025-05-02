@@ -31,19 +31,15 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
 
   //travel's informations
   const [info, setInfo] = useState<Travel>({
-    destination: "",
+    destination: route.params.destination,
     start_date: new Date(),
     end_date: new Date(),
     badget: null,
     n_passengers: 0,
   });
-  const destination = route.params.destination;
+
   const [dateOpen, setDateOpen] = useState<boolean>(false);
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
   const [focus, setFocus] = useState<boolean>(false);
-  const [passanger, setPassanger] = useState<number>(1);
-  const [badget, setBadget] = useState<string>("0");
   const [response, setResponse] = useState<string>("");
   const today = new Date();
   const styles = createStyle(theme);
@@ -55,14 +51,11 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
   const onConfirm = useCallback(
     (output: RangeOutput) => {
       setDateOpen(false);
-      setStartDate(output.startDateString ?? "");
-      setEndDate(output.endDateString ?? "");
-      handleInfos("destination", destination);
-      handleInfos("start_date", new Date(startDate ?? today));
-      handleInfos("end_date", new Date(endDate ?? today));
+      handleInfos("start_date", output.startDate ?? new Date());
+      handleInfos("end_date", output.endDate ?? new Date());
       console.log(info.start_date.getDate());
     },
-    [setDateOpen, startDate, endDate]
+    [setDateOpen, info.start_date, info.end_date]
   );
 
   const onDismiss = React.useCallback(() => {
@@ -76,16 +69,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
     setInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-  const confirm = useCallback(() => {
-    handleInfos("destination", destination);
-    handleInfos("start_date", new Date(startDate ?? today));
-    handleInfos("end_date", new Date(endDate ?? today));
-    handleInfos("n_passengers", passanger);
-    handleInfos("badget", badget);
-  }, [destination, startDate, endDate, passanger, badget]);
-
   const generate = async () => {
-    console.log("entrato");
     setOnLoad(true);
     const prompt =
       "Generate a travel in " +
@@ -98,7 +82,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
       info.start_date +
       " to " +
       info.end_date;
-
+    console.log("prompt: " + prompt);
     try {
       const res = await ai.models.generateContent({
         model: "gemini-2.0-flash",
@@ -174,7 +158,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
             <View style={styles.input_dates}>
               <TextInput
                 mode="outlined"
-                value={startDate}
+                value={info.start_date.toString()}
                 placeholder="Start date"
                 style={styles.input_date_start}
                 left={
@@ -193,7 +177,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
 
               <TextInput
                 mode="outlined"
-                value={endDate}
+                value={info.end_date.toString()}
                 placeholder="End date"
                 style={styles.input_date_start}
                 left={
@@ -238,12 +222,12 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
                 keyboardType="number-pad"
                 maxLength={2}
                 onFocus={() => setFocus(true)}
-                onChangeText={(number: string) => setPassanger(Number(number))}
+                onChangeText={(number: string) => handleInfos("n_passengers",number)}
                 onPressOut={() => {
                   setFocus(false);
                 }}
                 numberOfLines={1}
-                placeholder="1"
+                value={info.n_passengers.toString()};
               />
             </View>
 
@@ -254,9 +238,8 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
                 keyboardType="numeric"
                 right={<TextInput.Icon icon="currency-eur" />}
                 activeOutlineColor={theme.colors.secondary}
-                placeholder="0"
-                value={badget}
-                onChangeText={(text) => setBadget(text)}
+                onChangeText={(text) => handleInfos("badget",text)}
+                value={info.badget?.toString()}
               />
             </View>
           </KeyboardAvoidingView>

@@ -5,4 +5,5 @@ export type SearchTypeList = {
     information:{
         destination:string,
     },
+    travelGenerated:undefined,
 }

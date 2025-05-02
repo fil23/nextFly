@@ -25,7 +25,7 @@ export const SearchPage = () => {
   };
 
   useEffect(() => {
-    if (search == "" || search == null) {
+    if (search?.trim() == "" || search == null) {
       setDisabled(true);
     } else {
       setDisabled(false);
