@@ -19,6 +19,9 @@ import { create } from "domain";
 import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
 import { GoogleGenAI, Type } from "@google/genai";
 import { useAuth } from "../../../configurations/contexts/authContext";
+import { useTravel } from "../../../configurations/contexts/travelContext";
+import { useNavigation } from "@react-navigation/native";
+import { SplashScreen } from "../../splash/splashScreen";
 
 // interfaces
 
@@ -28,9 +31,10 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
   //theme info
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
-
+  const { setInfo } = useTravel();
+  const navigate = useNavigation();
   //travel's informations
-  const [info, setInfo] = useState<Travel>({
+  const [info, setInfos] = useState<Travel>({
     destination: route.params.destination,
     start_date: new Date(),
     end_date: new Date(),
@@ -40,13 +44,13 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
 
   const [dateOpen, setDateOpen] = useState<boolean>(false);
   const [focus, setFocus] = useState<boolean>(false);
-  const [response, setResponse] = useState<string>("");
+  const [risposta, setRisposta] = useState<any>();
   const today = new Date();
   const styles = createStyle(theme);
   const ai = new GoogleGenAI({
     apiKey: process.env.EXPO_PUBLIC_API_KEY_GEMINI,
   });
-  const { onLoad, setOnLoad } = useAuth();
+  const [onLoad, setOnLoad] = useState<boolean>(false);
 
   const onConfirm = useCallback(
     (output: RangeOutput) => {
@@ -66,190 +70,219 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
     name: "destination" | "n_passengers" | "start_date" | "end_date" | "badget",
     value: Date | string | number
   ) => {
-    setInfo((prev) => ({ ...prev, [name]: value }));
+    setInfos((prev) => ({ ...prev, [name]: value }));
   };
 
   const generate = async () => {
     setOnLoad(true);
+    setInfo(info);
     const prompt =
-      "Generate a travel in " +
+      "Generate an itinerary to " +
       info.destination +
       " for " +
       info.n_passengers +
       " people with " +
       info.badget +
       "€ badget from " +
-      info.start_date +
+      info.start_date.toDateString() +
       " to " +
-      info.end_date;
+      info.end_date.toDateString() +
+      " with differents places to visit for each day";
     console.log("prompt: " + prompt);
     try {
-      const res = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.ARRAY,
-            items: {
-              type: Type.OBJECT,
-              properties: {
-                day: {
-                  type: Type.NUMBER,
-                  description: "Number of the day",
-                  nullable: false,
-                },
-                location: {
-                  type: Type.STRING,
-                  description: "Name of the location",
-                  nullable: false,
-                },
-                duration: {
-                  type: Type.NUMBER,
-                  description: "Days in the current location",
-                  nullable: false,
-                },
-                places: {
-                  type: Type.ARRAY,
-                  description: "Places to visit in this location",
-                  items: {
-                    type: Type.OBJECT,
-                    properties: {
-                      place: {
-                        type: Type.STRING,
-                        description: "Name of the place to visit",
-                        nullable: false,
-                      },
-                      price: {
-                        type: Type.NUMBER,
-                        description: "Price to visit the place",
-                      },
-                    },
-                  },
-                },
-                price: {
-                  type: Type.NUMBER,
-                  description: "The cost in the current location",
-                  nullable: false,
-                },
-              },
-            },
-          },
-        },
-      });
-      console.log(res.text);
+      //   const res = await ai.models.generateContent({
+      //     model: "gemini-2.0-flash",
+      //     contents: prompt,
+      //     config: {
+      //       responseMimeType: "application/json",
+      //       responseSchema: {
+      //         type: Type.OBJECT,
+      //         properties: {
+      //           continent: {
+      //             type: Type.STRING,
+      //             description: "continent of the destination",
+      //             nullable: false,
+      //           },
+      //           travel: {
+      //             type: Type.ARRAY,
+      //             items: {
+      //               type: Type.OBJECT,
+      //               properties: {
+      //                 day: {
+      //                   type: Type.NUMBER,
+      //                   description: "Number of the day",
+      //                   nullable: false,
+      //                 },
+      //                 location: {
+      //                   type: Type.STRING,
+      //                   description: "Name of the location",
+      //                   nullable: false,
+      //                 },
+      //                 duration: {
+      //                   type: Type.NUMBER,
+      //                   description: "Number of days in the same location",
+      //                   nullable: false,
+      //                 },
+      //                 places: {
+      //                   type: Type.ARRAY,
+      //                   description: "Places to visit in this location",
+      //                   items: {
+      //                     type: Type.OBJECT,
+      //                     properties: {
+      //                       place: {
+      //                         type: Type.STRING,
+      //                         description: "Name of the place to visit",
+      //                         nullable: false,
+      //                       },
+      //                       price: {
+      //                         type: Type.NUMBER,
+      //                         description: "Price to visit the place",
+      //                       },
+      //                     },
+      //                   },
+      //                 },
+      //                 price: {
+      //                   type: Type.NUMBER,
+      //                   description: "The cost in the current location",
+      //                   nullable: false,
+      //                 },
+      //               },
+      //             },
+      //           },
+      //         },
+      //       },
+      //     },
+      //   });
+      //   console.log(res.text);
+      //   setRisposta(res);
+      console.log("Ok");
     } catch (exeption) {
       console.error(exeption);
+      setRisposta("");
     } finally {
       setOnLoad(false);
+      navigate.navigate("travelGenerated", {
+        risposta: risposta,
+      });
     }
   };
 
   return (
     <SafeAreaViewCustom>
-      {/* First row with when input*/}
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{ flex: 1 }}>
-          <KeyboardAvoidingView
-            style={styles.main_container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+      {onLoad ? (
+        <SplashScreen />
+      ) : (
+        <>
+          {/* First row with when input*/}
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}
           >
-            <Text variant="headlineSmall">How long will you stay? </Text>
-            <View style={styles.input_dates}>
-              <TextInput
-                mode="outlined"
-                value={info.start_date.toString()}
-                placeholder="Start date"
-                style={styles.input_date_start}
-                left={
-                  <TextInput.Icon
-                    icon="airplane-takeoff"
-                    color={theme.colors.secondary}
+            <View style={{ flex: 1 }}>
+              <KeyboardAvoidingView
+                style={styles.main_container}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+              >
+                <Text variant="headlineSmall">How long will you stay? </Text>
+                <View style={styles.input_dates}>
+                  <TextInput
+                    mode="outlined"
+                    value={info.start_date.toString()}
+                    placeholder="Start date"
+                    style={styles.input_date_start}
+                    left={
+                      <TextInput.Icon
+                        icon="airplane-takeoff"
+                        color={theme.colors.secondary}
+                      />
+                    }
+                    readOnly
+                    onPressIn={Keyboard.dismiss}
+                    onPressOut={() => {
+                      setDateOpen(true);
+                    }}
+                    outlineColor={theme.colors.secondary}
                   />
-                }
-                readOnly
-                onPressIn={Keyboard.dismiss}
-                onPressOut={() => {
-                  setDateOpen(true);
-                }}
-                outlineColor={theme.colors.secondary}
-              />
 
-              <TextInput
-                mode="outlined"
-                value={info.end_date.toString()}
-                placeholder="End date"
-                style={styles.input_date_start}
-                left={
-                  <TextInput.Icon
-                    icon="airplane-landing"
-                    color={theme.colors.secondary}
+                  <TextInput
+                    mode="outlined"
+                    value={info.end_date.toString()}
+                    placeholder="End date"
+                    style={styles.input_date_start}
+                    left={
+                      <TextInput.Icon
+                        icon="airplane-landing"
+                        color={theme.colors.secondary}
+                      />
+                    }
+                    outlineColor={theme.colors.secondary}
+                    onPressIn={Keyboard.dismiss}
+                    onPressOut={() => {
+                      setDateOpen(true);
+                    }}
+                    readOnly
                   />
-                }
-                outlineColor={theme.colors.secondary}
-                onPressIn={Keyboard.dismiss}
-                onPressOut={() => {
-                  setDateOpen(true);
-                }}
-                readOnly
+                </View>
+
+                <DatePicker
+                  isVisible={dateOpen}
+                  mode="range"
+                  onConfirm={onConfirm}
+                  onCancel={onDismiss}
+                  minDate={today}
+                  colorOptions={{
+                    backgroundColor: theme.colors.surface,
+                    headerColor: theme.colors.surface,
+                    confirmButtonColor: theme.colors.secondary,
+                    dateTextColor: theme.colors.text,
+                    selectedDateBackgroundColor: theme.colors.secondary,
+                    headerTextColor: theme.colors.secondary,
+                    weekDaysColor: theme.colors.secondary,
+                  }}
+                  dateStringFormat="dd/mm/yyyy"
+                />
+
+                <View style={styles.second_row}>
+                  <Text variant="headlineSmall">How many people? </Text>
+                  <TextInput
+                    label="People"
+                    mode="outlined"
+                    activeOutlineColor={theme.colors.secondary}
+                    keyboardType="number-pad"
+                    maxLength={2}
+                    onFocus={() => setFocus(true)}
+                    onChangeText={(number: string) =>
+                      handleInfos("n_passengers", number)
+                    }
+                    onPressOut={() => {
+                      setFocus(false);
+                    }}
+                    numberOfLines={1}
+                    value={info.n_passengers.toString()}
+                  />
+                </View>
+
+                <View style={styles.third_row}>
+                  <Text variant="headlineSmall">Your badget?</Text>
+                  <TextInput
+                    mode="outlined"
+                    keyboardType="numeric"
+                    right={<TextInput.Icon icon="currency-eur" />}
+                    activeOutlineColor={theme.colors.secondary}
+                    onChangeText={(text) => handleInfos("badget", text)}
+                    value={info.badget?.toString()}
+                  />
+                </View>
+              </KeyboardAvoidingView>
+              <CustomButtonYellow
+                text="Confirm"
+                function={() => generate()}
+                style={styles.confirm_button}
               />
             </View>
-
-            <DatePicker
-              isVisible={dateOpen}
-              mode="range"
-              onConfirm={onConfirm}
-              onCancel={onDismiss}
-              minDate={today}
-              colorOptions={{
-                backgroundColor: theme.colors.surface,
-                headerColor: theme.colors.surface,
-                confirmButtonColor: theme.colors.secondary,
-                dateTextColor: theme.colors.text,
-                selectedDateBackgroundColor: theme.colors.secondary,
-                headerTextColor: theme.colors.secondary,
-                weekDaysColor: theme.colors.secondary,
-              }}
-              dateStringFormat="dd/mm/yyyy"
-            />
-
-            <View style={styles.second_row}>
-              <Text variant="headlineSmall">How many people? </Text>
-              <TextInput
-                label="People"
-                mode="outlined"
-                activeOutlineColor={theme.colors.secondary}
-                keyboardType="number-pad"
-                maxLength={2}
-                onFocus={() => setFocus(true)}
-                onChangeText={(number: string) => handleInfos("n_passengers",number)}
-                onPressOut={() => {
-                  setFocus(false);
-                }}
-                numberOfLines={1}
-                value={info.n_passengers.toString()};
-              />
-            </View>
-
-            <View style={styles.third_row}>
-              <Text variant="headlineSmall">Your badget?</Text>
-              <TextInput
-                mode="outlined"
-                keyboardType="numeric"
-                right={<TextInput.Icon icon="currency-eur" />}
-                activeOutlineColor={theme.colors.secondary}
-                onChangeText={(text) => handleInfos("badget",text)}
-                value={info.badget?.toString()}
-              />
-            </View>
-          </KeyboardAvoidingView>
-          <CustomButtonYellow
-            text="Confirm"
-            function={generate}
-            style={styles.confirm_button}
-          />
-        </View>
-      </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </>
+      )}
     </SafeAreaViewCustom>
   );
 };

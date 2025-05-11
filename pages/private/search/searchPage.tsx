@@ -37,7 +37,9 @@ export const SearchPage = () => {
     <View style={styles.main_container}>
       <ImageBackground
         resizeMode="cover"
-        source={require("../../../assets/img/backSearch.jpg")}
+        source={{
+          uri: "https://storage.googleapis.com/nextfly-bucket/nextfly-background/backSearch.jpg",
+        }}
         imageStyle={{ position: "absolute", top: 0, left: 0 }}
         style={{
           width: Dimensions.get("window").width,

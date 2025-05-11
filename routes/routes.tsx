@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthStack } from "./public/AuthStack";
 import { SplashScreen } from "../pages/splash/splashScreen";
 import { PrivateStack } from "./private/privateStack";
+import { TravelProvider } from "../configurations/contexts/travelContext";
 
 export const Route = () => {
   const { token, onLoad } = useAuth();
@@ -13,7 +14,9 @@ export const Route = () => {
       {onLoad ? (
         <SplashScreen />
       ) : token != null ? (
-        <PrivateStack />
+        <TravelProvider>
+          <PrivateStack />
+        </TravelProvider>
       ) : (
         <AuthStack />
       )}

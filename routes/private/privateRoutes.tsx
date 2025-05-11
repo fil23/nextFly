@@ -19,6 +19,7 @@ import { SearchPage } from "../../pages/private/search/searchPage";
 import { SearchTypeList } from "../../pages/private/search/searchTypeList";
 import { InformationPage } from "../../pages/private/search/informationPage";
 import { TravelGenerated } from "../../pages/private/search/travelGenerated";
+import { TravelProvider } from "../../configurations/contexts/travelContext";
 
 const HomeStack = createNativeStackNavigator<HomeListType>();
 const ProfileStack = createNativeStackNavigator<ProfileListType>();
@@ -166,8 +167,17 @@ export const SearchStackNavigator = () => {
           headerTintColor: theme.colors.text,
         })}
       />
-
-      <SearchStack.Screen name="travelGenerated" component={TravelGenerated} />
+      <SearchStack.Screen
+        name="travelGenerated"
+        component={TravelGenerated}
+        options={({ route }) => ({
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.surface,
+          },
+          headerTintColor: theme.colors.text,
+        })}
+      />
     </SearchStack.Navigator>
   );
 };
