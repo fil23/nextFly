@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useColorScheme } from "react-native";
+import { Alert, useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { darkTheme, lightTheme } from "./constants/theme/theme";
 import * as Font from "expo-font";
@@ -8,11 +8,13 @@ import { Route } from "./routes/routes";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./constants/theme/toastConfiguration";
 import { createClient } from "@supabase/supabase-js";
+import { ErrorScreen } from "./pages/splash/errorScreen";
 
 export default function App() {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState<boolean>(false);
+
   useEffect(() => {
     //
     async function loadFonts() {
@@ -30,7 +32,6 @@ export default function App() {
     // }
 
     loadFonts();
-    // deleteToken();
   }, []);
 
   if (!fontsLoaded) {

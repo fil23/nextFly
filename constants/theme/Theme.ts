@@ -1,5 +1,6 @@
 import { MD3LightTheme, MD3DarkTheme, configureFonts } from "react-native-paper";
 import { fontConfig } from "./fontConfiguration";
+import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 
 export const lightTheme = {
@@ -29,6 +30,7 @@ export const lightTheme = {
     google_button_color:'#016fd5',
     elevation:'#000000',
     black:'#000000',
+     white:'#ffffff'
   },
 };
 
@@ -58,6 +60,7 @@ export const darkTheme = {
     yellow_star:'#ffeb52',
     google_button_color:'#016fd5',
     elevation:'#a6a6a6',
-    black:'#000000'
+    black:'#000000',
+    white:'#ffffff'
   },
 };

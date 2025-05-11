@@ -15,13 +15,12 @@ import type { Travel } from "../../../constants/interfaces/travel";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { SearchTypeList } from "./searchTypeList";
 import DatePicker, { RangeOutput } from "react-native-neat-date-picker";
-import { create } from "domain";
 import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
 import { GoogleGenAI, Type } from "@google/genai";
-import { useAuth } from "../../../configurations/contexts/authContext";
 import { useTravel } from "../../../configurations/contexts/travelContext";
 import { useNavigation } from "@react-navigation/native";
 import { SplashScreen } from "../../splash/splashScreen";
+import { supabase } from "../../../configurations/supabase_config";
 
 // interfaces
 
@@ -90,71 +89,73 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
       " with differents places to visit for each day";
     console.log("prompt: " + prompt);
     try {
-      //   const res = await ai.models.generateContent({
-      //     model: "gemini-2.0-flash",
-      //     contents: prompt,
-      //     config: {
-      //       responseMimeType: "application/json",
-      //       responseSchema: {
-      //         type: Type.OBJECT,
-      //         properties: {
-      //           continent: {
-      //             type: Type.STRING,
-      //             description: "continent of the destination",
-      //             nullable: false,
-      //           },
-      //           travel: {
-      //             type: Type.ARRAY,
-      //             items: {
-      //               type: Type.OBJECT,
-      //               properties: {
-      //                 day: {
-      //                   type: Type.NUMBER,
-      //                   description: "Number of the day",
-      //                   nullable: false,
-      //                 },
-      //                 location: {
-      //                   type: Type.STRING,
-      //                   description: "Name of the location",
-      //                   nullable: false,
-      //                 },
-      //                 duration: {
-      //                   type: Type.NUMBER,
-      //                   description: "Number of days in the same location",
-      //                   nullable: false,
-      //                 },
-      //                 places: {
-      //                   type: Type.ARRAY,
-      //                   description: "Places to visit in this location",
-      //                   items: {
-      //                     type: Type.OBJECT,
-      //                     properties: {
-      //                       place: {
-      //                         type: Type.STRING,
-      //                         description: "Name of the place to visit",
-      //                         nullable: false,
-      //                       },
-      //                       price: {
-      //                         type: Type.NUMBER,
-      //                         description: "Price to visit the place",
-      //                       },
-      //                     },
-      //                   },
-      //                 },
-      //                 price: {
-      //                   type: Type.NUMBER,
-      //                   description: "The cost in the current location",
-      //                   nullable: false,
-      //                 },
-      //               },
-      //             },
-      //           },
-      //         },
-      //       },
-      //     },
-      //   });
-      //   console.log(res.text);
-      //   setRisposta(res);
+      const res = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              continent: {
+                type: Type.STRING,
+                description: "continent of the destination",
+                nullable: false,
+              },
+              travel: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    day: {
+                      type: Type.NUMBER,
+                      description: "Number of the day",
+                      nullable: false,
+                    },
+                    location: {
+                      type: Type.STRING,
+                      description: "Name of the location",
+                      nullable: false,
+                    },
+                    places: {
+                      type: Type.ARRAY,
+                      description: "Places to visit in this location",
+                      items: {
+                        type: Type.OBJECT,
+                        properties: {
+                          place: {
+                            type: Type.STRING,
+                            description: "Name of the place to visit",
+                            nullable: false,
+                          },
+                          placeDescription: {
+                            type: Type.STRING,
+                            description:
+                              "A short description of what I'll see or what I'll do in this place",
+                            nullable: false,
+                          },
+                          price: {
+                            type: Type.NUMBER,
+                            description: "Price to visit the place",
+                          },
+                        },
+                      },
+                    },
+                    price: {
+                      type: Type.NUMBER,
+                      description: "The cost in the current location",
+                      nullable: false,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      console.log(res.text);
+      setRisposta(res);
+
       console.log("Ok");
     } catch (exeption) {
       console.error(exeption);
@@ -166,6 +167,10 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
       });
     }
   };
+
+  // async function saveTravel() {
+  //   const { data, error } = await supabase.from("travels").insert();
+  // }
 
   return (
     <SafeAreaViewCustom>

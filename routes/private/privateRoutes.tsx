@@ -159,7 +159,7 @@ export const SearchStackNavigator = () => {
         name="information"
         component={InformationPage}
         options={({ route }) => ({
-          title: route.params.destination,
+          title: "Information",
           headerShown: true,
           headerStyle: {
             backgroundColor: theme.colors.surface,
@@ -171,6 +171,7 @@ export const SearchStackNavigator = () => {
         name="travelGenerated"
         component={TravelGenerated}
         options={({ route }) => ({
+          title: "Travel generated",
           headerShown: true,
           headerStyle: {
             backgroundColor: theme.colors.surface,

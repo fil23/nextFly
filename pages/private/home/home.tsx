@@ -126,7 +126,9 @@ export const Home = () => {
         {/* Cover  */}
         <View style={styles.cover_container}>
           <ImageBackground
-            source={require("../../../assets/img/Toky nights2.jpg")}
+            source={{
+              uri: "https://storage.googleapis.com/nextfly-bucket/nextfly-background/Toky%20nights2.jpg",
+            }}
             style={styles.cover_image}
             imageStyle={styles.cover_img}
             resizeMode="cover"
