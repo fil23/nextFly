@@ -5,7 +5,5 @@ export type SearchTypeList = {
     information:{
         destination:string,
     },
-    travelGenerated:{
-        risposta:any,
-    },
+    travelGenerated:undefined
 }

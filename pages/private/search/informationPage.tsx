@@ -11,7 +11,7 @@ import {
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
 import { Button, Text, TextInput } from "react-native-paper";
-import type { Travel } from "../../../constants/interfaces/travel";
+import { type Travel } from "../../../constants/interfaces/travel";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { SearchTypeList } from "./searchTypeList";
 import DatePicker, { RangeOutput } from "react-native-neat-date-picker";
@@ -21,6 +21,8 @@ import { useTravel } from "../../../configurations/contexts/travelContext";
 import { useNavigation } from "@react-navigation/native";
 import { SplashScreen } from "../../splash/splashScreen";
 import { supabase } from "../../../configurations/supabase_config";
+import { setContinentId } from "../../../utils/continents";
+import { useAuth } from "../../../configurations/contexts/authContext";
 
 // interfaces
 
@@ -29,8 +31,15 @@ type TravelProps = NativeStackScreenProps<SearchTypeList, "information">;
 export const InformationPage = ({ route, navigation }: TravelProps) => {
   //theme info
   const color = useColorScheme();
+  const { session } = useAuth();
   const theme = color === "dark" ? darkTheme : lightTheme;
-  const { setInfo } = useTravel();
+  const {
+    setInfo,
+    handlerInfoSupa,
+    handleInfoSupaFromInfos,
+    setTravelGenerated,
+    travelGenerated,
+  } = useTravel();
   const navigate = useNavigation();
   //travel's informations
   const [info, setInfos] = useState<Travel>({
@@ -43,7 +52,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
 
   const [dateOpen, setDateOpen] = useState<boolean>(false);
   const [focus, setFocus] = useState<boolean>(false);
-  const [risposta, setRisposta] = useState<any>();
+
   const today = new Date();
   const styles = createStyle(theme);
   const ai = new GoogleGenAI({
@@ -51,6 +60,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
   });
   const [onLoad, setOnLoad] = useState<boolean>(false);
 
+  // Choose date
   const onConfirm = useCallback(
     (output: RangeOutput) => {
       setDateOpen(false);
@@ -72,6 +82,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
     setInfos((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Generate travel with AI
   const generate = async () => {
     setOnLoad(true);
     setInfo(info);
@@ -101,6 +112,15 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
                 type: Type.STRING,
                 description: "continent of the destination",
                 nullable: false,
+                enum: [
+                  "Asia",
+                  "Africa",
+                  "Europe",
+                  "America",
+                  "Antartica",
+                  "Oceania",
+                  " Antarctica",
+                ],
               },
               travel: {
                 type: Type.ARRAY,
@@ -154,17 +174,37 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
         },
       });
       console.log(res.text);
-      setRisposta(res);
+
+      // Controll if params are all upload
+      if (
+        res.text?.trim() != "" &&
+        res.text != null &&
+        res.text != undefined &&
+        (session?.user.id != undefined || session?.user.id != null)
+      ) {
+        const risp_json = JSON.parse(res.text);
+        console.log("res" + res.text);
+
+        console.log("travel:" + travelGenerated?.user_id);
+        // Upload travel's data
+        setInfos(info);
+        handleInfoSupaFromInfos(info);
+        handlerInfoSupa("user_id", session.user.id);
+        setTravelGenerated({
+          travel_generated: res.text,
+          user_id: session.user.id,
+        });
+        handlerInfoSupa("id_continent", setContinentId(risp_json.continent));
+      } else {
+        throw new Error("Error during travel's generation");
+      }
 
       console.log("Ok");
-    } catch (exeption) {
-      console.error(exeption);
-      setRisposta("");
+    } catch (error: any) {
+      console.error(error);
     } finally {
       setOnLoad(false);
-      navigate.navigate("travelGenerated", {
-        risposta: risposta,
-      });
+      navigate.navigate("travelGenerated");
     }
   };
 

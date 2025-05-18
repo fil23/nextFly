@@ -9,6 +9,7 @@ import Toast from "react-native-toast-message";
 import { toastConfig } from "./constants/theme/toastConfiguration";
 import { createClient } from "@supabase/supabase-js";
 import { ErrorScreen } from "./pages/splash/errorScreen";
+import { supabase } from "./configurations/supabase_config";
 
 export default function App() {
   const colorScheme = useColorScheme();

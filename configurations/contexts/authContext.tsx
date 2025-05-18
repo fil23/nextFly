@@ -2,6 +2,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
 import { supabase } from "../supabase_config";
+import { Session } from "@supabase/supabase-js";
 
 /**
  * This context permit to menage the authentication of the app and the
@@ -12,8 +13,8 @@ interface AuthContextType {
   utente: Utente;
   setUtente: any;
   handleUtente: (name: string, value: string) => void;
-  token: string | null;
-  setToken: any;
+  session: Session | null;
+  setSession: (session: Session | null) => void;
   signIn: any;
   signUp: any;
   onLoad: boolean;
@@ -35,10 +36,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     id: "",
     email: "",
   });
-  const [token, setToken] = useState<string | null>(null);
 
   const [onLoad, setOnLoad] = useState<boolean>(false);
-
+  const [session, setSession] = useState<Session | null>(null);
   //App sign IN with email and password
   const signIn = async (email: string, password: string) => {
     setOnLoad(true);
@@ -88,9 +88,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         text2: "Something has gone wrong during sign up",
       });
     } else {
-      //set token if sign up is successfull
-      SecureStore.setItemAsync("token", data.user?.id ?? "");
-
       //setUser to have informations in memory
       setUtente({ email: data.user?.email ?? email, id: data.user?.id ?? "" });
     }
@@ -104,7 +101,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await SecureStore.deleteItemAsync("token");
     setUtente({ id: "", email: "" });
     await SecureStore.deleteItemAsync("email");
-    setToken(null);
     console.log("Sign ot successed");
   };
 
@@ -114,8 +110,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         utente,
         setUtente,
         handleUtente,
-        token,
-        setToken,
+        session,
+        setSession,
         signIn,
         signUp,
         onLoad,

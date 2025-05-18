@@ -1,5 +1,9 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { Travel, TravelSupa } from "../../constants/interfaces/travel";
+import {
+  Travel,
+  TravelsGenerated,
+  TravelSupa,
+} from "../../constants/interfaces/travel";
 
 interface TravelContextType {
   info: Travel;
@@ -13,17 +17,19 @@ interface TravelContextType {
   handleInfoSupaFromInfos: (travel: Travel) => void;
   handlerInfoSupa: (
     name:
-      | "user_created"
+      | "user_id"
       | "id_continent"
-      | "travel_generated"
+      | "travel_id"
       | "profile_image"
       | "destination"
       | "n_travelers"
       | "arrive_date"
       | "departure_date"
       | "badget",
-    value: Date | string | number
+    value: Date | string | number | null
   ) => void;
+  travelGenerated: TravelsGenerated | null;
+  setTravelGenerated: (travel: TravelsGenerated | null) => void;
 }
 
 const TravelContext = createContext<TravelContextType | null>(null);
@@ -42,9 +48,9 @@ export const TravelProvider = ({ children }: { children: ReactNode }) => {
     departure_date: null,
     n_travelers: null,
     badget: null,
-    user_created: null,
+    user_id: null,
     id_continent: null,
-    travel_generated: null,
+    travel_id: null,
     profile_image: null,
   });
 
@@ -62,28 +68,31 @@ export const TravelProvider = ({ children }: { children: ReactNode }) => {
       departure_date: travel.end_date,
       n_travelers: travel.n_passengers,
       badget: Number(travel.badget),
-      user_created: null,
+      user_id: null,
       id_continent: null,
-      travel_generated: null,
+      travel_id: null,
       profile_image: null,
     });
   };
 
   const handlerInfoSupa = (
     name:
-      | "user_created"
+      | "user_id"
       | "id_continent"
-      | "travel_generated"
+      | "travel_id"
       | "profile_image"
       | "destination"
       | "n_travelers"
       | "arrive_date"
       | "departure_date"
       | "badget",
-    value: Date | string | number
+    value: Date | string | number | null
   ) => {
     setInfoSupa((prev) => ({ ...prev, [name]: value }));
   };
+
+  const [travelGenerated, setTravelGenerated] =
+    useState<TravelsGenerated | null>(null);
 
   return (
     <TravelContext.Provider
@@ -95,6 +104,8 @@ export const TravelProvider = ({ children }: { children: ReactNode }) => {
         setInfoSupa,
         handleInfoSupaFromInfos,
         handlerInfoSupa,
+        travelGenerated,
+        setTravelGenerated,
       }}
     >
       {children}

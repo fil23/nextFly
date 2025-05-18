@@ -12,8 +12,13 @@ export interface TravelSupa{
     departure_date:Date|null,
     n_travelers:number|null,
     badget:number|null,
-    user_created:string|null,
+    user_id:string|null,
     id_continent:number|null,
-    travel_generated:string|null,
+    travel_id:string|null,
     profile_image:string|null,
+}
+
+export interface TravelsGenerated{
+  travel_generated:string|null
+  user_id:string|null
 }

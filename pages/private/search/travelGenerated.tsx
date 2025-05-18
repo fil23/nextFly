@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import {
   ImageBackground,
@@ -8,29 +8,54 @@ import {
   useColorScheme,
   View,
 } from "react-native";
-import { SearchTypeList } from "./searchTypeList";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTravel } from "../../../configurations/contexts/travelContext";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { SplashScreen } from "../../splash/splashScreen";
 import { IconButton } from "react-native-paper";
+import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
+import { supabase } from "../../../configurations/supabase_config";
+import { useAuth } from "../../../configurations/contexts/authContext";
 
-type TravelProps = NativeStackScreenProps<SearchTypeList, "travelGenerated">;
-
-export const TravelGenerated = ({ route, navigation }: TravelProps) => {
+export const TravelGenerated = () => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
-  const { info } = useTravel();
-  const travel = route.params.risposta;
+  const { session } = useAuth();
+  const { info, infoSupa, handlerInfoSupa, travelGenerated } = useTravel();
   const [uriImage, setUriImage] = useState<string>(
     "https://storage.googleapis.com/nextfly-bucket/nextfly-background/Tokyo%20nights2jpg.jpg"
   );
   const [onLoad, setOnLoad] = useState<boolean>(false);
 
+  // TODO:Insert possibility to modify the travel's cover image
   const modify_cover = () => {
     console.log("cover modificate");
   };
+
+  const saveTravel = useCallback(async () => {
+    setOnLoad(true);
+    try {
+      handlerInfoSupa("profile_image", uriImage);
+
+      console.log(JSON.stringify(travelGenerated));
+      const { data, error1 } = await supabase
+        .from("travels_generated")
+        .insert(travelGenerated)
+        .select("id");
+      console.warn("Error: " + error1?.message);
+      console.log("data" + data[0]?.id);
+      handlerInfoSupa("travel_id", data[0]?.id);
+
+      const { error } = await supabase.from("travels").insert(infoSupa);
+
+      console.log("Viaggio salvato con successo:" + infoSupa.id_continent);
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setOnLoad(false);
+    }
+  }, [uriImage, info, infoSupa, travelGenerated]);
+
   return (
     <>
       {onLoad ? (
@@ -61,6 +86,9 @@ export const TravelGenerated = ({ route, navigation }: TravelProps) => {
                 style={styles.img_cover_button}
                 onPress={modify_cover}
               />
+            </View>
+            <View>
+              <CustomButtonYellow function={saveTravel} text="Save" />
             </View>
           </ScrollView>
         </SafeAreaView>
