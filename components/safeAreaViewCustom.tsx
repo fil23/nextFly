@@ -6,16 +6,13 @@ interface MyProps {
   children: React.ReactNode;
   style?: {};
 }
-export const SafeAreaViewCustom: React.FC<MyProps> = ({
-  children,
-  style,
-}): JSX.Element => {
+export const SafeAreaViewCustom: React.FC<MyProps> = (props): JSX.Element => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
 
   return (
-    <SafeAreaView style={[styles.container, style]}>{children}</SafeAreaView>
+    <SafeAreaView style={[styles.container, props.style]}>{props.children}</SafeAreaView>
   );
 };
 
@@ -24,7 +21,7 @@ const createStyle = (theme: typeof darkTheme) =>
     container: {
       flex: 1,
       paddingHorizontal: 20,
-      paddingVertical: 30,
+      paddingVertical: 50,
       backgroundColor: theme.colors.background,
     },
   });

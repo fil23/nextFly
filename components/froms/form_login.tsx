@@ -4,6 +4,7 @@ import { Button, TextInput, Text } from "react-native-paper";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../configurations/contexts/authContext";
+import { CustomButtonYellow } from "../buttons/CustomButtonYellow";
 
 interface MyProps {
   load: boolean;
@@ -96,7 +97,7 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         </Button>
       </View>
 
-      <Button
+      {/*<Button
         mode="elevated"
         buttonColor={theme.colors.secondary}
         style={styles.button}
@@ -108,8 +109,8 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         >
           Login
         </Text>
-      </Button>
-
+      </Button>*/}
+      <CustomButtonYellow function={login} text="Login" style={styles.button}/>
       {/* <Button
         mode="elevated"
         buttonColor={theme.colors.google_button_color}

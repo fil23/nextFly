@@ -18,7 +18,7 @@ import { CreateTravelsPage } from "../../pages/private/my_travels/create_travels
 import { SearchPage } from "../../pages/private/search/searchPage";
 import { SearchTypeList } from "../../pages/private/search/searchTypeList";
 import { InformationPage } from "../../pages/private/search/informationPage";
-import { TravelGenerated } from "../../pages/private/search/travelGenerated";
+import { TravelGeneratedApp } from "../../pages/private/search/travelGenerated";
 import { TravelProvider } from "../../configurations/contexts/travelContext";
 
 const HomeStack = createNativeStackNavigator<HomeListType>();
@@ -169,7 +169,7 @@ export const SearchStackNavigator = () => {
       />
       <SearchStack.Screen
         name="travelGenerated"
-        component={TravelGenerated}
+        component={TravelGeneratedApp}
         options={({ route }) => ({
           title: "Travel generated",
           headerShown: true,

@@ -34,15 +34,14 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
   const { session } = useAuth();
   const theme = color === "dark" ? darkTheme : lightTheme;
   const {
-    setInfo,
     handlerInfoSupa,
-    handleInfoSupaFromInfos,
     setTravelGenerated,
     travelGenerated,
+    infoSupa
   } = useTravel();
   const navigate = useNavigation();
   //travel's informations
-  const [info, setInfos] = useState<Travel>({
+  const [infos, setInfos] = useState<Travel>({
     destination: route.params.destination,
     start_date: new Date(),
     end_date: new Date(),
@@ -66,9 +65,9 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
       setDateOpen(false);
       handleInfos("start_date", output.startDate ?? new Date());
       handleInfos("end_date", output.endDate ?? new Date());
-      console.log(info.start_date.getDate());
+      console.log(infos.start_date.getDate());
     },
-    [setDateOpen, info.start_date, info.end_date]
+    [setDateOpen, infos.start_date, infos.end_date]
   );
 
   const onDismiss = React.useCallback(() => {
@@ -85,20 +84,18 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
   // Generate travel with AI
   const generate = async () => {
     setOnLoad(true);
-    setInfo(info);
     const prompt =
       "Generate an itinerary to " +
-      info.destination +
+      infos.destination +
       " for " +
-      info.n_passengers +
+      infos.n_passengers +
       " people with " +
-      info.badget +
+      infos.badget +
       "€ badget from " +
-      info.start_date.toDateString() +
+      infos.start_date.toDateString() +
       " to " +
-      info.end_date.toDateString() +
+      infos.end_date.toDateString() +
       " with differents places to visit for each day";
-    console.log("prompt: " + prompt);
     try {
       const res = await ai.models.generateContent({
         model: "gemini-2.0-flash",
@@ -183,23 +180,23 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
         (session?.user.id != undefined || session?.user.id != null)
       ) {
         const risp_json = JSON.parse(res.text);
-        console.log("res" + res.text);
-
-        console.log("travel:" + travelGenerated?.user_id);
         // Upload travel's data
-        setInfos(info);
-        handleInfoSupaFromInfos(info);
+        handlerInfoSupa("destination",route.params.destination);
+        handlerInfoSupa("n_travelers",infos.n_passengers);
+        handlerInfoSupa("arrive_date",infos.start_date);
+        handlerInfoSupa("departure_date",infos.end_date);
+        handlerInfoSupa("badget",infos.badget);
         handlerInfoSupa("user_id", session.user.id);
         setTravelGenerated({
-          travel_generated: res.text,
+          travel: risp_json.travel,
           user_id: session.user.id,
+          
         });
         handlerInfoSupa("id_continent", setContinentId(risp_json.continent));
       } else {
         throw new Error("Error during travel's generation");
       }
 
-      console.log("Ok");
     } catch (error: any) {
       console.error(error);
     } finally {
@@ -232,7 +229,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
                 <View style={styles.input_dates}>
                   <TextInput
                     mode="outlined"
-                    value={info.start_date.toString()}
+                    value={infos.start_date.toString()}
                     placeholder="Start date"
                     style={styles.input_date_start}
                     left={
@@ -251,7 +248,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
 
                   <TextInput
                     mode="outlined"
-                    value={info.end_date.toString()}
+                    value={infos.end_date.toString()}
                     placeholder="End date"
                     style={styles.input_date_start}
                     left={
@@ -303,7 +300,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
                       setFocus(false);
                     }}
                     numberOfLines={1}
-                    value={info.n_passengers.toString()}
+                    value={infos.n_passengers.toString()}
                   />
                 </View>
 
@@ -315,7 +312,7 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
                     right={<TextInput.Icon icon="currency-eur" />}
                     activeOutlineColor={theme.colors.secondary}
                     onChangeText={(text) => handleInfos("badget", text)}
-                    value={info.badget?.toString()}
+                    value={infos.badget?.toString()}
                   />
                 </View>
               </KeyboardAvoidingView>

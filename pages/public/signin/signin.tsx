@@ -22,7 +22,7 @@ export const SignIn = () => {
       : require("../../../assets/img/signInBack.jpg");
   const { onLoad } = useAuth();
   return (
-    <SafeAreaViewCustom>
+    <SafeAreaViewCustom style={styles.areaview}>
       {onLoad ? (
         <LoaderIndicator /> /* <ImageBackground
         source={image}
@@ -50,6 +50,10 @@ export const SignIn = () => {
 
 const createStyle = (theme: typeof lightTheme) =>
   StyleSheet.create({
+    areaview:{
+      paddingVertical:'50%',
+      
+    },
     container: {
       flex: 1,
       paddingTop: 30,

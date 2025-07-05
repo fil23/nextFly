@@ -15,13 +15,15 @@ import { IconButton } from "react-native-paper";
 import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
 import { supabase } from "../../../configurations/supabase_config";
 import { useAuth } from "../../../configurations/contexts/authContext";
+import type { TravelsGenerated } from "../../../constants/interfaces/travel";
+import { resolve } from "path";
 
-export const TravelGenerated = () => {
+export const TravelGeneratedApp = () => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
   const { session } = useAuth();
-  const { info, infoSupa, handlerInfoSupa, travelGenerated } = useTravel();
+  const { infoSupa, handlerInfoSupa, travelGenerated } = useTravel();
   const [uriImage, setUriImage] = useState<string>(
     "https://storage.googleapis.com/nextfly-bucket/nextfly-background/Tokyo%20nights2jpg.jpg"
   );
@@ -32,29 +34,71 @@ export const TravelGenerated = () => {
     console.log("cover modificate");
   };
 
-  const saveTravel = useCallback(async () => {
+  const sleep = (millisecond : number) =>{
+    return new Promise(resolve => setTimeout(resolve,millisecond));
+  }
+
+  // const saveTravel = useCallback(async () => {
+  //   setOnLoad(true);
+  //   try {
+  //     handlerInfoSupa("profile_image", uriImage);
+
+  //     console.log(JSON.stringify(travelGenerated));
+  //     const { data, error1 } = await supabase
+  //       .from("travels_generated")
+  //       .insert(travelGenerated)
+  //       .select("id");
+  //     console.warn("Error: " + error1?.message);
+  //     console.log("data" + data[0]?.id);
+  //     handlerInfoSupa("travel_id", data[0]?.id);
+
+  //     const { error } = await supabase.from("travels").insert(infoSupa);
+
+  //     console.log("Viaggio salvato con successo:" + infoSupa.id_continent);
+  //   } catch (error: any) {
+  //     console.error(error);
+  //   } finally {
+  //     setOnLoad(false);
+  //   }
+  // }, [uriImage, info, infoSupa, travelGenerated]);
+
+  const saveTravel = async () =>{
     setOnLoad(true);
-    try {
-      handlerInfoSupa("profile_image", uriImage);
+     try {
+      handlerInfoSupa("profile_image", uriImage)
+      console.log("travel gen: "+JSON.stringify(travelGenerated.travel))
+      const {data:{user}} = await supabase.auth.getUser();
+      console.log("Utente: ",user?.id);
+      
+      const { data: userInfo, error: authErr } = await supabase.auth.getUser();
 
-      console.log(JSON.stringify(travelGenerated));
-      const { data, error1 } = await supabase
-        .from("travels_generated")
-        .insert(travelGenerated)
-        .select("id");
-      console.warn("Error: " + error1?.message);
-      console.log("data" + data[0]?.id);
-      handlerInfoSupa("travel_id", data[0]?.id);
+      console.log("Auth UID:", userInfo?.user?.id);
+      const session = (await supabase.auth.getSession()).data.session;
 
-      const { error } = await supabase.from("travels").insert(infoSupa);
 
-      console.log("Viaggio salvato con successo:" + infoSupa.id_continent);
-    } catch (error: any) {
-      console.error(error);
-    } finally {
-      setOnLoad(false);
-    }
-  }, [uriImage, info, infoSupa, travelGenerated]);
+      const { data, error } = await supabase
+        .from("travelsGenerated")
+        .insert(travelGenerated).select("id")
+
+      if (error && data === null) {
+        console.error("Errore:", error.message, error.details);
+      }else{
+        handlerInfoSupa("id_travel_generated", data[0].id );
+        await sleep(2000);
+        const {error} = await supabase.from("travels").insert(infoSupa)
+        if(error){
+          console.error("Errore inserimento info viaggio:",error.message,error.details);
+        }else{
+          console.log("Viaggio salvato con successo:" + infoSupa.id_continent);
+        }
+        
+      }
+     } catch (error: any) {
+       console.error(error+ " infoSupa:" );
+     } finally {
+       setOnLoad(false);
+     }
+  }
 
   return (
     <>

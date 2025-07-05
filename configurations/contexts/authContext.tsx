@@ -16,7 +16,7 @@ interface AuthContextType {
   session: Session | null;
   setSession: (session: Session | null) => void;
   signIn: any;
-  signUp: any;
+  signUp:  (email: string, password: string) => void;
   onLoad: boolean;
   setOnLoad: any;
   signOut: () => void;
@@ -85,8 +85,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: "Something has gone wrong during sign up",
+        text2: "Something has gone wrong during sign up" + error.message,
       });
+      console.error(error.message)
     } else {
       //setUser to have informations in memory
       setUtente({ email: data.user?.email ?? email, id: data.user?.id ?? "" });

@@ -21,7 +21,7 @@ export const CustomButtonYellow: FC<MyProps> = (props): JSX.Element => {
       style={props.style}
       disabled={props.disabled}
     >
-      <Text variant="titleSmall" style={{ color: theme.colors.secondary_text }}>
+      <Text variant="titleSmall" style={{ color: theme.colors.primary }}>
         {props.text}
       </Text>
     </Button>

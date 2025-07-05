@@ -51,7 +51,7 @@ export const Login = () => {
                 transform: [{ translateY: slideAnim }],
               }}
             >
-              <Text style={styles.span} variant="displayMedium">
+              <Text style={styles.span} variant="displaySmall">
                 NextFly
               </Text>
             </Animated.View>
@@ -80,11 +80,11 @@ const createStyle = (theme: typeof lightTheme) =>
     },
     span: {
       color: theme.colors.secondary,
-      letterSpacing: 2,
-      fontFamily: "Montserrat-ExtraBold",
-      textShadowColor: theme.colors.shadow,
+     textShadowColor: theme.colors.shadow,
       textShadowOffset: { width: 3, height: 1 },
-      paddingTop: 15,
+      textShadowRadius: 1,
+      fontFamily: "Montserrat-ExtraBold",
       marginTop: "20%",
+      fontWeight:'bold'
     },
   });

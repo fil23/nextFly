@@ -4,6 +4,8 @@ import { Button, Icon, Text, TextInput } from "react-native-paper";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { useAuth } from "../../configurations/contexts/authContext";
 import { useNavigation } from "@react-navigation/native";
+import { CustomButtonYellow } from "../buttons/CustomButtonYellow";
+import { SafeAreaViewCustom } from "../safeAreaViewCustom";
 
 interface InputText {
   email: string;
@@ -40,7 +42,7 @@ export const FormSignIn = (): JSX.Element => {
   // }, [inputs]);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaViewCustom style={styles.container}>
       <TextInput
         mode="outlined"
         error={error.error == "email"}
@@ -56,11 +58,13 @@ export const FormSignIn = (): JSX.Element => {
         autoCapitalize="none"
         keyboardType="email-address"
         autoCorrect={false}
+        style={styles.input_container}
       />
       <TextInput
         mode="outlined"
         value={inputs.password}
         error={error.error == "password"}
+        style={styles.input_container}
         autoCapitalize="none"
         label="Password"
         maxLength={50}
@@ -107,7 +111,7 @@ export const FormSignIn = (): JSX.Element => {
         />
       )}
 
-      <Button
+     {/* <Button
         mode="elevated"
         buttonColor={theme.colors.secondary}
         style={styles.button}
@@ -119,7 +123,8 @@ export const FormSignIn = (): JSX.Element => {
         >
           Sign in
         </Text>
-      </Button>
+      </Button>*/}
+      <CustomButtonYellow text="Sign in" function={signUpNewUser} style={styles.button} />
 
       {/* <Button
         mode="elevated"
@@ -131,27 +136,31 @@ export const FormSignIn = (): JSX.Element => {
       >
         <Text variant="titleSmall">Sign in with Google</Text>
       </Button> */}
-    </View>
+    </SafeAreaViewCustom>
   );
 };
 
 const createStyle = (theme: typeof lightTheme) =>
   StyleSheet.create({
+    
+    container: {
+      marginTop: 20,
+      paddingTop: 50,
+      gap: 10,
+    },
     input: {
       fontFamily: "Montserrat",
       fontSize: 15,
       color: theme.colors.text,
     },
-    container: {
-      marginTop: 20,
-      flex: 0.7,
-      paddingHorizontal: "5%",
-      paddingTop: 50,
-      justifyContent: "flex-start",
-      gap: 10,
+    input_container:{
+      marginHorizontal: 20
     },
 
     button: {
       marginTop: 15,
+      width:'80%',
+      justifyContent:'center',
+      alignSelf:'center'
     },
   });
