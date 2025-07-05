@@ -12,6 +12,7 @@ import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { MytravelsCard } from "../../../components/cards/coverCards";
 import { AnimatedFAB, List, Text } from "react-native-paper";
 import ListAccordion from "react-native-paper/lib/typescript/components/List/ListAccordion";
+import { useNavigation } from "@react-navigation/native";
 
 interface Travel {
   id: number;
@@ -86,6 +87,7 @@ export const MyTravelsPage = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
   const styles = createStyle(theme);
+  const navigate = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
       {/* Title */}
@@ -117,7 +119,7 @@ export const MyTravelsPage = () => {
       <AnimatedFAB
         icon={"plus"}
         label="Create new travel"
-        onPress={() => console.log("Viaggio creato")}
+        onPress={() => navigate.navigate("search")}
         extended={false}
         animateFrom="right"
         iconMode="static"

@@ -42,6 +42,17 @@ export const Details = ({ route, navigation }: DetailsProps) => {
             size={30}
             onPress={() => setPreferito(!preferito)}
           />
+          <View style={styles.cover_title}>
+            <Text
+              variant="displayMedium"
+              style={{
+                color: theme.colors.secondary,
+                textAlign: "center",
+              }}
+            >
+              {viaggio.destinazione}
+            </Text>
+          </View>
         </View>
 
         {/* Travel's information */}
@@ -107,10 +118,14 @@ const createStyle = (theme: typeof lightTheme) =>
   StyleSheet.create({
     cover: {
       width: "100%",
-      maxHeight: 250,
+      maxHeight: 350,
       minHeight: 200,
     },
-
+    cover_title: {
+      position: "absolute",
+      width: "100%",
+      top: "50%",
+    },
     star_button: {
       position: "absolute",
       top: 0,

@@ -11,25 +11,29 @@ import { useAuth } from "../../configurations/contexts/authContext";
 import { AuthListType } from "../../pages/public/params/AuthListType";
 import { SignIn } from "../../pages/public/signin/signin";
 import { EmailConfirm } from "../../pages/public/signin/email_conf";
+import { supabase } from "../../configurations/supabase_config";
 
 const Stack = createNativeStackNavigator<AuthListType>();
 
 const webClient = process.env.EXPO_PUBLIC_GOOGLE_WEB;
+const iosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS;
 export const AuthStack = () => {
   const color = useColorScheme();
   const theme = color === "dark" ? darkTheme : lightTheme;
-  const { setToken, setOnLoad } = useAuth();
-  async function getToken() {
-    const storedToken = await SecureStore.getItemAsync("token");
-    setToken(storedToken);
-    console.log("Token: " + storedToken);
-  }
+  const { setSession, setOnLoad } = useAuth();
 
   useEffect(() => {
     setOnLoad(true);
-    getToken();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
     GoogleSignin.configure({
       webClientId: webClient,
+      iosClientId: iosClientId,
       offlineAccess: true,
     });
     setOnLoad(false);

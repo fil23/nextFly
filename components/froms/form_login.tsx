@@ -1,14 +1,10 @@
 import React, { FC, useState } from "react";
 import { StyleSheet, useColorScheme, View } from "react-native";
-import { Button, TextInput, Text, Icon } from "react-native-paper";
+import { Button, TextInput, Text } from "react-native-paper";
 import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../configurations/contexts/authContext";
-import { chiamata_publ_post_async } from "../../api/calls/chiamate";
-import { validateEmail, validatePassword } from "../../utils/validateEmail";
-import * as SecureStore from "expo-secure-store";
-import Toast from "react-native-toast-message";
-import { endpoints } from "../../api/endpoints/endpoints";
+import { CustomButtonYellow } from "../buttons/CustomButtonYellow";
 
 interface MyProps {
   load: boolean;
@@ -34,48 +30,10 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
   const [error, setError] = useState<Error>({ error: "", msg: "" });
   const navigate = useNavigation();
   const styles = createStyle(theme);
-  const { signInWithGoogle, setToken, setUtente } = useAuth();
+  const { signIn } = useAuth();
 
   const login = () => {
-    props.setOnLoad(true);
-    const valE = validateEmail(inputs.email);
-    const valP = validatePassword(inputs.password);
-    if (valE && valP) {
-      chiamata_publ_post_async(endpoints.auth.login, {
-        email: inputs?.email,
-        password: inputs?.password,
-      })
-        .then(async (risp) => {
-          await SecureStore.setItemAsync("token", risp.data.token);
-          setToken(risp.data.token);
-          Toast.show({
-            type: "success",
-            text1: "Success",
-            text2: "Login succesful",
-          });
-
-          setUtente({ email: inputs.email });
-          await SecureStore.setItemAsync("email", inputs.email);
-        })
-        .catch((err) => {
-          Toast.show({
-            type: "error",
-            text1: "Error",
-            text2: "Something went wrong during login",
-          });
-        })
-        .finally(() => {
-          props.setOnLoad(false);
-        });
-    } else if (valE) {
-      setError({ error: "email", msg: "Email's format is wrong" });
-      Toast.show({ type: "error", text1: "Error", text2: error.msg });
-      props.setOnLoad(false);
-    } else {
-      setError({ error: "password", msg: "Password's format is wrong" });
-      Toast.show({ type: "error", text1: "Error", text2: error.msg });
-      props.setOnLoad(false);
-    }
+    signIn(inputs.email, inputs.password);
   };
 
   return (
@@ -139,7 +97,7 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         </Button>
       </View>
 
-      <Button
+      {/*<Button
         mode="elevated"
         buttonColor={theme.colors.secondary}
         style={styles.button}
@@ -151,9 +109,9 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         >
           Login
         </Text>
-      </Button>
-
-      <Button
+      </Button>*/}
+      <CustomButtonYellow function={login} text="Login" style={styles.button}/>
+      {/* <Button
         mode="elevated"
         buttonColor={theme.colors.google_button_color}
         icon={() => <Icon source="google" size={20} />}
@@ -161,7 +119,7 @@ export const Login_Form: FC<MyProps> = (props): JSX.Element => {
         onPress={signInWithGoogle}
       >
         <Text variant="titleSmall">Accedi con Google</Text>
-      </Button>
+      </Button> */}
     </>
   );
 };

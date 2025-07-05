@@ -5,6 +5,7 @@ import { darkTheme, lightTheme } from "../../constants/theme/theme";
 
 interface MyProps {
   text: string;
+  disabled?: boolean;
   function: () => void;
   style?: {};
 }
@@ -18,11 +19,9 @@ export const CustomButtonYellow: FC<MyProps> = (props): JSX.Element => {
       buttonColor={theme.colors.secondary}
       onPress={props.function}
       style={props.style}
+      disabled={props.disabled}
     >
-      <Text
-        variant="titleMedium"
-        style={{ color: theme.colors.secondary_text }}
-      >
+      <Text variant="titleSmall" style={{ color: theme.colors.primary }}>
         {props.text}
       </Text>
     </Button>

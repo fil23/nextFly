@@ -2,25 +2,39 @@
   "expo": {
     "name": "talkme",
     "slug": "talkme",
-    "runtimeVersion":"1.0.0",
+    "runtimeVersion": "1.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/logo.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    "assetBundlePatterns": ["assets/fonts/*"],
+    "assetBundlePatterns": [
+      "assets/fonts/*"
+    ],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "${API_KEY_MAPS}"
+      },
+      "bundleIdentifier": "com.pippo123.talkme",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "${API_KEY_MAPS}"
+        }
       },
       "package": "com.pippo123.talkme"
     },
@@ -32,12 +46,14 @@
         "projectId": "ea644225-2201-4ee5-a4ce-f0d67eacdb35"
       }
     },
-    
     "updates": {
       "url": "https://u.expo.dev/ea644225-2201-4ee5-a4ce-f0d67eacdb35"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-secure-store",
+      "expo-localization",
+      "expo-build-properties"
     ]
   }
 }

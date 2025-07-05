@@ -1,6 +1,6 @@
 interface Utente{
     id:string,
-    email:string,
+    email:string
 }
 
 interface DettagliUtente{

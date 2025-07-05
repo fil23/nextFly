@@ -1,172 +1,96 @@
-import {
-  GoogleSignin,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
 import { createContext, ReactNode, useContext, useState } from "react";
-import { chiamata_publ_post_async } from "../../api/calls/chiamate";
-import { endpoints } from "../../api/endpoints/endpoints";
 import * as SecureStore from "expo-secure-store";
-import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
+import { supabase } from "../supabase_config";
+import { Session } from "@supabase/supabase-js";
 
+/**
+ * This context permit to menage the authentication of the app and the
+ * permit to save and get the user's informations in every part of application.
+ * It works as a context.
+ */
 interface AuthContextType {
   utente: Utente;
   setUtente: any;
   handleUtente: (name: string, value: string) => void;
-  token: string | null;
-  setToken: any;
-  signInWithGoogle: any;
-  signOutWithGoogle: any;
+  session: Session | null;
+  setSession: (session: Session | null) => void;
+  signIn: any;
+  signUp:  (email: string, password: string) => void;
   onLoad: boolean;
   setOnLoad: any;
   signOut: () => void;
 }
 
+//Interface to menage errors during authentication
 interface ErroreInt {
   messaggio: string | null;
   errore: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
+const SECRET_KEY = process.env.EXPO_PUBLIC_SECRET_KEY ?? " ";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [utente, setUtente] = useState<Utente>({
     id: "",
     email: "",
   });
-  const [token, setToken] = useState<string | null>(null);
-  const [errore, setErrore] = useState<ErroreInt | null>();
+
   const [onLoad, setOnLoad] = useState<boolean>(false);
-
-  const signInWithGoogle = async () => {
+  const [session, setSession] = useState<Session | null>(null);
+  //App sign IN with email and password
+  const signIn = async (email: string, password: string) => {
     setOnLoad(true);
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const idToken = userInfo.data?.idToken;
-      console.log(userInfo);
 
-      chiamata_publ_post_async(endpoints.auth.googleSignIn, {
-        token: idToken,
-        password: userInfo.data?.user.id,
-        email: userInfo.data?.user.email,
-      })
-        .then(async (risp) => {
-          await SecureStore.setItemAsync("token", risp.data.token);
-          setToken(risp.data.token);
-        })
-        .catch((err) => {
-          setErrore({
-            errore: true,
-            messaggio: "Errore durante il salvataggio del token",
-          });
-        })
-        .finally(() => {
-          setOnLoad(false);
-        });
-    } catch (error: any) {
-      switch (error.code) {
-        case statusCodes.SIGN_IN_CANCELLED:
-          console.error("L'utente ha cancellato l'accesso");
-          Alert.alert(
-            "Error",
-            "Something is gone wrong during the authentication",
-            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
-            {
-              cancelable: true,
-              onDismiss: () =>
-                Alert.alert(
-                  " This alert was dismissed by tapping outside of the alert dialog.,"
-                ),
-            }
-          );
-          break;
-        case statusCodes.IN_PROGRESS:
-          console.error("Operazione in corso");
-          Alert.alert(
-            "Error",
-            "Something is gone wrong during the authentication",
-            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
-            {
-              cancelable: true,
-              onDismiss: () =>
-                Alert.alert(
-                  " This alert was dismissed by tapping outside of the alert dialog.,"
-                ),
-            }
-          );
-          break;
-        case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-          console.error("Servizi di Google Play non disponibili");
-          Alert.alert(
-            "Error",
-            "Something is gone wrong during the authentication",
-            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
-            {
-              cancelable: true,
-              onDismiss: () =>
-                Alert.alert(
-                  " This alert was dismissed by tapping outside of the alert dialog.,"
-                ),
-            }
-          );
-          break;
-        case 409:
-          console.error("utente già registrato");
-          Alert.alert(
-            "Error",
-            "Something is gone wrong during the authentication",
-            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
-            {
-              cancelable: true,
-              onDismiss: () =>
-                Alert.alert(
-                  " This alert was dismissed by tapping outside of the alert dialog.,"
-                ),
-            }
-          );
-          break;
+    //call to supabase db to sign In
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
-        default:
-          console.error("Errore durante l'accesso", error);
-          Alert.alert(
-            "Error",
-            "Something is gone wrong during the authentication",
-            [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
-            {
-              cancelable: true,
-            }
-          );
-          break;
-      }
+    console.warn("Errore: " + error?.message);
 
-      setOnLoad(false);
+    setOnLoad(false);
+    if (error) {
+      //I'll show to user a notify if the sign in will be a failure
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Something has gone wrong during login",
+      });
+      console.error(error.message);
+    } else {
+      //if it's all ok I set token so the user can go on homepage automatically
+      SecureStore.setItemAsync("token", data.user.id);
+
+      //setUser to have informations in memory
+      setUtente({ email: data.user?.email ?? email, id: data.user?.id ?? "" });
     }
   };
 
-  const signOutWithGoogle = async () => {
-    try {
-      setOnLoad(true);
-      await GoogleSignin.signOut();
-      await SecureStore.deleteItemAsync("token");
-      await SecureStore.deleteItemAsync("email");
-      console.log("Sign out avvenuto con successo");
-    } catch (error) {
-      setErrore({ errore: true, messaggio: "Errpre durante il signOut" });
+  //Application signUp with email and password
+  const signUp = async (email: string, password: string) => {
+    setOnLoad(true);
+    //signUp on supabase db
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
 
-      Alert.alert(
-        "Error",
-        "Something is gone wrong during the authentication",
-        [{ text: "OK", onPress: () => console.log("Cancel pressed") }],
-        {
-          cancelable: true,
-          onDismiss: () =>
-            Alert.alert(
-              " This alert was dismissed by tapping outside of the alert dialog.,"
-            ),
-        }
-      );
-    } finally {
-      setOnLoad(false);
+    //if there is an error in supabase call
+
+    setOnLoad(false);
+    if (error) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Something has gone wrong during sign up" + error.message,
+      });
+      console.error(error.message)
+    } else {
+      //setUser to have informations in memory
+      setUtente({ email: data.user?.email ?? email, id: data.user?.id ?? "" });
     }
   };
 
@@ -178,7 +102,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await SecureStore.deleteItemAsync("token");
     setUtente({ id: "", email: "" });
     await SecureStore.deleteItemAsync("email");
-    setToken(null);
     console.log("Sign ot successed");
   };
 
@@ -188,10 +111,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         utente,
         setUtente,
         handleUtente,
-        token,
-        setToken,
-        signInWithGoogle,
-        signOutWithGoogle,
+        session,
+        setSession,
+        signIn,
+        signUp,
         onLoad,
         setOnLoad,
         signOut,

@@ -7,7 +7,7 @@ export const fontConfig = {
     "lineHeight": 16,
   },
   headlineSmall: {
-    "fontFamily": "Montserrat",
+    "fontFamily": "Montserrat-Bold",
     "fontSize": 24,
     "fontWeight":"normal",
     "letterSpacing": 0,
@@ -15,14 +15,14 @@ export const fontConfig = {
   },
 
   headlineMedium: {
-  "fontFamily": "Montserrat",
+  "fontFamily": "Montserrat-Bold",
   "fontSize": 28,
   "letterSpacing": 0,
   "lineHeight": 36,
   },
 
   headlineLarge: {
-  "fontFamily": "Montserrat",
+  "fontFamily": "Montserrat-Bold",
   "fontSize": 32,
   "fontWeight": "400",
   "letterSpacing": 0,
@@ -49,36 +49,42 @@ export const fontConfig = {
     "letterSpacing": 0.1,
     "lineHeight": 20,
   },
+  titleSmall: {
+    "fontFamily": "Montserrat-Bold",
+    "fontSize": 15,
+    "letterSpacing": 0,
+    "lineHeight": 28,
+    },
   titleMedium: {
     "fontFamily": "Montserrat-Bold",
-    "fontSize": 16,
+    "fontSize": 22,
     "letterSpacing": 0.15,
     "lineHeight": 24,
   },
 
   titleLarge: {
   "fontFamily": "Montserrat-Bold",
-  "fontSize": 22,
+  "fontSize": 26,
   "letterSpacing": 0,
   "lineHeight": 28,
   },
 
   displayMedium: {
      "fontFamily": "Montserrat-Bold",
-     "fontSize": 45,
+     "fontSize": 60,
      "letterSpacing": 0,
      "lineHeight": 52,
    },
 
    displaySmall: {
-  "fontFamily": "Montserrat-Bold",
-  "fontSize": 36,
+  "fontFamily": "Montserrat",
+  "fontSize": 45,
   "letterSpacing": 0,
   "lineHeight": 44,
   },
 
   displayLarge: {
-    "fontFamily": "Montserrat-Bold",
+    "fontFamily": "Montserrat",
     "fontSize": 57,
     "letterSpacing": 0,
     "lineHeight": 64,

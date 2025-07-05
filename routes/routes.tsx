@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../configurations/contexts/authContext";
 import { NavigationContainer } from "@react-navigation/native";
 import { AuthStack } from "./public/AuthStack";
 import { SplashScreen } from "../pages/splash/splashScreen";
 import { PrivateStack } from "./private/privateStack";
+import { TravelProvider } from "../configurations/contexts/travelContext";
+import { supabase } from "../configurations/supabase_config";
 
 export const Route = () => {
-  const { token, onLoad } = useAuth();
+  const { onLoad, session } = useAuth();
 
   return (
     <NavigationContainer>
       {onLoad ? (
         <SplashScreen />
-      ) : token != null ? (
-        <PrivateStack />
+      ) : session && session.user ? (
+        <TravelProvider>
+          <PrivateStack />
+        </TravelProvider>
       ) : (
         <AuthStack />
       )}
