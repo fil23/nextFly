@@ -11,12 +11,14 @@ import {
 import { useTravel } from "../../../configurations/contexts/travelContext";
 import { darkTheme, lightTheme } from "../../../constants/theme/theme";
 import { SplashScreen } from "../../splash/splashScreen";
-import { IconButton } from "react-native-paper";
+import { IconButton, Text } from "react-native-paper";
 import { CustomButtonYellow } from "../../../components/buttons/CustomButtonYellow";
 import { supabase } from "../../../configurations/supabase_config";
 import { useAuth } from "../../../configurations/contexts/authContext";
 import type { TravelsGenerated } from "../../../constants/interfaces/travel";
 import { resolve } from "path";
+import { DaysList } from "../../../components/dayslist";
+import Toast from "react-native-toast-message";
 
 export const TravelGeneratedApp = () => {
   const colorScheme = useColorScheme();
@@ -38,55 +40,34 @@ export const TravelGeneratedApp = () => {
     return new Promise(resolve => setTimeout(resolve,millisecond));
   }
 
-  // const saveTravel = useCallback(async () => {
-  //   setOnLoad(true);
-  //   try {
-  //     handlerInfoSupa("profile_image", uriImage);
 
-  //     console.log(JSON.stringify(travelGenerated));
-  //     const { data, error1 } = await supabase
-  //       .from("travels_generated")
-  //       .insert(travelGenerated)
-  //       .select("id");
-  //     console.warn("Error: " + error1?.message);
-  //     console.log("data" + data[0]?.id);
-  //     handlerInfoSupa("travel_id", data[0]?.id);
-
-  //     const { error } = await supabase.from("travels").insert(infoSupa);
-
-  //     console.log("Viaggio salvato con successo:" + infoSupa.id_continent);
-  //   } catch (error: any) {
-  //     console.error(error);
-  //   } finally {
-  //     setOnLoad(false);
-  //   }
-  // }, [uriImage, info, infoSupa, travelGenerated]);
 
   const saveTravel = async () =>{
     setOnLoad(true);
      try {
       handlerInfoSupa("profile_image", uriImage)
-      console.log("travel gen: "+JSON.stringify(travelGenerated.travel))
-      const {data:{user}} = await supabase.auth.getUser();
-      console.log("Utente: ",user?.id);
-      
-      const { data: userInfo, error: authErr } = await supabase.auth.getUser();
-
-      console.log("Auth UID:", userInfo?.user?.id);
-      const session = (await supabase.auth.getSession()).data.session;
-
-
+    
       const { data, error } = await supabase
         .from("travelsGenerated")
         .insert(travelGenerated).select("id")
 
       if (error && data === null) {
+        Toast.show({
+            type:'error',
+            text1:'Error',
+            text2:'Error while saving!'
+          })
         console.error("Errore:", error.message, error.details);
       }else{
         handlerInfoSupa("id_travel_generated", data[0].id );
         await sleep(2000);
         const {error} = await supabase.from("travels").insert(infoSupa)
         if(error){
+          Toast.show({
+            type:'error',
+            text1:'Error',
+            text2:'Error while saving!'
+          })
           console.error("Errore inserimento info viaggio:",error.message,error.details);
         }else{
           console.log("Viaggio salvato con successo:" + infoSupa.id_continent);
@@ -94,7 +75,11 @@ export const TravelGeneratedApp = () => {
         
       }
      } catch (error: any) {
-       console.error(error+ " infoSupa:" );
+       Toast.show({
+            type:'error',
+            text1:'Error',
+            text2:'Error while saving!'
+        })
      } finally {
        setOnLoad(false);
      }
@@ -111,6 +96,7 @@ export const TravelGeneratedApp = () => {
             automaticallyAdjustsScrollIndicatorInsets
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={16}
+            
           >
             {/* travel's cover */}
             <View style={styles.cover_container}>
@@ -131,8 +117,40 @@ export const TravelGeneratedApp = () => {
                 onPress={modify_cover}
               />
             </View>
+
+            {/* travel informations */}
+            <View style={styles.informations_section}>
+              <View style={styles.info}>
+                <Text variant="titleSmall">Title:  </Text>
+                <Text variant="bodyMedium">{infoSupa.title}</Text>
+              </View>
+
+              {/* destination */}
+              <View style={styles.info}>
+                <Text variant="titleSmall">Destination:  </Text>
+                <Text variant="bodyMedium">{infoSupa.destination}</Text>
+              </View>
+              {/* Arrive date  */}
+              <View style={styles.info}>
+                <Text variant="titleSmall">Arrive date:  </Text>
+                <Text variant="bodyMedium">{infoSupa.arrive_date?.toLocaleDateString()}</Text>
+              </View>
+              {/* departure date  */}
+              <View style={styles.info}>
+                <Text variant="titleSmall">Departure date:  </Text>
+                <Text variant="bodyMedium">{infoSupa.departure_date?.toLocaleDateString()}</Text>
+              </View>
+
+              {/* Travel plan */}
+              <View>
+                <Text variant="titleSmall">Travel plan:  </Text>
+                <DaysList data={travelGenerated.travel?? []}/>
+              </View>
+
+            </View>
+            {/* Save button */}
             <View>
-              <CustomButtonYellow function={saveTravel} text="Save" />
+              <CustomButtonYellow function={saveTravel} text="Save" disabled={infoSupa.title != null? false : true} />
             </View>
           </ScrollView>
         </SafeAreaView>
@@ -144,8 +162,9 @@ export const TravelGeneratedApp = () => {
 const createStyle = (theme: typeof darkTheme) =>
   StyleSheet.create({
     safe_area: {
-      flex: 1,
+      flex: 0.9,
       backgroundColor: theme.colors.background,
+      
     },
     main_scroll: {
       backgroundColor: theme.colors.background,
@@ -168,4 +187,16 @@ const createStyle = (theme: typeof darkTheme) =>
       top: 10,
       right: 20,
     },
+
+    informations_section:{
+      
+      paddingLeft:'5%',
+      marginVertical:'5%'
+    },
+    info:{
+      flexDirection:'row',
+     
+      flexWrap:'wrap',
+      alignItems:'center'
+    }
   });

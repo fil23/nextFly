@@ -1,3 +1,15 @@
+export type Place = {
+  place: string;
+  placeDescription: string;
+  price: number;
+};
+
+export type TravelDay = {
+  day: number;
+  location: string;
+  places: Place[];
+  price: number;
+};
 export interface Travel {
     destination:string,
     n_passengers:number,
@@ -7,6 +19,7 @@ export interface Travel {
 }
 
 export interface TravelSupa{
+    title:string|null,
     destination:string|null,
     arrive_date:Date|null,
     departure_date:Date|null,
@@ -19,7 +32,7 @@ export interface TravelSupa{
 }
 
 export interface TravelsGenerated{
-  travel:string|null
+  travel:TravelDay[]|null
   user_id?:string|null
   created_at?:Date|null
 }

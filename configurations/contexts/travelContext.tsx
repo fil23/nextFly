@@ -18,7 +18,8 @@ interface TravelContextType {
       | "n_travelers"
       | "arrive_date"
       | "departure_date"
-      | "badget",
+      | "badget"
+      | "title",
     value: Date | string | number | null
   ) => void;
   travelGenerated: TravelsGenerated;
@@ -30,6 +31,7 @@ const TravelContext = createContext<TravelContextType | null>(null);
 export const TravelProvider = ({ children }: { children: ReactNode }) => {
  
   const [infoSupa, setInfoSupa] = useState<TravelSupa>({
+    title:null,
     destination: null,
     arrive_date: null,
     departure_date: null,
@@ -51,7 +53,8 @@ export const TravelProvider = ({ children }: { children: ReactNode }) => {
       | "n_travelers"
       | "arrive_date"
       | "departure_date"
-      | "badget",
+      | "badget"
+      | "title",
     value: Date | string | number | null
   ) => {
     setInfoSupa((prev) => ({ ...prev, [name]: value }));

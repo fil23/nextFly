@@ -5,7 +5,7 @@ import {
   StyleSheet,
   useColorScheme,
 } from "react-native";
-import { FormSignIn } from "../../../components/froms/form_registrazione";
+import { FormSignIn } from "../../../components/forms/form_registrazione";
 import { LoaderIndicator } from "../../../components/loaderIndicator";
 import { SafeAreaViewCustom } from "../../../components/safeAreaViewCustom";
 import { SignInTitles } from "../../../components/titles/signInTitles";

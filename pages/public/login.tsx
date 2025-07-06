@@ -9,7 +9,7 @@ import { darkTheme, lightTheme } from "../../constants/theme/theme";
 import { Text, TextInput } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import { SafeAreaViewCustom } from "../../components/safeAreaViewCustom";
-import { Login_Form } from "../../components/froms/form_login";
+import { Login_Form } from "../../components/forms/form_login";
 import { Platform } from "react-native";
 import { LoaderIndicator } from "../../components/loaderIndicator";
 import { useAuth } from "../../configurations/contexts/authContext";

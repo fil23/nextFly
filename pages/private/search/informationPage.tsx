@@ -23,6 +23,7 @@ import { SplashScreen } from "../../splash/splashScreen";
 import { supabase } from "../../../configurations/supabase_config";
 import { setContinentId } from "../../../utils/continents";
 import { useAuth } from "../../../configurations/contexts/authContext";
+import Toast from "react-native-toast-message";
 
 // interfaces
 
@@ -170,7 +171,6 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
           },
         },
       });
-      console.log(res.text);
 
       // Controll if params are all upload
       if (
@@ -196,13 +196,17 @@ export const InformationPage = ({ route, navigation }: TravelProps) => {
       } else {
         throw new Error("Error during travel's generation");
       }
-
-    } catch (error: any) {
-      console.error(error);
-    } finally {
       setOnLoad(false);
       navigate.navigate("travelGenerated");
-    }
+    } catch (error: any) {
+      setOnLoad(false);
+      console.error(error);
+      Toast.show({
+                  type:'error',
+                  text1:'Error',
+                  text2:'Error while generation of the travel!'
+                })
+    } 
   };
 
   // async function saveTravel() {

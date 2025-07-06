@@ -159,7 +159,7 @@ export const SearchStackNavigator = () => {
         name="information"
         component={InformationPage}
         options={({ route }) => ({
-          title: "Information",
+          title: "Info",
           headerShown: true,
           headerStyle: {
             backgroundColor: theme.colors.surface,
